@@ -7,14 +7,14 @@ from .serializer import PegawaiSerializer, BarangSerializer, PeminjamanSerialize
 from .models import Pegawai, Barang, Peminjaman
 
 # Create your views here.
-class PegawaiView(generics.ListAPIView):
+class PegawaiView(generics.CreateAPIView):
     queryset = Pegawai.objects.all()
     serializer_class = PegawaiSerializer
 
-class PeminjamanView(generics.ListAPIView):
+class PeminjamanView(generics.CreateAPIView):
     queryset = Peminjaman.objects.all()
     serializer_class = PeminjamanSerializer
 
-class BarangView(generics.ListAPIView):
+class BarangView(generics.CreateAPIView):
     queryset = Barang.objects.all()
     serializer_class = BarangSerializer
