@@ -37,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'backend.apps.BackendConfig',
+    'inventaris.apps.InventarisConfig',
     'rest_framework',
     'frontend.apps.FrontendConfig',
-    'authentications.apps.AuthenticationsConfig'
+    'authentications.apps.AuthenticationsConfig',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -133,4 +134,7 @@ AUTH_USER_MODEL = 'authentications.UserAccounts'
 
 REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'error',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }

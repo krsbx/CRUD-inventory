@@ -8,7 +8,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = UserAccounts
-        fields = ['nip_nrk', 'email', 'password' , 'nama', 'alamat', 'telp']
+        fields = ['nip_nrk', 'email', 'password' , 'nama_pegawai', 'alamat', 'telp']
 
     def validate(self, attrs):
         nip_nrk = attrs.get('nip_nrk', '')
@@ -23,12 +23,14 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.ModelSerializer):
-    # nip_nrk = serializers.CharField(max_length=120, write_only=True, label="NIP/NIK")
-    # password  = serializers.CharField(max_length=16, min_length=8, write_only=True, label="Passwords")
+    nip_nrk = serializers.CharField(max_length=120, write_only=True, label="NIP/NIK")
+    password  = serializers.CharField(max_length=16, min_length=8, write_only=True, label="Passwords")
+    nama_pegawai = serializers.CharField(max_length=120, read_only=True)
+    tokens = serializers.CharField(max_length=64, min_length=6, read_only=True)
 
     class Meta:
         model = UserAccounts
-        fields = ['nip_nrk', 'password']
+        fields = ['nip_nrk', 'password', 'nama_pegawai', 'tokens']
 
     def validate(self, attrs):
         nip_nrk = attrs.get('nip_nrk', '')
@@ -41,5 +43,6 @@ class LoginSerializer(serializers.ModelSerializer):
 
         return {
             'nip_nrk': user.nip_nrk,
-            'nama': user.nama
+            'nama': user.nama_pegawai,
+            'tokens': user.tokens
         }
