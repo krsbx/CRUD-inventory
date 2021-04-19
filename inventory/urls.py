@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('inventaris.urls')),
     path('api/', include('authentications.urls')),
+    path('api/', include('inven_manager.urls')),
 ]

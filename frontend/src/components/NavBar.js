@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import style from 'styled-components';
-
+import Login from './Login';
 
 const Styled = style.div`
 .navbar{
@@ -209,8 +209,9 @@ export default class NavBar extends Component {
             <div class="inner-width">
                 <div class="navbar-menu">
                     <a href="http://localhost:8000">Home</a>
-                    <a href="http://localhost:8000/about">About</a>
+                    <a href="http://localhost:8000/register">Register</a>
                     <a href="http://localhost:8000/login">Login</a>
+                    <a href="http://localhost:8000/about">About</a>
                 </div>
             </div>
             <button class="menu-btn">

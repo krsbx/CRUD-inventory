@@ -15,4 +15,16 @@
     align-items: center;
     text-align: center;
     justify-content: center;
+    background: url("../images/Backgrounds.jpg") fixed no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+
+.login_textFields{
+    color: white !important;
+}
+
+.label_textfield{
+    color: white !important
 }

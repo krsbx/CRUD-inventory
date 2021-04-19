@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,10 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'inventaris.apps.InventarisConfig',
-    'rest_framework',
-    'frontend.apps.FrontendConfig',
     'authentications.apps.AuthenticationsConfig',
+    'rest_framework',
     'drf_yasg',
+    'inven_manager.apps.InvenManagerConfig',
+    'frontend.apps.FrontendConfig',
 ]
 
 MIDDLEWARE = [
@@ -136,5 +138,13 @@ REST_FRAMEWORK = {
     'NON_FIELD_ERRORS_KEY': 'error',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
+    # 'PAGE_SIZE': 10
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'USER_ID_FIELD': 'nip_nrk'
 }
