@@ -1,11 +1,9 @@
 from django.urls import path
-from .views import PegawaiView, BarangView, PeminjamanView, DetailView, GedungView, RuangView
+from .views import BarangView, PeminjamanView, BarangDetail, PeminjamanDetail
 
 urlpatterns = [
-    path('pegawai/', PegawaiView.as_view()),
     path('barang/', BarangView.as_view()),
+    path('barang/<str:kode_barang>', BarangDetail.as_view()),
     path('peminjaman/', PeminjamanView.as_view()),
-    path('detail/', DetailView.as_view()),
-    path('gedung/', GedungView.as_view()),
-    path('ruang/', RuangView.as_view()),
+    path('peminjaman/<str:nomor_peminjaman>', PeminjamanDetail.as_view()),
 ]

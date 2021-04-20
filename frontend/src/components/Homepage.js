@@ -3,7 +3,8 @@ import About from './About';
 import NavBar from './NavBar';
 import Login from './Login';
 import Register from './Register';
-import Gedung from './Gedung';
+import Logout from './Logout';
+import Inventory from './Inventory';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 
 export default class Homepage extends Component {
@@ -15,11 +16,10 @@ export default class Homepage extends Component {
         let isAuthorized = localStorage.getItem('isAuthorized');
 
         const drawRegister = () => {
-            if(isAuthorized == null || isAuthorized == false){
-                <Register />
-            }else{
-                <Gedung />
+            if(isAuthorized == "true"){
+                return <Inventory />;
             }
+            return <Register />;
         }
 
         return  (
@@ -28,7 +28,7 @@ export default class Homepage extends Component {
             <Switch>
                 <div className="container">
                     <Route exact path='/'>
-                    <Gedung />
+                        {drawRegister()}
                     </Route>
                     <Route path='/about/'>
                         <About />
@@ -38,6 +38,9 @@ export default class Homepage extends Component {
                     </Route>
                     <Route path='/register'>
                         <Register />
+                    </Route>
+                    <Route path='/logout'>
+                        <Logout />
                     </Route>
                 </div>
             </Switch>

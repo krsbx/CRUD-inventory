@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from inventaris.models import TabelRuang, TabelPeminjaman, TabelGedung, TabelBarang, PeminjamanDetail
-from inventaris.serializer import BarangSerializer, PeminjamanSerializer, DetailSerializer, GedungSerializer, RuangSerializer
+from inventaris.models import TabelRuang, TabelGedung, PeminjamanDetail
+from .serializer import DetailSerializer, GedungSerializer, RuangSerializer
 from rest_framework import permissions
 
 # Create your views here.
@@ -26,7 +26,7 @@ class RuangDetail(RetrieveUpdateDestroyAPIView):
         return serializer.save()
 
     def get_queryset(self):
-        return self.queryset.all()
+        return self.queryset.filter()
 
 class GedungList(ListCreateAPIView):
     serializer_class = GedungSerializer
@@ -49,7 +49,7 @@ class GedungDetail(RetrieveUpdateDestroyAPIView):
         return serializer.save()
 
     def get_queryset(self):
-        return self.queryset.all()
+        return self.queryset.filter()
 
 class DetailList(ListCreateAPIView):
     serializer_class = DetailSerializer

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import style from 'styled-components';
-import Login from './Login';
 
 const Styled = style.div`
 .navbar{
@@ -198,6 +197,15 @@ export default class NavBar extends Component {
     }
 
     render () {
+        let isAuthorized = localStorage.getItem('isAuthorized');
+
+        const Login_Logout = () => {
+            if(isAuthorized == "true"){
+                return <a href="http://localhost:8000/logout">Logout</a>;
+            }
+            return <a href="http://localhost:8000/login">Login</a>;
+        }
+
         return (
         <Styled>
         <nav class="navbar">
@@ -210,7 +218,7 @@ export default class NavBar extends Component {
                 <div class="navbar-menu">
                     <a href="http://localhost:8000">Home</a>
                     <a href="http://localhost:8000/register">Register</a>
-                    <a href="http://localhost:8000/login">Login</a>
+                    {Login_Logout()}
                     <a href="http://localhost:8000/about">About</a>
                 </div>
             </div>

@@ -12,7 +12,7 @@ export default class Register extends Component {
      }
 
     Submit = () => {
-        const url = 'http://localhost:8000/api/register'
+        const url = 'http://localhost:8000/api/register/'
         let data = this.state.fields;
 
         console.log(data);
@@ -46,6 +46,9 @@ export default class Register extends Component {
                         if(resp["telp"] != null){
                             errors["telp"] = resp["telp"];
                         }
+
+                        this.state.errors = errors;
+
                         return;
                     });
                 }
