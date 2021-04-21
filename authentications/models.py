@@ -2,7 +2,9 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from rest_framework_simplejwt.tokens import RefreshToken
 
-# Create your models here.
+#Creating Custom User Accounts Models
+#   All the models here is responsible for Creating/Managing User Account
+
 class UserAccountsManager(BaseUserManager):
     def create_user(self, nip_nrk, email, password=None, nama_pegawai = None, alamat = None, telp = None, is_active = True, is_staff = False, is_superuser = False):
         if nip_nrk is None:

@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
 import { Button, TextField } from '@material-ui/core';
-import axiosInstance from './axios';
-
-const styles = {
-    root: {
-      background: "black"
-    },
-    input: {
-      color: "white"
-    }
-  };
+import axiosInstance from './AxiosInstance';
 
 export default class Login extends Component {
     constructor(props){
@@ -23,15 +14,16 @@ export default class Login extends Component {
         }
      }
 
+     /*
+        Submit function will create a post request to login the user
+            The result of the user action will be illustrated by the page redirecting the user to the homepage
+    */
 
     Submit = () => {
         const data = this.state.fields;
 
         if(this.handleValidation()){
-            axiosInstance.post(`/api/login/`, {
-                nip_nrk: data.nip_nrk,
-                password: data.password,
-            }).then((result) => {
+            axiosInstance.post(`/api/login/`, data).then((result) => {
                 if(result.status === 200){
                     if(result.data.access_token){
                         localStorage.setItem('access_token', result.data.access_token);
@@ -48,6 +40,11 @@ export default class Login extends Component {
             });
         }
     };
+
+    /*
+        handleValidation function will set state value for error input
+            the function will check all user the input same as the database require or nots
+    */
 
     handleValidation(){
         let fields = this.state.fields;
@@ -84,15 +81,27 @@ export default class Login extends Component {
        return formIsValid;
    }
 
+   /*
+        handleChange function will set the state value for text input
+    */
+
     handleChange(field, e){         
         let fields = this.state.fields;
         fields[field] = e.target.value;        
         this.setState({fields});
     }
 
+    /*
+        render function is used to render all necessary component for the page
+        render function will render:
+            Textfield for NIP/NRK
+            Textfield for Password
+            Button for submitting response
+    */
+
     render () {
         return (
-            <div className='Register'>
+            <div className='Login'>
                 <p>
                     <br /> <TextField variant="filled" color='primary' type='text' size="30" onChange={this.handleChange.bind(this, "nip_nrk")} value={this.state.fields["nip_nrk"]} 
                     label='NIP/NRK' InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 120 }} />

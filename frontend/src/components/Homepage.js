@@ -4,6 +4,10 @@ import NavBar from './NavBar';
 import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
+import Gedung from './Gedung';
+import Barang from './Barang';
+import Ruang from './Ruang';
+import Peminjaman from './Peminjaman';
 import Inventory from './Inventory';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 
@@ -17,7 +21,7 @@ export default class Homepage extends Component {
 
         const drawRegister = () => {
             if(isAuthorized == "true"){
-                return <Inventory />;
+                return <Ruang />;
             }
             return <Register />;
         }

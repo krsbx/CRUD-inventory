@@ -11,6 +11,11 @@ export default class Register extends Component {
         }
      }
 
+    /*
+        Submit function will create a post request to register all user input
+            The result of the user registration will bre printed in browser console
+    */
+
     Submit = () => {
         const url = 'http://localhost:8000/api/register/'
         let data = this.state.fields;
@@ -63,6 +68,11 @@ export default class Register extends Component {
             });
         }
     };
+
+    /*
+        handleValidation function will set state value for error input
+            the function will check all user the input same as the database require or nots
+    */
 
     handleValidation(){
         let fields = this.state.fields;
@@ -155,11 +165,27 @@ export default class Register extends Component {
        return formIsValid;
    }
 
+   /*
+        handleChange function will set the state value for text input
+    */
+
     handleChange(field, e){         
         let fields = this.state.fields;
         fields[field] = e.target.value;        
         this.setState({fields});
     }
+
+    /*
+        render function is used to render all necessary component for the page
+        render function will render:
+            Textfield for NIP/NRK
+            Textfield for Password
+            Textfield for Email
+            Textfield for Nama Pegawai
+            Textfield for Alamat
+            Textfield for Telepon
+            Button for submitting response
+    */
 
     render () {
         return (

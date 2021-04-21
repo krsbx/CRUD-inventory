@@ -4,7 +4,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializer import RegisterSerializer, LoginSerializer
 
-# Create your views here.
+
+#All this view is used for API View
+#   This view wil be called in urls file
+#   The register view used for user registraion page
+#   The login view used for user login page
+
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
@@ -17,7 +22,6 @@ class RegisterView(generics.CreateAPIView):
         user_data = serializer.data
         
         return Response(user_data, status=status.HTTP_201_CREATED)
-
 
 class LoginView(generics.CreateAPIView):
     serializer_class = LoginSerializer

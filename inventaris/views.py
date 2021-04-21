@@ -7,7 +7,13 @@ from .serializer import PegawaiSerializer, BarangSerializer, PeminjamanSerialize
 from .models import Pegawai, TabelPeminjaman, TabelBarang
 from rest_framework import permissions
 
-# Create your views here.
+#All this view is used for API View
+#   This view wil be called in urls file
+#   Where this view accessible only if the user authenticated
+
+#The View with View class name is for post/get request
+#   The View with Detail class name is for detailed request informations
+
 class PegawaiView(generics.ListCreateAPIView):
     queryset = Pegawai.objects.all()
     serializer_class = PegawaiSerializer
@@ -25,9 +31,6 @@ class PegawaiDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     lookup_field = "nip_nrk"
 
-    def perform_create(self, serializer):
-        return serializer.save()
-
     def get_queryset(self):
         return self.queryset.filter()
 
@@ -37,7 +40,7 @@ class PeminjamanView(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def perform_create(self, serializer):
-        return serializer.save()
+        return serializer.save(nip_nrk=self.request.user, nama_pegawai=self.request.user.nama_pegawai)
 
     def get_queryset(self):
         return self.queryset.all()
@@ -48,16 +51,13 @@ class PeminjamanDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     lookup_field = "nomor_peminjaman"
 
-    def perform_create(self, serializer):
-        return serializer.save()
-
     def get_queryset(self):
         return self.queryset.filter()
 
 class BarangView(generics.ListCreateAPIView):
     queryset = TabelBarang.objects.all()
     serializer_class = BarangSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     
     def perform_create(self, serializer):
         return serializer.save()
@@ -70,9 +70,6 @@ class BarangDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BarangSerializer
     permission_classes = (permissions.IsAuthenticated,)
     lookup_field = "kode_barang"
-
-    def perform_create(self, serializer):
-        return serializer.save()
 
     def get_queryset(self):
         return self.queryset.filter()
