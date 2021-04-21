@@ -10,6 +10,7 @@ import Ruang from './Ruang';
 import Peminjaman from './Peminjaman';
 import Inventory from './Inventory';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import Samlekom from './bear';
 
 export default class Homepage extends Component {
     constructor(props){
@@ -21,7 +22,7 @@ export default class Homepage extends Component {
 
         const drawRegister = () => {
             if(isAuthorized == "true"){
-                return <Ruang />;
+                return <Inventory />;
             }
             return <Register />;
         }
@@ -45,6 +46,9 @@ export default class Homepage extends Component {
                     </Route>
                     <Route path='/logout'>
                         <Logout />
+                    </Route>
+                    <Route path='/salam'>
+                        <Samlekom />
                     </Route>
                 </div>
             </Switch>
