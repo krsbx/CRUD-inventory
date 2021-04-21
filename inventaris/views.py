@@ -25,9 +25,6 @@ class PegawaiDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     lookup_field = "nip_nrk"
 
-    def perform_create(self, serializer):
-        return serializer.save()
-
     def get_queryset(self):
         return self.queryset.filter()
 
@@ -37,7 +34,7 @@ class PeminjamanView(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def perform_create(self, serializer):
-        return serializer.save()
+        return serializer.save(nip_nrk=self.request.user, nama_pegawai=self.request.user.nama_pegawai)
 
     def get_queryset(self):
         return self.queryset.all()
@@ -48,16 +45,13 @@ class PeminjamanDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     lookup_field = "nomor_peminjaman"
 
-    def perform_create(self, serializer):
-        return serializer.save()
-
     def get_queryset(self):
         return self.queryset.filter()
 
 class BarangView(generics.ListCreateAPIView):
     queryset = TabelBarang.objects.all()
     serializer_class = BarangSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     
     def perform_create(self, serializer):
         return serializer.save()
@@ -70,9 +64,6 @@ class BarangDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BarangSerializer
     permission_classes = (permissions.IsAuthenticated,)
     lookup_field = "kode_barang"
-
-    def perform_create(self, serializer):
-        return serializer.save()
 
     def get_queryset(self):
         return self.queryset.filter()

@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
 import { Button, TextField } from '@material-ui/core';
-import axiosInstance from './axios';
-
-const styles = {
-    root: {
-      background: "black"
-    },
-    input: {
-      color: "white"
-    }
-  };
+import axiosInstance from './AxiosInstance';
 
 export default class Login extends Component {
     constructor(props){
@@ -28,10 +19,7 @@ export default class Login extends Component {
         const data = this.state.fields;
 
         if(this.handleValidation()){
-            axiosInstance.post(`/api/login/`, {
-                nip_nrk: data.nip_nrk,
-                password: data.password,
-            }).then((result) => {
+            axiosInstance.post(`/api/login/`, data).then((result) => {
                 if(result.status === 200){
                     if(result.data.access_token){
                         localStorage.setItem('access_token', result.data.access_token);

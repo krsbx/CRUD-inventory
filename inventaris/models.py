@@ -26,7 +26,7 @@ class TabelPeminjaman(models.Model):
     id_Peminjaman = models.CharField(verbose_name="ID Peminjaman", max_length=10, default=None, null=False)
     # Will Create a functions to get a random nomor peminjaman
     nomor_peminjaman = models.CharField(verbose_name="Nomor Peminjaman", max_length=10, default=None, null=False, primary_key=True)
-    nip_nrk = models.ForeignKey(UserAccounts, on_delete=models.CASCADE, verbose_name="NIP/NRK")
+    nip_nrk = models.ForeignKey(UserAccounts, on_delete=models.CASCADE, verbose_name="NIP/NRK", default=None)
     nama_pegawai = models.CharField(max_length=120, null=False, default=None, verbose_name="Nama Pegawai")
     tgl_pinjam = models.DateField(verbose_name="Tanggal Peminjaman", help_text="Masukkan Tanggal Peminjaman", default=datetime.date.today, null=False)
     tgl_kembali = models.DateField(verbose_name="Tanggal Pengembalian", help_text="Masukkan Tanggal Pengembalian", null=True)
@@ -44,7 +44,7 @@ class TabelGedung(models.Model):
 class TabelRuang(models.Model):
     ruangID = models.CharField(verbose_name="ID Ruang", max_length=10, default=None, null=False)
     ruang = models.CharField(verbose_name="Ruang", max_length=8, default=None, null=False, primary_key=True)
-    pj_ruang = models.CharField(verbose_name="MG Gedung", max_length=120, null=False, default=None)
+    pj_ruang = models.CharField(verbose_name="PJ Ruang", max_length=120, null=False, default=None)
     gedung = models.ForeignKey(TabelGedung, on_delete=models.CASCADE, verbose_name="Gedung")
 
 #Peminjaman Model

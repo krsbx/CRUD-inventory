@@ -5,7 +5,7 @@ from .models import UserAccounts
 from rest_framework_simplejwt.tokens import RefreshToken
 
 class RegisterSerializer(serializers.ModelSerializer):
-    password  = serializers.CharField(max_length=16, min_length=8, write_only=True, label="Passwords")
+    password  = serializers.CharField(max_length=32, min_length=8, write_only=True, label="Passwords")
     
     class Meta:
         model = UserAccounts
@@ -25,7 +25,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 class LoginSerializer(serializers.ModelSerializer):
     nip_nrk = serializers.CharField(max_length=120, write_only=True, label="NIP/NIK")
-    password  = serializers.CharField(max_length=16, min_length=8, write_only=True, label="Passwords")
+    password  = serializers.CharField(max_length=32, min_length=8, write_only=True, label="Passwords")
     tokens = serializers.CharField(max_length=64, min_length=6, read_only=True)
     access_token = serializers.CharField(max_length=64, min_length=6, read_only=True)
     refresh = serializers.CharField(max_length=64, min_length=6, read_only=True)

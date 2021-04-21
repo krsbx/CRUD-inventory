@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axiosInstance from './axios';
+import axiosInstance from './AxiosInstance';
 
 export default class Logout extends Component {
     constructor(props){
