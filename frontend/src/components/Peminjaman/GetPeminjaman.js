@@ -7,6 +7,11 @@ export default class GetPeminjmana extends Component {
         super(props);
     }
 
+    /*
+        PeminjamanList function will create a GET Rest API
+        All informations retrieved will printed in browser console
+    */
+
     PeminjamanList = () => {
         axiosInstance.get(`/api/peminjaman/`).then((result) => {
             const data = result.data.results;
@@ -15,6 +20,10 @@ export default class GetPeminjmana extends Component {
             });
         });
     }
+
+    /*
+        render function is used to render all necessary component for the page
+    */
 
     render () {
         return (<Button variant="contained" color="primary" onClick={() => this.PeminjamanList()}>Get Peminjaman!</Button>);

@@ -7,7 +7,13 @@ from .serializer import PegawaiSerializer, BarangSerializer, PeminjamanSerialize
 from .models import Pegawai, TabelPeminjaman, TabelBarang
 from rest_framework import permissions
 
-# Create your views here.
+#All this view is used for API View
+#   This view wil be called in urls file
+#   Where this view accessible only if the user authenticated
+
+#The View with View class name is for post/get request
+#   The View with Detail class name is for detailed request informations
+
 class PegawaiView(generics.ListCreateAPIView):
     queryset = Pegawai.objects.all()
     serializer_class = PegawaiSerializer

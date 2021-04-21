@@ -3,6 +3,16 @@ import { Button, TextField } from '@material-ui/core';
 import PostGedung from './Gedung/PostGedung';
 import GetGedung from './Gedung/GetGedung';
 
+/*
+    This Class Contain Ruang Page
+    The Page contain 2 components
+        1. PostGedung Component || GetGedung Component
+        2. Button to change view
+    
+    PostGedung will show a page to post gedung by using REST API
+    GetGedung will show a page to get gedung list by using REST API
+*/
+
 export default class Gedung extends Component {
     constructor(props){
         super(props);
@@ -10,6 +20,10 @@ export default class Gedung extends Component {
             visible: false,
         }
     }
+
+    /*
+        render function is used to render all necessary component for the page
+    */
     
     render(){
         const toRender = this.state.visible ? (<PostGedung />) : (<GetGedung />);

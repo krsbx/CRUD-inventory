@@ -22,11 +22,19 @@ export default class PostBarang extends Component {
         }
     }
 
+    /*
+        handleChange function will set the state value for text input
+    */
+
     handleChange(field, e){         
         let fields = this.state.fields;
         fields[field] = e.target.value;
         this.setState({fields});
     }
+
+    /*
+        handleFile function will set the state value for file input
+    */
 
     handleFile(field, e){
         let fields = this.state.fields;
@@ -35,6 +43,11 @@ export default class PostBarang extends Component {
 
         console.log(e.target.files[0]);
     }
+
+    /*
+        handleValidation function will set state value for error input
+            the function will check all user the input same as the database require or nots
+    */
 
     handleValidation(){
         let fields = this.state.fields;
@@ -114,7 +127,13 @@ export default class PostBarang extends Component {
 
        this.setState({errors: errors});
        return formIsValid;
-   }
+    }
+
+    /*
+        PostBarang function will create a POST Rest API
+        All Informations inputted by user, will be posted to database
+        The POST Request will printed the result in browser console
+    */
 
     PostBarang = () => {
         const data = this.state.fields;
@@ -149,6 +168,18 @@ export default class PostBarang extends Component {
             });
         }
     }
+
+    /*
+        render function is used to render all necessary component for the page
+        render function will render:
+            Textfield for Barang ID
+            Textfield for Kode Barang
+            Textfield for Nama Barang
+            Textfield for Merk
+            Textfield for Stock
+            Uploadfield for BAST Perolehan
+            Button for submitting response
+    */
 
     render () {
         return (

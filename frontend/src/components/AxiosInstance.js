@@ -1,6 +1,19 @@
 import axios from 'axios'
 
+/*
+	This module will be used for all REST request after the user logged in
+*/
+
+//	Set the website main url
+
 const baseURL = 'http://localhost:8000/';
+
+/*
+	Create an axios instance with the current configurations
+		baseURL => base connections request
+		timeout => maximum time for the request to call
+		headers => will be used for rest API
+*/
 
 const axiosInstance = axios.create({
     baseURL: baseURL,
@@ -11,6 +24,12 @@ const axiosInstance = axios.create({
 		'Accept': 'application/json',
 	}, 
 });
+
+/*
+	Set additional request when creating rest API
+		Create a reject promis on user not logged in
+		If the user has a refresh token, create a new request for a new token
+*/
 
 axiosInstance.interceptors.response.use(
 	(response) => {

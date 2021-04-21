@@ -3,6 +3,10 @@ from .views import RegisterView, LoginView
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from rest_framework_simplejwt.views import ( TokenObtainPairView, TokenRefreshView, )
+
+#Do not edit this schema view
+#   This schema view will be used for debugging
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -17,10 +21,8 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,),
 )
 
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+#Store all urls will be used in website
+#   Foreach ulrs in this apps need to be call with api link
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),

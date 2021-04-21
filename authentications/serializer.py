@@ -4,6 +4,14 @@ from rest_framework.exceptions import AuthenticationFailed
 from .models import UserAccounts
 from rest_framework_simplejwt.tokens import RefreshToken
 
+#Sertializer modules
+#   Used for creating API view
+
+#Each class represent API View
+#   Foreach serializer store each model/table
+#   Foreach serializer store all required fields for the corresponding API View
+#       Each fields contains the all the fields inside the corresponding models
+
 class RegisterSerializer(serializers.ModelSerializer):
     password  = serializers.CharField(max_length=32, min_length=8, write_only=True, label="Passwords")
     
@@ -21,7 +29,6 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return UserAccounts.objects.create_user(**validated_data)
-
 
 class LoginSerializer(serializers.ModelSerializer):
     nip_nrk = serializers.CharField(max_length=120, write_only=True, label="NIP/NIK")

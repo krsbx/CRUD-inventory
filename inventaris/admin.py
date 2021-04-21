@@ -1,7 +1,9 @@
 from django.contrib import admin
 from .models import Pegawai, TabelPeminjaman, TabelBarang, TabelGedung, TabelRuang, PeminjamanDetail
 
-# Register your models here.
+#Register foreach models to admin page
+#   List Display contains all the required fields in models/tables
+
 class pegawaiAdmin(admin.ModelAdmin):
     list_display = ('nip_nrk', 'nama_pegawai', 'alamat', 'telp')
 
@@ -19,6 +21,10 @@ class ruangAdmin(admin.ModelAdmin):
 
 class detailPinjam(admin.ModelAdmin):
     list_display = ('peminjamanID', 'nomor_peminjaman', 'kode_barang', 'nama_barang', 'jumlah', 'gedung', 'ruang')
+
+#Register all the models admin to admin page
+#   This block of codes used for registering the all class created above
+#   This block of codes registering all class above with the same model type
 
 admin.site.register(TabelPeminjaman, peminjamanAdmin)
 admin.site.register(TabelBarang, barangAdmin)

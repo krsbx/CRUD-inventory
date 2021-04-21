@@ -13,11 +13,20 @@ export default class PostRuang extends Component {
         }
     }
 
+    /*
+        handleChange function will set the state value for text input
+    */
+
     handleChange(field, e){         
         let fields = this.state.fields;
         fields[field] = e.target.value;        
         this.setState({fields});
     }
+
+    /*
+        handleValidation function will set state value for error input
+            the function will check all user the input same as the database require or nots
+    */
 
     handleValidation(){
         let fields = this.state.fields;
@@ -80,6 +89,12 @@ export default class PostRuang extends Component {
        return formIsValid;
     }
 
+    /*
+        PostRuang function will create a POST Rest API
+        All Informations inputted by user, will be posted to database
+        The POST Request will printed the result in browser console
+    */
+
     PostRuang = () => {
         const data = this.state.fields;
 
@@ -108,6 +123,11 @@ export default class PostRuang extends Component {
         }
     }
 
+    /*
+        GetGedungName function will create a GET Rest API
+        All informations retrieved will be printed in browser console
+    */
+
     GetGedungName = () => {
         axiosInstance.get(`/api/gedung/`).then((result) => {
             const data = result.data.results;
@@ -121,9 +141,23 @@ export default class PostRuang extends Component {
         });
     }
 
+    /*
+        componentDidMount function will be called on page loaded
+            when page loaded, call GetGedungName function
+    */
+
     componentDidMount() {
         this.GetGedungName();
     }
+
+    /*
+        render function is used to render all necessary component for the page
+        render function will render:
+            Textfield for Ruang ID
+            Textfield for Ruang
+            Textfield for MG Gedung
+            Button for submitting response
+    */
 
     render () {
         return (
