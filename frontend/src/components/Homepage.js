@@ -8,6 +8,7 @@ import Gedung from './Gedung';
 import Barang from './Barang';
 import Ruang from './Ruang';
 import Peminjaman from './Peminjaman';
+import Details from './Details';
 import Inventory from './Inventory';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 
@@ -21,7 +22,7 @@ export default class Homepage extends Component {
 
         const drawRegister = () => {
             if(isAuthorized == "true"){
-                return <Ruang />;
+                return <Barang />;
             }
             return <Register />;
         }

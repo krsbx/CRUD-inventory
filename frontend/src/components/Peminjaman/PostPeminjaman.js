@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import axios from 'axios';
 import axiosInstance from '../AxiosInstance'
 import { Button, TextField, Input } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
@@ -49,36 +48,16 @@ export default class GetPeminjmana extends Component {
 
         console.log(fields);
 
-        //id_Peminjaman
-        if(!fields["id_Peminjaman"]){
-           formIsValid = false;
-           errors["id_Peminjaman"] = "Cannot be empty";
-        }
-  
-        if(typeof fields["id_Peminjaman"] !== "undefined"){
-            if(!fields["id_Peminjaman"].match(/^[a-zA-Z0-9]+$/)){
-               formIsValid = false;
-               errors["id_Peminjaman"] = "Alpha Numeric Only";
-            }
-         }
- 
-        //nomor_peminjaman
-        if(!fields["nomor_peminjaman"]){
-            formIsValid = false;
-            errors["nomor_peminjaman"] = "Cannot be empty";
-        }
-    
-        if(typeof fields["nomor_peminjaman"] !== "undefined"){
-             if(!fields["nomor_peminjaman"].match(/^[a-zA-Z0-9]+$/)){
-                formIsValid = false;
-                errors["nomor_peminjaman"] = "Alpha Numeric Only";
-            }
-        }
-
         //tgl_pinjam
         if(!fields["tgl_pinjam"]){
             formIsValid = false;
             errors["tgl_pinjam"] = "Cannot be empty";
+        }
+
+        //BAST_disposisi
+        if(fields["BAST_disposisi"] === "undefined" || !fields["BAST_disposisi"]){
+            formIsValid = false;
+            errors["BAST_disposisi"] = "Cannot be empty";
         }
 
        this.setState({errors: errors});
@@ -91,7 +70,9 @@ export default class GetPeminjmana extends Component {
         The POST Request will printed the result in browser console
     */
 
-    PostPeminjaman = () => {
+    PostPeminjaman = event => {
+        event.preventDefault();
+        
         const data = this.state.fields;
 
         if(this.handleValidation()){
@@ -128,13 +109,10 @@ export default class GetPeminjmana extends Component {
             });
         }
     }
-    
 
     /*
         render function is used to render all necessary component for the page
         render function will render:
-            Textfield for ID Peminjaman
-            Textfield for Nomor Peminjaman
             Textfield for Tanggal Pinjam
             Textfield for Tanggal Kembali
             Uploadfield for BAST Disposisi
@@ -144,35 +122,27 @@ export default class GetPeminjmana extends Component {
     render () {
         return (
             <div>
-                <p>
-                    <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "id_Peminjaman")} value={this.state.fields["id_Peminjaman"]} 
-                    label='ID Peminjaman' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 10 }} />
-                    <br /> <span style={{color: "red"}}>{this.state.errors["id_Peminjaman"]}</span>
-                </p>
-                <p>
-                    <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "nomor_peminjaman")} value={this.state.fields["nomor_peminjaman"]} 
-                    label='Nomor Peminjaman' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 8 }} />
-                    <br /> <span style={{color: "red"}}>{this.state.errors["nomor_peminjaman"]}</span>
-                </p>
-                <p>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <br /> <KeyboardDatePicker margin="normal" label="Tanggal Pinjam" format="yyyy-MM-dd" KeyboardButtonProps={{ 'aria-label': 'change date', }} 
-                        value={this.state.fields["tgl_pinjam"]} onChange={(value, e) => this.state.fields['tgl_pinjam'] = e} />
-                    </MuiPickersUtilsProvider>
-                    <br /> <span style={{color: "red"}}>{this.state.errors["tgl_pinjam"]}</span>
-                </p>
-                <p>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <br /> <KeyboardDatePicker margin="normal" label="Tanggal Kembali" format="yyyy-MM-dd" KeyboardButtonProps={{ 'aria-label': 'change date', }} 
-                        value={this.state.fields["tgl_kembali"]} onChange={(value, e) => this.state.fields['tgl_pinjam'] = e} />
-                    </MuiPickersUtilsProvider>
-                    <br /> <span style={{color: "red"}}>{this.state.errors["tgl_kembali"]}</span>
-                </p>
-                <p>
-                    <Button variant="outlined" component="BAST_disposisi" label="BAST Diposisi"><Input type='file' hidden onChange={this.handleFile.bind(this, "BAST_disposisi")}/></Button>
-                    <br /> <span style={{color: "red"}}>{this.state.errors["BAST_disposisi"]}</span>
-                </p>
-                <br /><Button variant="contained" color="primary" onClick={() => this.PostPeminjaman()}>Post Peminjaman!</Button>
+                <form onSubmit={this.PostPeminjaman}>
+                    <p>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <br /> <KeyboardDatePicker margin="normal" label="Tanggal Pinjam" format="yyyy-MM-dd" KeyboardButtonProps={{ 'aria-label': 'change date', }} 
+                            value={this.state.fields["tgl_pinjam"]} onChange={(value, e) => this.state.fields['tgl_pinjam'] = e} />
+                        </MuiPickersUtilsProvider>
+                        <br /> <span style={{color: "red"}}>{this.state.errors["tgl_pinjam"]}</span>
+                    </p>
+                    <p>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <br /> <KeyboardDatePicker margin="normal" label="Tanggal Kembali" format="yyyy-MM-dd" KeyboardButtonProps={{ 'aria-label': 'change date', }} 
+                            value={this.state.fields["tgl_kembali"]} onChange={(value, e) => this.state.fields['tgl_kembali'] = e} />
+                        </MuiPickersUtilsProvider>
+                        <br /> <span style={{color: "red"}}>{this.state.errors["tgl_kembali"]}</span>
+                    </p>
+                    <p>
+                        <Button variant="outlined" component="BAST_disposisi" label="BAST Diposisi"><Input type='file' hidden onChange={this.handleFile.bind(this, "BAST_disposisi")}/></Button>
+                        <br /> <span style={{color: "red"}}>{this.state.errors["BAST_disposisi"]}</span>
+                    </p>
+                    <br /><Button variant="contained" color="primary" type="submit">Post Peminjaman!</Button>
+                </form>
             </div>
         );
     }

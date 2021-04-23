@@ -4,7 +4,7 @@ import PostPeminjaman from './Peminjaman/PostPeminjaman';
 import GetPeminjaman from './Peminjaman/GetPeminjaman';
 
 /*
-    This Class Contain Ruang Page
+    This Class Contain Peminjaman Page
     The Page contain 2 components
         1. PostPeminjaman Component || GetPeminjaman Component
         2. Button to change view

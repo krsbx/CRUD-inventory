@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import { Button, TextField } from '@material-ui/core';
-import PostBarang from './Barang/PostBarang';
-import GetBarang from './Barang/GetBarang';
+import PostDetails from './Details/PostDetails';
+import GetDetails from './Details/GetDetails';
 
 /*
-    This Class Contain Barang Page
+    This Class Contain Details Page
     The Page contain 2 components
-        1. PostBarang Component || GetBarang Component
+        1. PostGedung Component || GetGedung Component
         2. Button to change view
     
-    PostBarang will show a page to post barang by using REST API
-    GetBarang will show a page to get barang list by using REST API
+    PostGedung will show a page to post gedung by using REST API
+    GetGedung will show a page to get gedung list by using REST API
 */
 
-export default class Barang extends Component {
-    constructor(props){
+export default class Details extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             visible: false,
@@ -26,9 +26,9 @@ export default class Barang extends Component {
     */
 
     render(){
-        const toRender = this.state.visible ? (<PostBarang />) : (<GetBarang />);
+        const toRender = this.state.visible ? (<PostDetails />) : (<GetDetails />);
         return (
-            <div className='Barang'>
+            <div className='Gedung'>
                 <Button onClick={() => { this.setState({visible: !this.state.visible}) }}>Change!</Button>
                 <br />{toRender}
             </div>
