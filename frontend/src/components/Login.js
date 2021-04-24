@@ -113,7 +113,7 @@ export default class Login extends Component {
                     <br /> <span style={{color: "red"}}>{this.state.errors["password"]}</span>
                 </p>
                 <p>
-                    <br /> <Button variant="contained" color="primary" onClick={() => this.Submit()}>Login!</Button>
+                    <br /><Button variant="contained" color="primary" onClick={() => this.Submit()}>Login!</Button>
                 </p>
             </div>
         );

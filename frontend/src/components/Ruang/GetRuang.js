@@ -7,8 +7,7 @@ export default class GetRuang extends Component {
         super(props);
 
         this.state = {
-            fields: {},
-            errors: {},
+            ruang : [],
         }
     }
 
@@ -20,10 +19,22 @@ export default class GetRuang extends Component {
     RuangList = () => {
         axiosInstance.get(`/api/ruang/`).then((result) => {
             const data = result.data.results;
-            data.forEach(a => {
-                console.log(a);
-            });
+            let ruangList = data.map((r) => {
+                return (
+                    <div className="GroupsOfRows">
+                        <div className="CustomRow">{r.ruangID}</div>
+                        <div className="CustomRow">{r.ruang}</div>
+                        <div className="CustomRow">{r.pj_ruang}</div>
+                        <div className="CustomRow">{r.gedung}</div>
+                    </div>
+                );
+            }, this);
+            this.setState( { ruang : ruangList } )
         });
+    }
+
+    componentDidMount () {
+        this.RuangList();
     }
 
     /*
@@ -31,6 +42,17 @@ export default class GetRuang extends Component {
     */
 
     render () {
-        return (<Button variant="contained" color="primary" onClick={() => this.RuangList()}>Get Ruang!</Button>);
+        return (
+        <>
+            <div className="CustomTables">
+                <div className="CustomHeader">ID Ruang</div>
+                <div className="CustomHeader">Ruang</div>
+                <div className="CustomHeader">PJ Ruang</div>
+                <div className="CustomHeader">Gedung</div>
+                { this.state.ruang }
+            </div>
+            <Button variant="contained" color="primary" onClick={() => this.RuangList()}>Get Ruang!</Button>
+        </>
+        );
     }
 }

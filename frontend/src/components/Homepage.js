@@ -36,9 +36,6 @@ export default class Homepage extends Component {
                     <Route exact path='/'>
                         {drawRegister()}
                     </Route>
-                    <Route path='/about/'>
-                        <About />
-                    </Route>
                     <Route path='/login'>
                         <Login />
                     </Route>
@@ -47,6 +44,18 @@ export default class Homepage extends Component {
                     </Route>
                     <Route path='/logout'>
                         <Logout />
+                    </Route>
+                    <Route path='/peminjaman/'>
+                        <Peminjaman />
+                    </Route>
+                    <Route path='/barang/'>
+                        <Barang />
+                    </Route>
+                    <Route path='/gedung/'>
+                        <Gedung />
+                    </Route>
+                    <Route path='/ruang/'>
+                        <Ruang />
                     </Route>
                 </div>
             </Switch>
