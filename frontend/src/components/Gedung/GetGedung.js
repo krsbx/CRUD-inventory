@@ -5,6 +5,10 @@ import { Button, TextField } from '@material-ui/core';
 export default class GetOptions extends Component {
     constructor(props){
         super(props);
+
+        this.state = {
+            gedung : [],
+        }
     }
 
     /*
@@ -15,10 +19,21 @@ export default class GetOptions extends Component {
     GedungList = () => {
         axiosInstance.get(`/api/gedung/`).then((result) => {
             const data = result.data.results;
-            data.forEach(a => {
-                console.log(a);
-            });
+            let gedungList = data.map((g) => {
+                return (
+                    <div className="GroupsOfRows">
+                        <div className="CustomRow">{g.gedungID}</div>
+                        <div className="CustomRow">{g.gedung}</div>
+                        <div className="CustomRow">{g.mg_gedung}</div>
+                    </div>
+                );
+            }, this);
+            this.setState( { gedung : gedungList } );
         });
+    }
+
+    componentDidMount() {
+        this.GedungList();
     }
 
     /*
@@ -26,6 +41,16 @@ export default class GetOptions extends Component {
     */
 
     render () {
-        return (<Button variant="contained" color="primary" onClick={() => this.GedungList()}>Get Gedung!</Button>);
+        return (
+        <>
+            <div className="CustomTables">
+                <div className="CustomHeader">ID Gedung</div>
+                <div className="CustomHeader">Gedung</div>
+                <div className="CustomHeader">MG Gedung</div>
+                { this.state.gedung }
+            </div>
+            <Button variant="contained" color="primary" onClick={() => this.GedungList()}>Get Gedung!</Button>
+        </>
+        );
     }
 }

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from authentications.models import UserAccounts
+import string
 import random
 import datetime
 
