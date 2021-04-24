@@ -12,6 +12,7 @@ import Details from './Details';
 import Inventory from './Inventory';
 import SideBar from './Beautify/SideBar';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import Bear from './bear';
 
 export default class Homepage extends Component {
     constructor(props){
@@ -23,7 +24,7 @@ export default class Homepage extends Component {
 
         const drawRegister = () => {
             if(isAuthorized == "true"){
-                return <Peminjaman />
+                return <Bear />
             }
             return <Register />;
         }
