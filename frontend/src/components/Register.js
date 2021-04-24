@@ -210,7 +210,7 @@ export default class Register extends Component {
                         <br /> <span style={{color: "red"}}>{this.state.errors["telp"]}</span>
                     </p>
                     <p>
-                        <Button variant="contained" color="primary" type="submit">Register!</Button>
+                        <br /> <Button variant="contained" color="primary" type="submit">Register!</Button>
                     </p>
                 </form>
             </div>
