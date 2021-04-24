@@ -9,11 +9,12 @@ export default class bear extends Component {
     render () {
         return (
         <div className = 'gibran'> 
-            <h1>selamat datang</h1> 
-            <p /> <h1>assalamualaikum</h1>  
-            <Button variant="contained" color="secondary" >  Salam </Button> 
+            <h1>Selamat Datang</h1> 
+            <p /> <h1>Silahkan tekan Side Bar untuk melihat opsi yang ada</h1>  
             
         </div>);
         
     }
 }
+
+// <Button variant="contained" color="secondary" >  Salam </Button> 
