@@ -15,9 +15,15 @@
     align-items: center;
     text-align: center;
     justify-content: center;
-    background: url("../images/Backgrounds.jpg") fixed no-repeat;
     background-size: cover;
     background-attachment: fixed;
+}
+
+@media screen and (max-width:480px) {
+    .container {
+        display: block;
+        padding-top: 60px;
+    }
 }
 
 

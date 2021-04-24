@@ -53,57 +53,20 @@ export default class PostBarang extends Component {
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
-
-        //barangId
-        if(!fields["barangId"]){
-           formIsValid = false;
-           errors["barangId"] = "Cannot be empty";
-        }
-  
-        if(typeof fields["barangId"] !== "undefined"){
-            if(!fields["barangId"].match(/^[a-zA-Z0-9]+$/)){
-               formIsValid = false;
-               errors["barangId"] = "Alpha Numeric Only";
-            }
-         }
  
         //kode_barang
-        if(!fields["kode_barang"]){
-            formIsValid = false;
-            errors["kode_barang"] = "Cannot be empty";
-        }
-    
-        if(typeof fields["kode_barang"] !== "undefined"){
-             if(!fields["kode_barang"].match(/^[a-zA-Z0-9]+$/)){
-                formIsValid = false;
-                errors["kode_barang"] = "Alpha Numeric Only";
-            }
-        }
+        //  kode_barang can be empty
 
         //nama_barang
         if(!fields["nama_barang"]){
             formIsValid = false;
             errors["nama_barang"] = "Cannot be empty";
         }
-    
-        if(typeof fields["nama_barang"] !== "undefined"){
-             if(!fields["nama_barang"].match(/^[a-zA-Z0-9]+$/)){
-                formIsValid = false;
-                errors["nama_barang"] = "Alpha Numeric Only";
-            }
-        }
 
         //merk
         if(!fields["merk"]){
             formIsValid = false;
             errors["merk"] = "Cannot be empty";
-        }
-    
-        if(typeof fields["merk"] !== "undefined"){
-             if(!fields["merk"].match(/^[a-zA-Z0-9]+$/)){
-                formIsValid = false;
-                errors["merk"] = "Alpha Numeric Only";
-            }
         }
 
         //stock
@@ -135,7 +98,9 @@ export default class PostBarang extends Component {
         The POST Request will printed the result in browser console
     */
 
-    PostBarang = () => {
+    PostBarang = event => {
+        event.preventDefault();
+
         const data = this.state.fields;
 
         if(this.handleValidation()){
@@ -172,7 +137,6 @@ export default class PostBarang extends Component {
     /*
         render function is used to render all necessary component for the page
         render function will render:
-            Textfield for Barang ID
             Textfield for Kode Barang
             Textfield for Nama Barang
             Textfield for Merk
@@ -184,36 +148,33 @@ export default class PostBarang extends Component {
     render () {
         return (
             <div>
-                <p>
-                    <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "barangId")} value={this.state.fields["barangId"]} 
-                    label='Barang ID' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 20 }} />
-                    <br /> <span style={{color: "red"}}>{this.state.errors["barangId"]}</span>
-                </p>
-                <p>
-                    <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "kode_barang")} value={this.state.fields["kode_barang"]} 
-                    label='Kode Barang' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 20 }} />
-                    <br /> <span style={{color: "red"}}>{this.state.errors["kode_barang"]}</span>
-                </p>
-                <p>
-                    <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "nama_barang")} value={this.state.fields["nama_barang"]} 
-                    label='Nama Barang' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 20 }} />
-                    <br /> <span style={{color: "red"}}>{this.state.errors["nama_barang"]}</span>
-                </p>
-                <p>
-                    <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "merk")} value={this.state.fields["merk"]} 
-                    label='Merk' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 20 }} />
-                    <br /> <span style={{color: "red"}}>{this.state.errors["merk"]}</span>
-                </p>
-                <p>
-                    <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "stock")} value={this.state.fields["stock"]} 
-                    label='Stock' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} />
-                    <br /> <span style={{color: "red"}}>{this.state.errors["stock"]}</span>
-                </p>
-                <p>
-                    <Button variant="outlined" component="BAST_perolehan" label="BAST Perolehan"><Input type='file' hidden onChange={this.handleFile.bind(this, "BAST_perolehan")}/></Button>
-                    <br /> <span style={{color: "red"}}>{this.state.errors["BAST_perolehan"]}</span>
-                </p>
-                <br /><Button variant="contained" color="primary" onClick={() => this.PostBarang()}>Post Barang!</Button>
+                <form onSubmit={this.PostBarang}>
+                    <p>
+                        <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "kode_barang")} value={this.state.fields["kode_barang"]} 
+                        label='Kode Barang' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 20 }} />
+                        <br /> <span style={{color: "red"}}>{this.state.errors["kode_barang"]}</span>
+                    </p>
+                    <p>
+                        <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "nama_barang")} value={this.state.fields["nama_barang"]} 
+                        label='Nama Barang' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 20 }} />
+                        <br /> <span style={{color: "red"}}>{this.state.errors["nama_barang"]}</span>
+                    </p>
+                    <p>
+                        <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "merk")} value={this.state.fields["merk"]} 
+                        label='Merk' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 20 }} />
+                        <br /> <span style={{color: "red"}}>{this.state.errors["merk"]}</span>
+                    </p>
+                    <p>
+                        <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "stock")} value={this.state.fields["stock"]} 
+                        label='Stock' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} />
+                        <br /> <span style={{color: "red"}}>{this.state.errors["stock"]}</span>
+                    </p>
+                    <p>
+                        <Button variant="outlined" component="BAST_perolehan" label="BAST Perolehan"><Input type='file' hidden onChange={this.handleFile.bind(this, "BAST_perolehan")}/></Button>
+                        <br /> <span style={{color: "red"}}>{this.state.errors["BAST_perolehan"]}</span>
+                    </p>
+                    <br /><Button variant="contained" color="primary" type="submit">Post Barang!</Button>
+                </form>
             </div>
         );
     }

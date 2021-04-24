@@ -8,9 +8,10 @@ import Gedung from './Gedung';
 import Barang from './Barang';
 import Ruang from './Ruang';
 import Peminjaman from './Peminjaman';
+import Details from './Details';
 import Inventory from './Inventory';
+import SideBar from './Beautify/SideBar';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
-import Samlekom from './bear';
 
 export default class Homepage extends Component {
     constructor(props){
@@ -22,14 +23,14 @@ export default class Homepage extends Component {
 
         const drawRegister = () => {
             if(isAuthorized == "true"){
-                return <Inventory />;
+                return <Peminjaman />
             }
             return <Register />;
         }
 
         return  (
         <Router>
-            <NavBar />
+            <SideBar />
             <Switch>
                 <div className="container">
                     <Route exact path='/'>
@@ -46,9 +47,6 @@ export default class Homepage extends Component {
                     </Route>
                     <Route path='/logout'>
                         <Logout />
-                    </Route>
-                    <Route path='/salam'>
-                        <Samlekom />
                     </Route>
                 </div>
             </Switch>

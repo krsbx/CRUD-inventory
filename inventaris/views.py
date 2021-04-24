@@ -60,7 +60,17 @@ class BarangView(generics.ListCreateAPIView):
     # permission_classes = (permissions.IsAuthenticated,)
     
     def perform_create(self, serializer):
-        return serializer.save()
+        #Get The Value of each items
+        nama_barang = self.request.data.__getitem__('nama_barang')
+        kode_barang = self.request.data.__getitem__('kode_barang') if self.request.data.__contains__('kode_barang') else None
+
+        #Check if it exists or not
+        if kode_barang:
+            return serializer.save()
+
+        else:
+            kode_barang = TabelBarang.getKode(nama_barang)
+            return serializer.save(kode_barang=kode_barang)
 
     def get_queryset(self):
         return self.queryset.all()

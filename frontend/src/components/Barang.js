@@ -4,7 +4,7 @@ import PostBarang from './Barang/PostBarang';
 import GetBarang from './Barang/GetBarang';
 
 /*
-    This Class Contain Ruang Page
+    This Class Contain Barang Page
     The Page contain 2 components
         1. PostBarang Component || GetBarang Component
         2. Button to change view

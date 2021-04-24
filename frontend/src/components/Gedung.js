@@ -4,7 +4,7 @@ import PostGedung from './Gedung/PostGedung';
 import GetGedung from './Gedung/GetGedung';
 
 /*
-    This Class Contain Ruang Page
+    This Class Contain Gedung Page
     The Page contain 2 components
         1. PostGedung Component || GetGedung Component
         2. Button to change view
