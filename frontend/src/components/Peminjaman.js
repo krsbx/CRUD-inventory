@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, TextField } from '@material-ui/core';
-import PostPeminjaman from './Peminjaman/PostPeminjaman';
-import GetPeminjaman from './Peminjaman/GetPeminjaman';
+import PostPeminjaman from './Beautify/Peminjaman/PostPeminjaman';
+import GetPeminjaman from './Beautify/Peminjaman/GetPeminjaman';
 
 /*
     This Class Contain Peminjaman Page

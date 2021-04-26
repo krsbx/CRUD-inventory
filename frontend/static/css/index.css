@@ -10,7 +10,7 @@
     height: 100vh;
     width: 100vw;
     /* background: #2e2e2e; */
-    background: rgb(242, 242, 242);
+    background: rgb(250, 250, 250);
     /* color: white; */
     display: flex;
     align-items: center;
@@ -20,10 +20,9 @@
     background-attachment: fixed;
 }
 
-@media screen and (max-width:480px) {
+@media screen and (max-width:980px) {
     .container {
-        display: block;
-        padding-top: 60px;
+        padding-top: 150px;
     }
 }
 
@@ -34,4 +33,9 @@
 
 .label_textfield{
     color: white !important
+}
+
+.SelectInput {
+    text-align: center;
+    width: 250px;
 }

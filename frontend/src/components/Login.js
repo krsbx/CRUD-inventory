@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, TextField } from '@material-ui/core';
-import axiosInstance from './AxiosInstance';
+import { axiosInstance } from './AxiosInstance';
 
 export default class Login extends Component {
     constructor(props){
@@ -104,12 +104,12 @@ export default class Login extends Component {
             <div className='Login'>
                 <p>
                     <br /> <TextField variant="filled" color='primary' type='text' size="30" onChange={this.handleChange.bind(this, "nip_nrk")} value={this.state.fields["nip_nrk"]} 
-                    label='NIP/NRK' InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 120 }} />
+                    label='NIP/NRK' inputProps={{ maxLength: 120 }} />
                     <br /> <span style={{color: "red"}}>{this.state.errors["nip_nrk"]}</span>
                 </p>
                 <p>
                     <br /> <TextField variant="filled" color='primary' type='password' size="30" onChange={this.handleChange.bind(this, "password")} value={this.state.fields["password"]} 
-                    label='Password' InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 16, minLength: 8 }} />
+                    label='Password' inputProps={{ maxLength: 16, minLength: 8 }} />
                     <br /> <span style={{color: "red"}}>{this.state.errors["password"]}</span>
                 </p>
                 <p>

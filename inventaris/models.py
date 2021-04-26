@@ -53,7 +53,6 @@ class TabelPeminjaman(models.Model):
 
         return code
 
-
     id_Peminjaman = models.CharField(verbose_name="ID Peminjaman", max_length=10, default=getTotalCount, null=False)
     nomor_peminjaman = models.CharField(verbose_name="Nomor Peminjaman", max_length=10, default=getNomor, null=False, primary_key=True)
     nip_nrk = models.ForeignKey(UserAccounts, on_delete=models.CASCADE, verbose_name="NIP/NRK", default=None)

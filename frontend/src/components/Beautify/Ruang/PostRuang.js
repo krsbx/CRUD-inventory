@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
-import axiosInstance from '../AxiosInstance';
-import { Button, TextField, Select } from '@material-ui/core';
+import { axiosInstance, baseURL } from '../../AxiosInstance';
+import { Button, TextField, Select, InputLabel, FormControl } from '@material-ui/core';
 
 export default class PostRuang extends Component {
     constructor(props){
@@ -133,16 +133,19 @@ export default class PostRuang extends Component {
                 <form onSubmit={this.PostRuang}>
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "ruang")} value={this.state.fields["ruang"]} 
-                        label='Ruang' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 8 }} />
+                        label='Ruang' variant="outlined" inputProps={{ maxLength: 8 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["ruang"]}</span>
                     </p>
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "pj_ruang")} value={this.state.fields["pj_ruang"]} 
-                        label='MG Gedung' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 120 }} />
+                        label='MG Gedung' variant="outlined" inputProps={{ maxLength: 120 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["pj_ruang"]}</span>
                     </p>
                     <p>
-                        <Select name="Gedung" onChange={this.handleChange.bind(this, "gedung")} > { this.state.gedung } </Select>
+                        <br /><FormControl className="SelectInput">
+                            <InputLabel>Gedung</InputLabel>
+                            <Select name="Gedung" onChange={this.handleChange.bind(this, "gedung")} > { this.state.gedung } </Select>
+                        </FormControl>
                         <br /> <span style={{color: "red"}}>{this.state.errors["gedung"]}</span>
                     </p>
                     <br /><Button variant="contained" color="primary" type="submit">Post Ruang!</Button>

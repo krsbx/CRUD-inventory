@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import axiosInstance from '../AxiosInstance';
-import { Button, TextField, Select } from '@material-ui/core';
+import { axiosInstance, baseURL } from '../../AxiosInstance';
+import { Button, TextField, Select, InputLabel, FormControl } from '@material-ui/core';
 
 export default class PostDetails extends Component {
     constructor(props){
@@ -218,24 +218,36 @@ export default class PostDetails extends Component {
                 <div>
                     <form onSubmit={this.PostDetails}>
                         <p>
-                            <Select name="Nomor Peminjaman" onChange={this.handleChange.bind(this, "nomor_peminjaman")} > { this.state.peminjaman } </Select>
+                            <br /><FormControl className="SelectInput">
+                            <InputLabel>Nomor Peminjaman</InputLabel>
+                                <Select name="Nomor Peminjaman" onChange={this.handleChange.bind(this, "nomor_peminjaman")} > { this.state.peminjaman } </Select>
+                            </FormControl>
                             <br /> <span style={{color: "red"}}>{this.state.errors["nomor_peminjaman"]}</span>
                         </p>
                         <p>
-                            <Select name="Kode Barang" onChange={this.handleChange.bind(this, "kode_barang")} > { this.state.kode } </Select>
+                            <br /><FormControl className="SelectInput">
+                            <InputLabel>Kode Barang</InputLabel>
+                                <Select name="Kode Barang" onChange={this.handleChange.bind(this, "kode_barang")} > { this.state.kode } </Select>
+                            </FormControl>
                             <br /> <span style={{color: "red"}}>{this.state.errors["kode_barang"]}</span>
                         </p>
                         <p>
                             <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "jumlah")} value={this.state.fields["jumlah"]} 
-                            label='Jumlah' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 8 }} />
+                            label='Jumlah' variant="outlined" inputProps={{ maxLength: 8 }} />
                             <br /> <span style={{color: "red"}}>{this.state.errors["ruang"]}</span>
                         </p>
                         <p>
-                            <Select name="Gedung" onChange={this.handleChange.bind(this, "gedung")} > { this.state.gedung } </Select>
+                            <br /><FormControl className="SelectInput">
+                            <InputLabel>Gedung</InputLabel>
+                                <Select name="Gedung" onChange={this.handleChange.bind(this, "gedung")} > { this.state.gedung } </Select>
+                            </FormControl>
                             <br /> <span style={{color: "red"}}>{this.state.errors["gedung"]}</span>
                         </p>
                         <p>
-                            <Select name="Ruang" onChange={this.handleChange.bind(this, "ruang")} > { this.state.ruang } </Select>
+                            <br /><FormControl className="SelectInput">
+                            <InputLabel>Ruang</InputLabel>
+                                <Select name="Ruang" onChange={this.handleChange.bind(this, "ruang")} > { this.state.ruang } </Select>
+                            </FormControl>
                             <br /> <span style={{color: "red"}}>{this.state.errors["ruang"]}</span>
                         </p>
                         <br /><Button variant="contained" color="primary" type="submit">Post Details!</Button>

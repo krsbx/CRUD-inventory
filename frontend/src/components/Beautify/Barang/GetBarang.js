@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axiosInstance from '../AxiosInstance';
+import { axiosInstance, baseURL, PrevNext, previousCheck } from '../../AxiosInstance'
 import { Button, TextField } from '@material-ui/core';
 
 export default class GetBarang extends Component {
@@ -8,6 +8,8 @@ export default class GetBarang extends Component {
 
         this.state = {
             barang : [],
+            next : [],
+            prev : [],
         }
     }
 
@@ -20,27 +22,45 @@ export default class GetBarang extends Component {
         axiosInstance.get(`/api/barang/`).then((result) => {
             const data = result.data.results;
 
-            let barangList = data.map((b) => {
+            let barangList = data.map((brg) => {
                 return (
                 <div className="GroupsOfRows">
                     <div className="CustomRow">
-                        {b.barangId}
+                        {brg.barangId}
                     </div>
                     <div className="CustomRow">
-                        {b.kode_barang}
+                        {brg.kode_barang}
                     </div>
                     <div className="CustomRow">
-                        {b.nama_barang}
+                        {brg.nama_barang}
                     </div>
                     <div className="CustomRow">
-                        {b.merk}
+                        {brg.merk}
                     </div>
                     <div className="CustomRow">
-                        {b.stock}
+                        {brg.stock}
                     </div>
                 </div>
                 );
             }, this);
+
+            const parser = [ result.data.next ? new URL(result.data.next) : null, result.data.prev ? new URL(result.data.prev) : null ];
+
+            const path = {
+                'next' : parser[0] ? parser[0].searchParams.get('page') : null,
+                'prev' : previousCheck(parser[1], `barang`),
+            };
+
+            if(path.next){
+                const toNext = PrevNext(`?page=${path.next}`, this.BarangList, true);
+                this.setState( { next : toNext } );
+            }
+
+            if(path.prev){
+                const toPrev = PrevNext(`?page=${path.prev}`, this.BarangList, false);
+                this.setState( { prev : toPrev } );
+            }
+
             this.setState( { barang : barangList} );
         });
     }
@@ -61,10 +81,12 @@ export default class GetBarang extends Component {
                     <div className="CustomHeader">Kode Barang</div>
                     <div className="CustomHeader">Nama Barang</div>
                     <div className="CustomHeader">Merk Barang</div>
-                    <div className="CustomHeader">Stock Barang</div>
+                    <div className="CustomHeader last">Stock Barang</div>
                     { this.state.barang }
                 </div>
+                { this.state.prev }
                 <Button variant="contained" color="primary" onClick={() => this.BarangList()}>Get Barang!</Button>
+                { this.state.next }
             </>
         );
     }

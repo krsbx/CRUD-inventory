@@ -9,8 +9,7 @@ import Barang from './Barang';
 import Ruang from './Ruang';
 import Peminjaman from './Peminjaman';
 import Details from './Details';
-import Inventory from './Inventory';
-import SideBar from './Beautify/SideBar';
+import SideBar from './Beautify/SideBar/SideBar';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 
 export default class Homepage extends Component {
@@ -33,30 +32,15 @@ export default class Homepage extends Component {
             <SideBar />
             <Switch>
                 <div className="container">
-                    <Route exact path='/'>
-                        {drawRegister()}
-                    </Route>
-                    <Route path='/login'>
-                        <Login />
-                    </Route>
-                    <Route path='/register'>
-                        <Register />
-                    </Route>
-                    <Route path='/logout'>
-                        <Logout />
-                    </Route>
-                    <Route path='/peminjaman/'>
-                        <Peminjaman />
-                    </Route>
-                    <Route path='/barang/'>
-                        <Barang />
-                    </Route>
-                    <Route path='/gedung/'>
-                        <Gedung />
-                    </Route>
-                    <Route path='/ruang/'>
-                        <Ruang />
-                    </Route>
+                    <Route exact path='/' component={drawRegister} />
+                    <Route path='/login' component={Login} />
+                    <Route path='/register' component={Register} />
+                    <Route path='/logout' component={Logout} />
+                    <Route path='/peminjaman/' component={Peminjaman} />
+                    <Route path='/detail/:nomor_peminjaman' component={Details} />
+                    <Route path='/barang/' component={Barang} />
+                    <Route path='/gedung/' component={Gedung} />
+                    <Route path='/ruang/' component={Ruang} />
                 </div>
             </Switch>
         </Router>

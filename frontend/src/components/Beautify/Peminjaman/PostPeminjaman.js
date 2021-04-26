@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axiosInstance from '../AxiosInstance'
+import { axiosInstance, baseURL } from '../../AxiosInstance';
 import { Button, TextField, Input } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker, } from '@material-ui/pickers';
@@ -126,19 +126,19 @@ export default class GetPeminjmana extends Component {
                     <p>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <br /> <KeyboardDatePicker margin="normal" label="Tanggal Pinjam" format="yyyy-MM-dd" KeyboardButtonProps={{ 'aria-label': 'change date', }} 
-                            value={this.state.fields["tgl_pinjam"]} onChange={(value, e) => this.state.fields['tgl_pinjam'] = e} InputLabelProps={{className: 'login_textFields'}} InputProps={{className: 'login_textFields'}} />
+                            value={this.state.fields["tgl_pinjam"]} onChange={(value, e) => this.state.fields['tgl_pinjam'] = e} />
                         </MuiPickersUtilsProvider>
                         <br /> <span style={{color: "red"}}>{this.state.errors["tgl_pinjam"]}</span>
                     </p>
                     <p>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <br /> <KeyboardDatePicker margin="normal" label="Tanggal Kembali" format="yyyy-MM-dd" KeyboardButtonProps={{ 'aria-label': 'change date', }} 
-                            value={this.state.fields["tgl_kembali"]} onChange={(value, e) => this.state.fields['tgl_kembali'] = e} InputLabelProps={{className: 'login_textFields'}} InputProps={{className: 'login_textFields'}} />
+                            value={this.state.fields["tgl_kembali"]} onChange={(value, e) => this.state.fields['tgl_kembali'] = e} />
                         </MuiPickersUtilsProvider>
                         <br /> <span style={{color: "red"}}>{this.state.errors["tgl_kembali"]}</span>
                     </p>
                     <p>
-                        <Button variant="outlined" component="BAST_disposisi" label="BAST Disposisi"><Input type='file' onChange={this.handleFile.bind(this, "BAST_disposisi")}/></Button>
+                        <br /><Button variant="outlined" component="BAST_disposisi" label="BAST Disposisi"><Input type='file' onChange={this.handleFile.bind(this, "BAST_disposisi")}/></Button>
                         <br /> <span style={{color: "red"}}>{this.state.errors["BAST_disposisi"]}</span>
                     </p>
                     <br /><Button variant="contained" color="primary" type="submit">Post Peminjaman!</Button>

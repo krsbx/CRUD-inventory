@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, TextField } from '@material-ui/core';
-import PostRuang from './Ruang/PostRuang';
-import GetRuang from './Ruang/GetRuang';
+import PostRuang from './Beautify/Ruang/PostRuang';
+import GetRuang from './Beautify/Ruang/GetRuang';
 
 /*
     This Class Contain Ruang Page

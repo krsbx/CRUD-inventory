@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, TextField } from '@material-ui/core';
-import PostGedung from './Gedung/PostGedung';
-import GetGedung from './Gedung/GetGedung';
+import PostGedung from './Beautify/Gedung/PostGedung';
+import GetGedung from './Beautify/Gedung/GetGedung';
 
 /*
     This Class Contain Gedung Page

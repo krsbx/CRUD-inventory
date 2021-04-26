@@ -1,12 +1,13 @@
 import axios from 'axios'
-
+import React from 'react'
+import { Button } from '@material-ui/core'
 /*
 	This module will be used for all REST request after the user logged in
 */
 
 //	Set the website main url
 
-const baseURL = 'http://localhost:8000/';
+export const baseURL = 'http://localhost:8000/';
 
 /*
 	Create an axios instance with the current configurations
@@ -15,7 +16,7 @@ const baseURL = 'http://localhost:8000/';
 		headers => will be used for rest API
 */
 
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
     baseURL: baseURL,
     timeout: 5000,
 	headers: {
@@ -24,6 +25,30 @@ const axiosInstance = axios.create({
 		'Accept': 'application/json',
 	}, 
 });
+
+
+export const PrevNext = (urls, ListFunc, isNext) => {
+	let newUrls = urls;
+	if(urls == `?page=#`){
+		newUrls = '';
+	}
+
+	return (
+		<>
+			<Button variant="contained" color="primary" onClick={() => ListFunc(newUrls)}>{isNext == true ? 'Next' : 'Prev'}</Button>
+		</>
+	);
+}
+
+export const previousCheck = (toCheck, apiPath) => {
+	if(toCheck == `${baseURL}api/${apiPath}/`){
+		return 1;
+	}else if(toCheck == null){
+		return '#';
+	}else{
+		return toCheck.searchParams.get('page');
+	}
+}
 
 /*
 	Set additional request when creating rest API
@@ -99,4 +124,4 @@ axiosInstance.interceptors.response.use(
 	}
 );
 
-export default axiosInstance;
+export default { axiosInstance, baseURL, PrevNext, previousCheck};

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, TextField } from '@material-ui/core';
-import PostDetails from './Details/PostDetails';
-import GetDetails from './Details/GetDetails';
+import PostDetails from './Beautify/Details/PostDetails';
+import GetDetails from './Beautify/Details/GetDetails';
 
 /*
     This Class Contain Details Page
@@ -28,7 +28,7 @@ export default class Details extends Component {
     render(){
         const toRender = this.state.visible ? (<PostDetails />) : (<GetDetails />);
         return (
-            <div className='Gedung'>
+            <div className='Details'>
                 <Button onClick={() => { this.setState({visible: !this.state.visible}) }}>Change!</Button>
                 <br />{toRender}
             </div>

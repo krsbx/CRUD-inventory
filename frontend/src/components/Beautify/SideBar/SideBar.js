@@ -13,6 +13,10 @@ function IsAuthtenticated () {
     if(authenticated == 'true'){
         return (
             SideBarData.map((item, id) => {
+                if(item.path == '/login' && authenticated == 'true'){
+                    item.path = '/logout';
+                    item.title = 'Sign Out';
+                }
                 return (
                     <li key={id} className={item.clName}>
                         <Link to={item.path}>
@@ -34,13 +38,18 @@ function IsAuthtenticated () {
     }
 }
 
-
 export default function SideBar () {
     const [sideBar, setSideBar] = useState(false);
 
     const showSideBar = () => {
         setSideBar(!sideBar);
     }
+
+    let authenticated = localStorage.getItem('isAuthorized');
+
+    useEffect (() => {
+        authenticated = localStorage.getItem('isAuthorized');
+    });
 
     return (
         <div className='Navigations'>
@@ -50,6 +59,10 @@ export default function SideBar () {
                 </Link>
                 <div className='Hide-Able-Menu'>
                     {NavBarData.map((item, id) => {
+                        if(item.path == '/login' && authenticated == 'true'){
+                            item.path = '/logout';
+                            item.title = 'Sign Out';
+                        }
                         return (
                             <li key={id} className={item.clName}>
                                 <Link to={item.path}>
@@ -69,6 +82,10 @@ export default function SideBar () {
                     </li>
                     <div className='To-Show-Menu'>
                         {NavBarData.map((item, id) => {
+                            if(item.path == '/login' && authenticated == 'true'){
+                                item.path = '/logout';
+                                item.title = 'Sign Out';
+                            }
                             return (
                                 <li key={id} className={item.clName}>
                                     <Link to={item.path}>

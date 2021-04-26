@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axiosInstance from '../AxiosInstance';
+import { axiosInstance, baseURL } from '../../AxiosInstance';
 import { Button, TextField } from '@material-ui/core';
 
 export default class PostGedung extends Component {
@@ -98,12 +98,12 @@ export default class PostGedung extends Component {
                 <form onSubmit={this.PostGedung}>
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "gedung")} value={this.state.fields["gedung"]} 
-                        label='Gedung' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 8 }} />
+                        label='Gedung' variant="outlined" inputProps={{ maxLength: 8 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["gedung"]}</span>
                     </p>
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "mg_gedung")} value={this.state.fields["mg_gedung"]} 
-                        label='MG Gedung' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 120 }} />
+                        label='MG Gedung' variant="outlined" inputProps={{ maxLength: 120 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["mg_gedung"]}</span>
                     </p>
                     <br /><Button variant="contained" color="primary" type="submit">Post Gedung!</Button>

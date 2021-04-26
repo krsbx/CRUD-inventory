@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { axiosInstance, baseURL } from '../../AxiosInstance';
 import { Button, TextField, Input } from '@material-ui/core';
-
-const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8000/',
-    timeout: 5000,
-	headers: {
-		'Authorization': localStorage.getItem('access_token') ? 'Bearer ' + localStorage.getItem('access_token') : null,
-		'Content-Type': 'multipart/form-data',
-		'Accept': 'application/json',
-	}, 
-});
 
 export default class PostBarang extends Component {
     constructor(props){
@@ -110,7 +100,11 @@ export default class PostBarang extends Component {
                 toPost.append(d, data[d]);
             }
 
-            axiosInstance.post(`/api/barang/`, toPost).then((result) => {
+            axiosInstance.post(`/api/barang/`, toPost, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            }).then((result) => {
                 if(result.status === 200){
                     const resp = result['data'];
                     for(var key in resp){
@@ -151,26 +145,26 @@ export default class PostBarang extends Component {
                 <form onSubmit={this.PostBarang}>
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "kode_barang")} value={this.state.fields["kode_barang"]} 
-                        label='Kode Barang' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 20 }} />
+                        label='Kode Barang' variant="outlined" inputProps={{ maxLength: 20 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["kode_barang"]}</span>
                     </p>
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "nama_barang")} value={this.state.fields["nama_barang"]} 
-                        label='Nama Barang' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 20 }} />
+                        label='Nama Barang' variant="outlined" inputProps={{ maxLength: 20 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["nama_barang"]}</span>
                     </p>
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "merk")} value={this.state.fields["merk"]} 
-                        label='Merk' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 20 }} />
+                        label='Merk' variant="outlined" inputProps={{ maxLength: 20 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["merk"]}</span>
                     </p>
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "stock")} value={this.state.fields["stock"]} 
-                        label='Stock' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} />
+                        label='Stock' variant="outlined" />
                         <br /> <span style={{color: "red"}}>{this.state.errors["stock"]}</span>
                     </p>
                     <p>
-                        <Button variant="outlined" component="BAST_perolehan" label="BAST Perolehan"><Input type='file' hidden onChange={this.handleFile.bind(this, "BAST_perolehan")}/></Button>
+                        <br /><Button variant="outlined" component="BAST_perolehan" label="BAST Perolehan"><Input type='file' hidden onChange={this.handleFile.bind(this, "BAST_perolehan")}/></Button>
                         <br /> <span style={{color: "red"}}>{this.state.errors["BAST_perolehan"]}</span>
                     </p>
                     <br /><Button variant="contained" color="primary" type="submit">Post Barang!</Button>
