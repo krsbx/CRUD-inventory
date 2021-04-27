@@ -26,4 +26,4 @@ urlpatterns = [
     path('api/', include('inven_manager.urls')),
 ]
 
-urlpatterns += static(settings.DOCS_URL, document_root=settings.DOCS_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
