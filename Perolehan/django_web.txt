@@ -1,0 +1,12 @@
+admin
+admin@admin.com
+initubespbo
+
+{
+  "nip_nrk": "testing",
+  "email": "testing@gmail.com",
+  "password": "initesting",
+  "nama": "testing",
+  "alamat": "test",
+  "telp": "telp"
+}

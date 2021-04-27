@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('', include('frontend.urls')),
@@ -23,3 +25,5 @@ urlpatterns = [
     path('api/', include('authentications.urls')),
     path('api/', include('inven_manager.urls')),
 ]
+
+urlpatterns += static(settings.DOCS_URL, document_root=settings.DOCS_ROOT)

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,9 +45,11 @@ INSTALLED_APPS = [
     'drf_yasg',
     'inven_manager.apps.InvenManagerConfig',
     'frontend.apps.FrontendConfig',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -160,3 +163,8 @@ SWAGGER_SETTINGS = {
         }
     },
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+DOCS_URL = 'Documents/'
+DOCS_ROOT = os.path.join(BASE_DIR, DOCS_URL)

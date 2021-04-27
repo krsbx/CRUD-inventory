@@ -1,5 +1,6 @@
 .GetDetails {
     display: flex;
+    color: #4a4e5e;
 }
 
 .BigGroups {
@@ -14,7 +15,6 @@
 .DetailsGroup {
     display: flex;
     padding-bottom: 35px;
-    color: #4a4e5e;
 }
 
 .DetailTables {
@@ -49,7 +49,7 @@
     padding-left : 10px;
     padding-right : 20px;
     border-left: 2px solid #dfdfdf;
-    background: #f1f1f1;
+    background: #f5f6fa;
     padding-top : 1px;
     padding-bottom : 1px;
 }

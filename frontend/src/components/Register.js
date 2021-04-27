@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, TextField } from '@material-ui/core';
+import {baseURL } from './AxiosInstance'
 
 export default class Register extends Component {
     constructor(props){
@@ -19,7 +20,7 @@ export default class Register extends Component {
     Submit = event => {
         event.preventDefault();
 
-        const url = 'http://localhost:8000/api/register/'
+        const url = `${baseURL}api/register/`
         let data = this.state.fields;
 
         console.log(data);
