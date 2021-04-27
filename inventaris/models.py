@@ -101,3 +101,4 @@ class PeminjamanDetail(models.Model):
     jumlah = models.IntegerField(verbose_name="Jumlah Peminjaman", max_length=None, null=False)
     gedung = models.ForeignKey(TabelGedung, on_delete=models.CASCADE, verbose_name="Gedung")
     ruang = models.ForeignKey(TabelRuang, on_delete=models.CASCADE, verbose_name="Ruang")
+    kembali = models.BooleanField(verbose_name="Dikembalikan", default=False)

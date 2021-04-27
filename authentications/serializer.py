@@ -33,13 +33,12 @@ class RegisterSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.ModelSerializer):
     nip_nrk = serializers.CharField(max_length=120, write_only=True, label="NIP/NIK")
     password  = serializers.CharField(max_length=32, min_length=8, write_only=True, label="Passwords")
-    tokens = serializers.CharField(max_length=64, min_length=6, read_only=True)
     access_token = serializers.CharField(max_length=64, min_length=6, read_only=True)
     refresh = serializers.CharField(max_length=64, min_length=6, read_only=True)
 
     class Meta:
         model = UserAccounts
-        fields = ['nip_nrk', 'password', 'tokens', 'access_token', 'refresh']
+        fields = ['nip_nrk', 'password', 'access_token', 'refresh']
 
     def validate(self, attrs):
         nip_nrk = attrs.get('nip_nrk', '')

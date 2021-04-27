@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, TextField } from '@material-ui/core';
-import PostBarang from './Beautify/Barang/PostBarang';
-import GetBarang from './Beautify/Barang/GetBarang';
+import PostBarang from '../Beautify/Barang/PostBarang';
+import GetBarang from '../Beautify/Barang/GetBarang';
 
 /*
     This Class Contain Barang Page
@@ -29,7 +29,7 @@ export default class Barang extends Component {
         const toRender = this.state.visible ? (<PostBarang />) : (<GetBarang />);
         return (
             <div className='Barang'>
-                <Button onClick={() => { this.setState({visible: !this.state.visible}) }}>Change!</Button>
+                <Button onClick={() => { this.setState({visible: !this.state.visible}) }}>Change View!</Button>
                 <br />{toRender}
             </div>
         );

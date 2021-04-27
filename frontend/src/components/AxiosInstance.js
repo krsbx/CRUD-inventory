@@ -107,6 +107,7 @@ axiosInstance.interceptors.response.use(
 					console.log('Refresh token is expired', tokenParts.exp, now);
 					localStorage.removeItem('access_token');
 					localStorage.removeItem('refresh');
+					localStorage.removeItem('nip_nrk');
 					localStorage.removeItem('isAuthorized');
 					window.location.href = `${baseURL}login/`;
 				}
@@ -114,6 +115,7 @@ axiosInstance.interceptors.response.use(
 				console.log('Refresh token not available.');
 				localStorage.removeItem('access_token');
 				localStorage.removeItem('refresh');
+				localStorage.removeItem('nip_nrk');
 				localStorage.removeItem('isAuthorized');
 				window.location.href = `${baseURL}login/`;
 			}

@@ -85,7 +85,6 @@ export default class GetBarang extends Component {
                     { this.state.barang }
                 </div>
                 { this.state.prev }
-                <Button variant="contained" color="primary" onClick={() => this.BarangList()}>Get Barang!</Button>
                 { this.state.next }
             </>
         );

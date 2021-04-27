@@ -14,12 +14,15 @@ class GetDetails extends Component {
             gedung: [],
             ruang: [],
             barang: [],
+            returnBtn: [],
         }
 
         this.gedungPath = '';
         this.ruangPath = '';
         this.kodePath = '';
         this.jumlah = '';
+        this.kembali = '';
+        this.kembaliBool = false;
 
         this.nomor_peminjaman = this.props.match.params.nomor_peminjaman;
     }
@@ -29,7 +32,7 @@ class GetDetails extends Component {
         All informations retrieved will be printed in browser console
     */
 
-    async DetailsList(urls) {
+    async DetailsList (urls) {
         await axiosInstance.get(`/api/detail/${urls}`).then((result) => {
             //Change to result.data.results
             //  for a lot of data
@@ -39,6 +42,8 @@ class GetDetails extends Component {
             this.ruangPath = data.ruang;
             this.kodePath = data.kode_barang;
             this.jumlah = data.jumlah;
+            this.kembali = (data.kembali == false ? "Belum Dikembalikan" : "Dikembalikan");
+            this.kembaliBool = data.kembali;
         });
 
         await axiosInstance.get(`/api/peminjaman/${this.nomor_peminjaman}`).then((res) => {
@@ -53,8 +58,9 @@ class GetDetails extends Component {
             });
 
             toPinjam.push(<div className="DetailInfo">{this.jumlah}</div>);
+            toPinjam.push(<div className="DetailInfo">{this.kembali}</div>);
 
-            const toSpan = ["ID Peminjaman", "Nomor Peminjaman", "NIP/NRK", "Nama Pegawai", "Tanggal Peminjaman", "Tanggal Pengembalian", "Jumlah"].map((hdr) => {
+            const toSpan = ["ID Peminjaman", "Nomor Peminjaman", "NIP/NRK", "Nama Pegawai", "Tanggal Peminjaman", "Tanggal Pengembalian", "Jumlah", "Dikembalikan"].map((hdr) => {
                 return (
                     <div className="DetailHeader"><span>{hdr}</span></div>
                 );
@@ -119,10 +125,46 @@ class GetDetails extends Component {
             this.setState( { barang : [ toSpan, toBarang] } );
         });
         
+        this.setState( { returnBtn: <Button variant="contained" color="primary" onClick={() => this.ReturnItem()} disabled={(this.kembaliBool == false ? false : true)}>Kembalikan!</Button> } )
     }
 
     componentDidMount () {
         this.DetailsList(this.nomor_peminjaman);
+    }
+
+    async ReturnItem () {
+        let stock = 0;
+        let jumlah = 0;
+
+        //Get Jumlah Barang
+        await axiosInstance.get(`/api/barang/${this.kodePath}`).then((result) => {
+            const data = result.data;
+
+            stock = data['stock'];
+        });
+
+        //Get Jumlah Peminjaman
+        await axiosInstance.get(`/api/detail/${this.nomor_peminjaman}`).then((result) => {
+            const data = result.data;
+
+            jumlah = data['jumlah'];
+        });
+
+        //Update Jumlah Barang
+        await axiosInstance.patch(`/api/barang/${this.kodePath}`, {
+            'stock' : jumlah+stock,
+        });
+
+        //Update Peminjaman Detail
+        await axiosInstance.patch(`/api/detail/${this.nomor_peminjaman}`, {
+            'kembali' : !this.kembaliBool,
+        }).then((result) => {
+            console.log(result.data);
+        });
+
+        this.kembaliBool = true;
+
+        this.setState( { returnBtn: <Button variant="contained" color="primary" onClick={() => this.ReturnItem()} disabled={(this.kembaliBool == false ? false : true)}>Kembalikan!</Button> } )
     }
 
     /*
@@ -131,8 +173,10 @@ class GetDetails extends Component {
 
     render () {
         return (
-        <div className="GetDetails">
-            <div className="BigGroups">
+            <>
+            {this.state.returnBtn}
+            <div className="GetDetails">
+                <div className="BigGroups">
                 <div className="DetailsGroup">
                     {this.state.pinjam.map((pin) => {
                         return(
@@ -148,7 +192,7 @@ class GetDetails extends Component {
                     })}
                 </div>
             </div>
-            <div className="BigGroups">
+                <div className="BigGroups">
                 <div className="DetailsGroup">
                     {this.state.ruang.map((rng) => {
                         return(
@@ -164,8 +208,8 @@ class GetDetails extends Component {
                     }, this)}
                 </div>
             </div>
-            {/* <Button variant="contained" color="primary" onClick={() => this.DetailsList()}>Get Details!</Button> */}
-        </div>);
+            </div>
+        </>);
     }
 }
 

@@ -68,11 +68,12 @@ export default class PostRuang extends Component {
 
         if(this.handleValidation()){
             axiosInstance.post(`/api/ruang/`, data).then((result) => {
-                if(result.status === 200){
+                if(result.status === 201){
                     const resp = result['data'];
                     for(var key in resp){
                         console.log(`${key} : ${resp[key]}`);
                     }
+                    window.location.href = '/ruang';
                 }
             }).catch((error) => {
                 console.log(error.response.data);
@@ -131,16 +132,19 @@ export default class PostRuang extends Component {
         return (
             <div>
                 <form onSubmit={this.PostRuang}>
+                    {/* Ruang Field */}
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "ruang")} value={this.state.fields["ruang"]} 
                         label='Ruang' variant="outlined" inputProps={{ maxLength: 8 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["ruang"]}</span>
                     </p>
+                    {/* PJ Ruang Field */}
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "pj_ruang")} value={this.state.fields["pj_ruang"]} 
-                        label='MG Gedung' variant="outlined" inputProps={{ maxLength: 120 }} />
+                        label='PJ Ruang' variant="outlined" inputProps={{ maxLength: 120 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["pj_ruang"]}</span>
                     </p>
+                    {/* Gedung Field */}
                     <p>
                         <br /><FormControl className="SelectInput">
                             <InputLabel>Gedung</InputLabel>
@@ -148,7 +152,7 @@ export default class PostRuang extends Component {
                         </FormControl>
                         <br /> <span style={{color: "red"}}>{this.state.errors["gedung"]}</span>
                     </p>
-                    <br /><Button variant="contained" color="primary" type="submit">Post Ruang!</Button>
+                    <br /><Button variant="contained" color="primary" type="submit">Simpan!</Button>
                 </form>
             </div>
         );

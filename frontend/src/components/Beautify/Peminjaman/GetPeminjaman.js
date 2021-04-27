@@ -84,7 +84,6 @@ export default class GetPeminjaman extends Component {
                     { this.state.peminjaman }
                 </div>
                 { this.state.prev }
-                <Button variant="contained" color="primary" onClick={() => this.PeminjamanList()}>Get Peminjaman!</Button>
                 { this.state.next }
             </>
         );

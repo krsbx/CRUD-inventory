@@ -12,6 +12,7 @@ export default class Logout extends Component {
             axiosInstance.defaults.headers['Authorization'] = null;
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh');
+            localStorage.removeItem('nip_nrk');
             localStorage.removeItem('isAuthorized');
             window.location.href = '/';
         }

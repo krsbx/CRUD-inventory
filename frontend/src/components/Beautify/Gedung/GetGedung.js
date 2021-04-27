@@ -70,7 +70,6 @@ export default class GetOptions extends Component {
                 { this.state.gedung }
             </div>
             { this.state.prev }
-            <Button variant="contained" color="primary" onClick={() => this.GedungList()}>Get Gedung!</Button>
             { this.state.next }
         </>
         );

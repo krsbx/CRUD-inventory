@@ -4,11 +4,11 @@ import NavBar from './NavBar';
 import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
-import Gedung from './Gedung';
-import Barang from './Barang';
-import Ruang from './Ruang';
-import Peminjaman from './Peminjaman';
-import Details from './Details';
+import Gedung from './Inventaris/Gedung';
+import Barang from './Inventaris/Barang';
+import Ruang from './Inventaris/Ruang';
+import Peminjaman from './Inventaris/Peminjaman';
+import Details from './Inventaris/Details';
 import SideBar from './Beautify/SideBar/SideBar';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 

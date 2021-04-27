@@ -61,11 +61,12 @@ export default class PostGedung extends Component {
 
         if(this.handleValidation()){
             axiosInstance.post(`/api/gedung/`, data).then((result) => {
-                if(result.status === 200){
+                if(result.status === 201){
                     const resp = result['data'];
                     for(var key in resp){
                         console.log(`${key} : ${resp[key]}`);
                     }
+                    window.location.href = '/gedung';
                 }
             }).catch((error) => {
                 console.log(error.response.data);
@@ -96,17 +97,19 @@ export default class PostGedung extends Component {
         return (
             <div className>
                 <form onSubmit={this.PostGedung}>
+                    {/* Gedung Field */}
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "gedung")} value={this.state.fields["gedung"]} 
                         label='Gedung' variant="outlined" inputProps={{ maxLength: 8 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["gedung"]}</span>
                     </p>
+                    {/* MG Gedung Field */}
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "mg_gedung")} value={this.state.fields["mg_gedung"]} 
                         label='MG Gedung' variant="outlined" inputProps={{ maxLength: 120 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["mg_gedung"]}</span>
                     </p>
-                    <br /><Button variant="contained" color="primary" type="submit">Post Gedung!</Button>
+                    <br /><Button variant="contained" color="primary" type="submit">Simpan!</Button>
                 </form>
             </div>
         );

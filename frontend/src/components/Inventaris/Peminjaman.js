@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, TextField } from '@material-ui/core';
-import PostPeminjaman from './Beautify/Peminjaman/PostPeminjaman';
-import GetPeminjaman from './Beautify/Peminjaman/GetPeminjaman';
+import PostDetails from '../Beautify/Details/PostDetails';
+import GetPeminjaman from '../Beautify/Peminjaman/GetPeminjaman';
 
 /*
     This Class Contain Peminjaman Page
@@ -27,10 +27,10 @@ export default class Peminjaman extends Component {
     */
 
     render(){
-        const toRender = this.state.visible ? (<PostPeminjaman />) : (<GetPeminjaman />);
+        const toRender = this.state.visible ? (<PostDetails />) : (<GetPeminjaman />);
         return (
             <div className='Peminjaman'>
-                <Button onClick={() => { this.setState({visible: !this.state.visible}) }}>Change!</Button>
+                <Button onClick={() => { this.setState({visible: !this.state.visible}) }}>Change View!</Button>
                 <br />{toRender}
             </div>
         );

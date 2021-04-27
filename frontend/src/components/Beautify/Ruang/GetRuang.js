@@ -72,7 +72,7 @@ export default class GetRuang extends Component {
                 { this.state.ruang }
             </div>
             { this.state.prev }
-            <Button variant="contained" color="primary" onClick={() => this.RuangList()}>Get Ruang!</Button>
+            {/* <Button variant="contained" color="primary" onClick={() => this.RuangList()}>Get Ruang!</Button> */}
             { this.state.next }
         </>
         );

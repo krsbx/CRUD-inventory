@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { axiosInstance, baseURL } from '../../AxiosInstance';
-import { Button, TextField, Input } from '@material-ui/core';
+import { Button, TextField, Select, InputLabel, FormControl, Input } from '@material-ui/core';
 
 export default class PostBarang extends Component {
     constructor(props){
@@ -105,11 +105,12 @@ export default class PostBarang extends Component {
                     'Content-Type': 'multipart/form-data',
                 }
             }).then((result) => {
-                if(result.status === 200){
+                if(result.status === 201){
                     const resp = result['data'];
                     for(var key in resp){
                         console.log(`${key} : ${resp[key]}`);
                     }
+                    window.location.href = '/barang';
                 }
             }).catch((error) => {
                 console.log(error.response.data);
@@ -143,31 +144,39 @@ export default class PostBarang extends Component {
         return (
             <div>
                 <form onSubmit={this.PostBarang}>
+                    {/* Kode Barang Field */}
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "kode_barang")} value={this.state.fields["kode_barang"]} 
                         label='Kode Barang' variant="outlined" inputProps={{ maxLength: 20 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["kode_barang"]}</span>
                     </p>
+                    {/* Nama Barang Field */}
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "nama_barang")} value={this.state.fields["nama_barang"]} 
                         label='Nama Barang' variant="outlined" inputProps={{ maxLength: 20 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["nama_barang"]}</span>
                     </p>
+                    {/* Merk Barang Field */}
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "merk")} value={this.state.fields["merk"]} 
                         label='Merk' variant="outlined" inputProps={{ maxLength: 20 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["merk"]}</span>
                     </p>
+                    {/* Stock Barang Field */}
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "stock")} value={this.state.fields["stock"]} 
                         label='Stock' variant="outlined" />
                         <br /> <span style={{color: "red"}}>{this.state.errors["stock"]}</span>
                     </p>
+                    {/* BAST Perolehan Field */}
                     <p>
-                        <br /><Button variant="outlined" component="BAST_perolehan" label="BAST Perolehan"><Input type='file' hidden onChange={this.handleFile.bind(this, "BAST_perolehan")}/></Button>
+                        <br /><FormControl className="UploadInput">
+                            <InputLabel>BAST Perolehan</InputLabel>
+                            <br /><Button variant="outlined" component="BAST_perolehan" label="BAST Perolehan"><Input type='file' hidden onChange={this.handleFile.bind(this, "BAST_perolehan")}/></Button>
+                        </FormControl>
                         <br /> <span style={{color: "red"}}>{this.state.errors["BAST_perolehan"]}</span>
                     </p>
-                    <br /><Button variant="contained" color="primary" type="submit">Post Barang!</Button>
+                    <br /><Button variant="contained" color="primary" type="submit">Simpan Barang!</Button>
                 </form>
             </div>
         );
