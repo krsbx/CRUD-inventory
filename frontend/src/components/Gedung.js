@@ -29,9 +29,9 @@ export default class Gedung extends Component {
         const toRender = this.state.visible ? (<PostGedung />) : (<GetGedung />);
         return (
             <div className='Gedung'>
-                <Button onClick={() => { this.setState({visible: !this.state.visible}) }}>Change!</Button>
+                <Button variant="contained" color="black" onClick={() => { this.setState({visible: !this.state.visible}) }}>Change!</Button>
                 <br />{toRender}
             </div>
         );
     }
-};
+};  
