@@ -31,6 +31,9 @@ class PegawaiDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     lookup_field = "nip_nrk"
 
+    def perform_create(self, serializer):
+        return serializer.save()
+
     def get_queryset(self):
         return self.queryset.filter()
 
@@ -50,6 +53,9 @@ class PeminjamanDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PeminjamanSerializer
     permission_classes = (permissions.IsAuthenticated,)
     lookup_field = "nomor_peminjaman"
+
+    def perform_create(self, serializer):
+        return serializer.save()
 
     def get_queryset(self):
         return self.queryset.filter()
@@ -80,6 +86,9 @@ class BarangDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BarangSerializer
     permission_classes = (permissions.IsAuthenticated,)
     lookup_field = "kode_barang"
+
+    def perform_create(self, serializer):
+        return serializer.save()
 
     def get_queryset(self):
         return self.queryset.filter()

@@ -30,7 +30,7 @@ class TabelBarang(models.Model):
     nama_barang = models.CharField(verbose_name="Nama Barang", max_length=20, null=False, unique=True)
     merk = models.CharField(verbose_name="Merk Barang", max_length=20, null=False)
     stock = models.IntegerField(verbose_name="Stock Barang", max_length=None, null=False)
-    BAST_perolehan = models.FileField(verbose_name="BAST Perolehan", default=None, null=False)
+    BAST_perolehan = models.FileField(upload_to='Documents/Perolehan/', verbose_name="BAST Perolehan", default=None, null=False)
 
 #Peminjaman Model/Table
 #   Primary Key => nomor peminjaman
@@ -53,14 +53,13 @@ class TabelPeminjaman(models.Model):
 
         return code
 
-
     id_Peminjaman = models.CharField(verbose_name="ID Peminjaman", max_length=10, default=getTotalCount, null=False)
     nomor_peminjaman = models.CharField(verbose_name="Nomor Peminjaman", max_length=10, default=getNomor, null=False, primary_key=True)
     nip_nrk = models.ForeignKey(UserAccounts, on_delete=models.CASCADE, verbose_name="NIP/NRK", default=None)
     nama_pegawai = models.CharField(max_length=120, null=False, default=None, verbose_name="Nama Pegawai")
     tgl_pinjam = models.DateField(verbose_name="Tanggal Peminjaman", help_text="Masukkan Tanggal Peminjaman", default=datetime.date.today, null=False)
     tgl_kembali = models.DateField(verbose_name="Tanggal Pengembalian", help_text="Masukkan Tanggal Pengembalian", null=True)
-    BAST_disposisi = models.FileField(verbose_name="BAST Diposisi", default=None, null=False)
+    BAST_disposisi = models.FileField(upload_to='Documents/Disposisi/', verbose_name="BAST Diposisi", default=None, null=False)
 
 #Gedung Model/Table
 #   Primary Key => Gedung
@@ -102,3 +101,4 @@ class PeminjamanDetail(models.Model):
     jumlah = models.IntegerField(verbose_name="Jumlah Peminjaman", max_length=None, null=False)
     gedung = models.ForeignKey(TabelGedung, on_delete=models.CASCADE, verbose_name="Gedung")
     ruang = models.ForeignKey(TabelRuang, on_delete=models.CASCADE, verbose_name="Ruang")
+    kembali = models.BooleanField(verbose_name="Dikembalikan", default=False)

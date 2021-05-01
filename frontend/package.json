@@ -28,9 +28,10 @@
     "@date-io/date-fns": "^1.3.11",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
-    "@material-ui/pickers": "^3.3.10",
+    "@material-ui/pickers": "^3.1.2",
     "axios": "^0.21.1",
     "date-fns": "^2.21.1",
+    "jwt-decode": "^3.1.2",
     "react-router-dom": "^5.2.0",
     "styled-components": "^5.2.3"
   }

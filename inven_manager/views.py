@@ -26,7 +26,7 @@ class RuangDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = RuangSerializer
     queryset = TabelRuang.objects.all()
     permission_classes = (permissions.IsAuthenticated,)
-    lookup_field = "gedung"
+    lookup_field = "ruang"
 
     def perform_create(self, serializer):
         return serializer.save()
@@ -72,7 +72,7 @@ class DetailPemDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = DetailSerializer
     queryset = PeminjamanDetail.objects.all()
     permission_classes = (permissions.IsAuthenticated,)
-    lookup_field = "peminjamanID"
+    lookup_field = "nomor_peminjaman"
 
     def perform_create(self, serializer):
         return serializer.save()
