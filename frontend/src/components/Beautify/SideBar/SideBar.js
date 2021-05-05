@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import AppsIcon from '@material-ui/icons/Apps';
 import CloseIcon from '@material-ui/icons/Close';
-import { Button, TextField } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import SideBarData from './SideBarData';
 import NavBarData from './NavBarData';
 import './SideBar.css'
 
+// Check if the user logged in
+//  If logged in, change the navbar/sidebar looks
+//      Logged in => Show inventory functions
+//      Unauthenticaed => Show "please login" text
 function IsAuthtenticated () {
     const authenticated = localStorage.getItem('isAuthorized');
 
@@ -27,29 +30,34 @@ function IsAuthtenticated () {
                 );
             }, this)
         );
-    }else{
-        return (
-            <div className='notif-text'>
-                <Link to='/login'>
-                    <span>Sign In First!</span>
-                </Link>
-            </div>
-        );
     }
+
+    return (
+        <div className='notif-text'>
+            <Link to='/login'>
+                <span>Sign In First!</span>
+            </Link>
+        </div>
+    );
 }
 
 export default function SideBar () {
     const [sideBar, setSideBar] = useState(false);
 
+    //Change the state of the SideBar (Visible/Invisible)
+    //  Invisible => false
+    //  Visible => true
     const showSideBar = () => {
         setSideBar(!sideBar);
     }
 
+    //Get authenticated variable from cache
     let authenticated = localStorage.getItem('isAuthorized');
 
+    //Update authenticated variable by getting the newest one from cache
     useEffect (() => {
         authenticated = localStorage.getItem('isAuthorized');
-    });
+    }, []);
 
     return (
         <div className='Navigations'>

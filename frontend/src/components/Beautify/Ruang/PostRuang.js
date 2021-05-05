@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react';
-import { axiosInstance, baseURL } from '../../AxiosInstance';
+import React, { Component } from 'react';
+import { axiosInstance } from '../../AxiosInstance';
 import { Button, TextField, Select, InputLabel, FormControl } from '@material-ui/core';
 
 export default class PostRuang extends Component {
@@ -17,7 +17,7 @@ export default class PostRuang extends Component {
         handleChange function will set the state value for text input
     */
 
-    handleChange(field, e){         
+    handleChange(field, e){
         let fields = this.state.fields;
         fields[field] = e.target.value;        
         this.setState({fields});

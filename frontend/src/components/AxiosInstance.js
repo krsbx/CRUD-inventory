@@ -17,8 +17,8 @@ export const baseURL = 'http://127.0.0.1:8000/';
 */
 
 export const axiosInstance = axios.create({ //membuat objek axios 
-    baseURL: baseURL,   // baseURL request akan dipanggil kesini semua req yang ada
-    timeout: 5000,      // waktu maksimal request (5s)
+	baseURL: baseURL,   // baseURL request akan dipanggil kesini semua req yang ada
+	timeout: 5000,      // waktu maksimal request (5s)
 	headers: {
 		'Authorization': localStorage.getItem('access_token') ? 'Bearer ' + localStorage.getItem('access_token') : null, // akses yang diberikan (mengambil dari cache)
 		'Content-Type': 'application/json',			// req yang diminta berupa json
@@ -29,8 +29,9 @@ export const axiosInstance = axios.create({ //membuat objek axios
 
 export const PrevNext = (urls, ListFunc, isNext) => {   // fungsi prevnext dengan 3 parameter 
 	let newUrls = urls;    			// ambil nilai dari url
+	
 	if(urls == `?page=#`){					// cek apakah pada main URI 
-		newUrls = '';
+		newUrls = ``;
 	}
 
 	return (
@@ -45,9 +46,9 @@ export const previousCheck = (toCheck, apiPath) => {  // fungsi dengan 2 paramet
 		return 1;
 	}else if(toCheck == null){ 							// pengecekan untuk kondisi empty (null) atau tidak 
 		return '#';
-	}else{
-		return toCheck.searchParams.get('page');      // kembalikan nilai dari page pada parameter URI 
 	}
+
+	return toCheck.searchParams.get('page');      // kembalikan nilai dari page pada parameter URI
 }
 
 /*

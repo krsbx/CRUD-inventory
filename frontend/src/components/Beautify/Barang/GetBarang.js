@@ -1,24 +1,17 @@
-import React, { Component } from 'react';
-import { axiosInstance, baseURL, PrevNext, previousCheck } from '../../AxiosInstance'
-import { Button, TextField } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { axiosInstance, PrevNext, previousCheck } from '../../AxiosInstance'
 
-export default class GetBarang extends Component {
-    constructor(props){
-        super(props);
-
-        this.state = {
-            barang : [],
-            next : [],
-            prev : [],
-        }
-    }
+export default function GetBarang (props) {
+    const [barang, setBarang] = useState([]);
+    const [next, setNext] = useState([]);
+    const [prev, setPrev] = useState([]);
 
     /*
         BarangList function will create a GET Rest API
         All informations retrieved will be shown in a table
     */
 
-    BarangList = (urls='') => {
+    const BarangList = (urls='') => {
         axiosInstance.get(`/api/barang/${urls}`).then((result) => { // melakukan get-request pada barang API.
             const data = result.data.results; // peroleh hasil dari get-request.
 
@@ -53,41 +46,39 @@ export default class GetBarang extends Component {
             };
 
             if(path.next){ // jika next ada pada path.
-                const toNext = PrevNext(`?page=${path.next}`, this.BarangList, true); // memperoleh button next untuk ditampilkan.
-                this.setState( { next : toNext } );
+                const toNext = PrevNext(`?page=${path.next}`, BarangList, true); // memperoleh button next untuk ditampilkan.
+                setNext(toNext);
             }
 
             if(path.prev){ // jika prev ada pada path.
-                const toPrev = PrevNext(`?page=${path.prev}`, this.BarangList, false); // memperoleh button prev untuk ditampilkan.
-                this.setState( { prev : toPrev } );
+                const toPrev = PrevNext(`?page=${path.prev}`, BarangList, false); // memperoleh button prev untuk ditampilkan.
+                setPrev(toPrev);
             }
 
-            this.setState( { barang : barangList} ); // mengubah variable barang pada state menjadi barangList.
+            setBarang(barangList) // mengubah variable barang pada state menjadi barangList.
         });
     }
 
-    componentDidMount() {
-        this.BarangList();
-    }
+    useEffect(() => {
+        BarangList();
+    }, [])
 
     /*
         render function is used to render all necessary component for the page
     */
 
-    render () { 
-        return (
-            <>
-                <div className="CustomTables">
-                    <div className="CustomHeader">ID Barang</div>
-                    <div className="CustomHeader">Kode Barang</div>
-                    <div className="CustomHeader">Nama Barang</div>
-                    <div className="CustomHeader">Merk Barang</div>
-                    <div className="CustomHeader last">Stock Barang</div>
-                    { this.state.barang }
-                </div>
-                { this.state.prev }
-                { this.state.next }
-            </>
-        );
-    }
+    return (
+        <>
+            <div className="CustomTables">
+                <div className="CustomHeader">ID Barang</div>
+                <div className="CustomHeader">Kode Barang</div>
+                <div className="CustomHeader">Nama Barang</div>
+                <div className="CustomHeader">Merk Barang</div>
+                <div className="CustomHeader last">Stock Barang</div>
+                { barang }
+            </div>
+            { prev }
+            { next }
+        </>
+    );
 }

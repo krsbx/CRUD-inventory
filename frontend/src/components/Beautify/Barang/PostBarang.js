@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { axiosInstance, baseURL } from '../../AxiosInstance';
-import { Button, TextField, Select, InputLabel, FormControl, Input } from '@material-ui/core';
+import { axiosInstance } from '../../AxiosInstance';
+import { Button, TextField, InputLabel, FormControl, Input } from '@material-ui/core';
 
 export default class PostBarang extends Component {
     constructor(props){

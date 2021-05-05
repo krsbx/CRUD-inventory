@@ -1,26 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { axiosInstance } from '../../AxiosInstance'
+import React, { Component } from 'react';
+import { axiosInstance, baseURL, PrevNext, previousCheck } from '../../AxiosInstance'
 import { useParams } from 'react-router-dom'
-import { Button } from '@material-ui/core';
+import { withRouter } from 'react-router'
+import { Button, TextField } from '@material-ui/core';
 
-// class GetDetails extends Component {
-export default function GetDetails (props) {
+class GetDetails extends Component {
 
-    const [pinjam, setPinjam] = useState([]);
-    const [gedung, setGedung] = useState([]);
-    const [ruang, setRuang] = useState([]);
-    const [barang, setBarang] = useState([]);
-    const [returnBtn, setReturn] = useState([]);
+    constructor(props){
+        super(props);
+        
+        this.state = {
+            pinjam: [],
+            gedung: [],
+            ruang: [],
+            barang: [],
+            returnBtn: [],
+        }
 
-    let gedungPath, ruangPath, kodePath, jumlah, kembali, kembaliBool, nama_pegawai;
-    const { nomor_peminjaman } = useParams();
+        this.gedungPath = '';
+        this.ruangPath = '';
+        this.kodePath = '';
+        this.jumlah = '';
+        this.kembali = '';
+        this.kembaliBool = false;
+        this.nama_pegawai = '';
+
+        this.nomor_peminjaman = this.props.match.params.nomor_peminjaman;
+    }
 
     /*
         DetailsList function will create a GET Rest API
         All informations retrieved will be printed in browser console
     */
 
-    async function DetailsList (urls='') {
+    async DetailsList (urls='') {
         //Create a get request to Details API
         await axiosInstance.get(`/api/detail/${urls}`).then((result) => {
             //Retrieved response body of the request
@@ -28,18 +41,18 @@ export default function GetDetails (props) {
             
             //Set retrieved data to corresponding variables
             //   Will be used for the next request
-            gedungPath = data.gedung;
-            ruangPath = data.ruang;
-            kodePath = data.kode_barang;
-            jumlah = data.jumlah;
-            kembaliBool = Boolean(data.kembali);
+            this.gedungPath = data.gedung;
+            this.ruangPath = data.ruang;
+            this.kodePath = data.kode_barang;
+            this.jumlah = data.jumlah;
+            this.kembaliBool = Boolean(data.kembali);
 
             //Check if the object has been returned or not
-            kembali = (data.kembali === false ? "Belum Dikembalikan" : "Dikembalikan");
+            this.kembali = (data.kembali === false ? "Belum Dikembalikan" : "Dikembalikan");
         });
 
         //Create a get request to peminjaman API
-        await axiosInstance.get(`/api/peminjaman/${nomor_peminjaman}`).then((result) => {
+        await axiosInstance.get(`/api/peminjaman/${this.nomor_peminjaman}`).then((result) => {
             //Retrieved response body of the request
             const data = result.data;
             
@@ -54,9 +67,9 @@ export default function GetDetails (props) {
             });
             
             //Add aditional informations of the total borrowed objects
-            toPinjam.push(<div className="DetailInfo">{jumlah}</div>);
+            toPinjam.push(<div className="DetailInfo">{this.jumlah}</div>);
             //Add aditional informations of the status of the objects
-            toPinjam.push(<div className="DetailInfo">{kembali}</div>);
+            toPinjam.push(<div className="DetailInfo">{this.kembali}</div>);
 
             //Create a header array for tables
             const toSpan = ["ID Peminjaman", "Nomor Peminjaman", "NIP/NRK", "Nama Pegawai", "Tanggal Peminjaman", "Tanggal Pengembalian", "Jumlah", "Dikembalikan"].map((hdr) => {
@@ -66,15 +79,15 @@ export default function GetDetails (props) {
             }, this);
 
             //Get the name of the person who borrow the objects
-            nama_pegawai = data.nama_pegawai;
+            this.nama_pegawai = data.nama_pegawai;
 
             //Set pinjam values to toSpan and toPinjam
             //  toSpan => Header of the tables
             //  toPinjam => Values of the tables
-            setPinjam( [toSpan, toPinjam] );
+            this.setState( { pinjam : [toSpan, toPinjam] } );
         });
         
-        await axiosInstance.get(`/api/gedung/${gedungPath}`).then((result) => {
+        await axiosInstance.get(`/api/gedung/${this.gedungPath}`).then((result) => {
             //Retrieved response body of the request
             const data = result.data;
 
@@ -96,10 +109,10 @@ export default function GetDetails (props) {
             //Set pinjam values to toSpan and toGedung
             //  toSpan => Header of the tables
             //  toGedung => Values of the tables
-            setGedung( [toSpan, toGedung] );
+            this.setState( { gedung : [toSpan, toGedung] } );
         });
         
-        await axiosInstance.get(`/api/ruang/${ruangPath}`).then((result) => {
+        await axiosInstance.get(`/api/ruang/${this.ruangPath}`).then((result) => {
             //Retrieved response body of the request
             const data = result.data;
 
@@ -121,10 +134,10 @@ export default function GetDetails (props) {
             //Set pinjam values to toSpan and toRuang
             //  toSpan => Header of the tables
             //  toRuang => Values of the tables
-            setRuang( [toSpan, toRuang] );
+            this.setState( { ruang : [toSpan, toRuang] } );
         });
         
-        await axiosInstance.get(`/api/barang/${kodePath}`).then((result) => {
+        await axiosInstance.get(`/api/barang/${this.kodePath}`).then((result) => {
             //Retrieved response body of the request
             const data = result.data;
 
@@ -148,35 +161,35 @@ export default function GetDetails (props) {
             //Set pinjam values to toSpan and toBarang
             //  toSpan => Header of the tables
             //  toBarang => Values of the tables
-            setBarang( [toSpan, toBarang] );
+            this.setState( { barang : [ toSpan, toBarang] } );
         });
         
         //Set return button to corresponding status
         //  Disable button interactions if the object has been returned
-        setReturn( [<Button variant="contained" color="primary" onClick={() => ReturnItem()}
-        disabled={ (Boolean(kembaliBool) === false ? (localStorage.getItem('nip_nrk') == nama_pegawai ? false : true) : true) }>Kembalikan!</Button> ] );
+        this.setState( { returnBtn: <Button variant="contained" color="primary" onClick={() => this.ReturnItem()}
+        disabled={ (Boolean(this.kembaliBool) === false ? (localStorage.getItem('nip_nrk') == this.nama_pegawai ? false : true) : true) }>Kembalikan!</Button> } )
     }
 
     /*
-        On page load, Call DetailsList  functions with current parameter
+        On page load, DetailsList with current parameter
     */
-    
-    useEffect(() => {
-        DetailsList(nomor_peminjaman)
-    }, [])
+
+    componentDidMount () {
+        this.DetailsList(this.nomor_peminjaman);
+    }
 
     /*
         ReturnItem function to return the borrowed thing to server  
     */
 
-    async function ReturnItem () {
+    async ReturnItem () {
         //Declare dummy variable to store any information from database
         let stock = 0;
         let jumlah = 0;
 
         //Get Jumlah Barang
         //  Get stock in database and store it to stock variable
-        await axiosInstance.get(`/api/barang/${kodePath}`).then((result) => {
+        await axiosInstance.get(`/api/barang/${this.kodePath}`).then((result) => {
             const data = result.data;
 
             //Set stock to stock from data objects
@@ -185,7 +198,7 @@ export default function GetDetails (props) {
 
         //Get Jumlah Peminjaman
         //  Get total objects the user borrow
-        await axiosInstance.get(`/api/detail/${nomor_peminjaman}`).then((result) => {
+        await axiosInstance.get(`/api/detail/${this.nomor_peminjaman}`).then((result) => {
             const data = result.data;
 
             //Get Jumlah
@@ -195,14 +208,14 @@ export default function GetDetails (props) {
 
         //Update Jumlah Barang
         //  Patch the database so the Jumlah in Barang Table return same as before
-        await axiosInstance.patch(`/api/barang/${kodePath}`, {
+        await axiosInstance.patch(`/api/barang/${this.kodePath}`, {
             'stock' : jumlah+stock,
         });
 
         //Update Peminjaman Detail
         //  Patch the DetailPeminjaman table to make sure that the object has been returned
-        await axiosInstance.patch(`/api/detail/${nomor_peminjaman}`, {
-            'kembali' : !kembaliBool,
+        await axiosInstance.patch(`/api/detail/${this.nomor_peminjaman}`, {
+            'kembali' : !this.kembaliBool,
         }).then((result) => {
             //Print the result after patching
             console.log(result.data);
@@ -210,52 +223,56 @@ export default function GetDetails (props) {
 
         //Set kembaliBool variable bool
         //  To notified that the object has been returned
-        kembaliBool = true;
+        this.kembaliBool = true;
 
         //Reset return button with a new state
-        setReturn( [<Button variant="contained" color="primary" onClick={() => ReturnItem()} disabled={(kembaliBool == false ? false : true)}>Kembalikan!</Button>] );
+        this.setState( { returnBtn: <Button variant="contained" color="primary" onClick={() => this.ReturnItem()} disabled={(this.kembaliBool == false ? false : true)}>Kembalikan!</Button> } )
     }
 
     /*
         render function is used to render all necessary component for the page
     */
 
-    return (
-    <>
-        {returnBtn}
-        <div className="GetDetails">
-            <div className="BigGroups">
-            <div className="DetailsGroup">
-                {pinjam.map((pin) => {
-                    return(
-                        <div className="DetailTables">{pin}</div>
-                    );
-                }, this)}
+    render () {
+        return (
+            <>
+            {this.state.returnBtn}
+            <div className="GetDetails">
+                <div className="BigGroups">
+                <div className="DetailsGroup">
+                    {this.state.pinjam.map((pin) => {
+                        return(
+                            <div className="DetailTables">{pin}</div>
+                        );
+                    }, this)}
+                </div>
+                <div className="DetailsGroup">
+                    {this.state.barang.map((brg) => {
+                        return(
+                            <div className="DetailTables">{brg}</div>
+                        )
+                    })}
+                </div>
             </div>
-            <div className="DetailsGroup">
-                {barang.map((brg) => {
-                    return(
-                        <div className="DetailTables">{brg}</div>
-                    )
-                })}
+                <div className="BigGroups">
+                <div className="DetailsGroup">
+                    {this.state.ruang.map((rng) => {
+                        return(
+                            <div className="DetailTables">{rng}</div>
+                        )
+                    })}
+                </div>
+                <div className="DetailsGroup">
+                    {this.state.gedung.map((ged) => {
+                        return(
+                            <div className="DetailTables">{ged}</div>
+                        );
+                    }, this)}
+                </div>
             </div>
-        </div>
-            <div className="BigGroups">
-            <div className="DetailsGroup">
-                {ruang.map((rng) => {
-                    return(
-                        <div className="DetailTables">{rng}</div>
-                    )
-                })}
             </div>
-            <div className="DetailsGroup">
-                {gedung.map((ged) => {
-                    return(
-                        <div className="DetailTables">{ged}</div>
-                    );
-                }, this)}
-            </div>
-        </div>
-        </div>
-    </>);
+        </>);
+    }
 }
+
+export default withRouter(GetDetails);

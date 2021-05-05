@@ -1,24 +1,17 @@
-import React, { Component } from 'react';
-import { axiosInstance, baseURL, PrevNext, previousCheck } from '../../AxiosInstance'
-import { Button, TextField } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { axiosInstance, PrevNext, previousCheck } from '../../AxiosInstance'
 
-export default class GetRuang extends Component {
-    constructor(props){
-        super(props);
-
-        this.state = {
-            ruang : [],
-            next : [],
-            prev : [],
-        }
-    }
+export default function GetRuang (props) {
+    const [ruang, setRuang] = useState([]);
+    const [next, setNext] = useState([]);
+    const [prev, setPrev] = useState([]);
 
     /*
         RuangList function will create a GET Rest API
         All informations retrieved will be printed in browser console
     */
 
-    RuangList = (urls='') => {
+    const RuangList = (urls='') => {
         axiosInstance.get(`/api/ruang/${urls}`).then((result) => { // melakukan get-request pada peminjaman API.
             const data = result.data.results; // peroleh hasil dari get-request.
 
@@ -42,41 +35,38 @@ export default class GetRuang extends Component {
             };
 
             if(path.next){ // jika next ada pada path.
-                const toNext = PrevNext(`?page=${path.next}`, this.RuangList, true); // memperoleh button next untuk ditampilkan.
-                this.setState( { next : toNext } );
+                const toNext = PrevNext(`?page=${path.next}`, RuangList, true); // memperoleh button next untuk ditampilkan.
+                setNext(toNext);
             }
 
             if(path.prev){ // jika prev ada pada path.
-                const toPrev = PrevNext(`?page=${path.prev}`, this.RuangList, false); // memperoleh button prev untuk ditampilkan.
-                this.setState( { prev : toPrev } );
+                const toPrev = PrevNext(`?page=${path.prev}`, RuangList, false); // memperoleh button prev untuk ditampilkan.
+                setPrev(toPrev);
             }
 
-            this.setState( { ruang : ruangList } )  // mengubah variable ruang pada state menjadi ruangList.
+            setRuang(ruangList)  // mengubah variable ruang pada state menjadi ruangList.
         });
     }
 
-    componentDidMount () {
-        this.RuangList();
-    }
+    useEffect (() => {
+        RuangList();
+    }, [])
 
     /*
         render function is used to render all necessary component for the page
     */
 
-    render () {
-        return (
-        <>
-            <div className="CustomTables">
-                <div className="CustomHeader">ID Ruang</div>
-                <div className="CustomHeader">Ruang</div>
-                <div className="CustomHeader">PJ Ruang</div>
-                <div className="CustomHeader last">Gedung</div>
-                { this.state.ruang }
-            </div>
-            { this.state.prev }
-            {/* <Button variant="contained" color="primary" onClick={() => this.RuangList()}>Get Ruang!</Button> */}
-            { this.state.next }
-        </>
-        );
-    }
+    return (
+    <>
+        <div className="CustomTables">
+            <div className="CustomHeader">ID Ruang</div>
+            <div className="CustomHeader">Ruang</div>
+            <div className="CustomHeader">PJ Ruang</div>
+            <div className="CustomHeader last">Gedung</div>
+            { ruang }
+        </div>
+        { prev }
+        { next }
+    </>
+    );
 }

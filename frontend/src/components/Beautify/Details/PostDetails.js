@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { axiosInstance, baseURL } from '../../AxiosInstance';
+import { axiosInstance } from '../../AxiosInstance';
 import { Button, TextField, Select, InputLabel, FormControl, Input } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker, } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker, } from '@material-ui/pickers';
 
 
 export default function PinjamBarang (props) {
@@ -17,7 +17,7 @@ export default function PinjamBarang (props) {
     pinFields['tgl_pinjam'] = new Date();
 
     /*
-        handleChange function will set the state value for text input
+        handleChange function will set the state value for input fields
     */
 
     function DetHandleChange(field, e) {
@@ -111,6 +111,7 @@ export default function PinjamBarang (props) {
         let stock = 0;
         const jumlah = detFields['jumlah'];
 
+        //Set Form Data Objects Key and Values
         for(let d in data){
             toPost.append(d, data[d]);
         }
@@ -118,27 +119,34 @@ export default function PinjamBarang (props) {
         //Create Peminjaman Informations
         await axiosInstance.post(`/api/peminjaman/`, toPost, {
             headers: {
-                'Content-Type': 'multipart/form-data',
+                'Content-Type': 'multipart/form-data', // Set Axios Post Content-Type Header to form-data
             }
         }).then((result) => {
+            //On Success
             if(result.status === 201){
+                //Retrieved the response data
                 const resp = result['data'];
-                console.log(resp);
+                
+                //Print all response data to console
                 for(var key in resp){
                     console.log(`${key} : ${resp[key]}`);
                 }
                 
+                //Save nomor_peminjaman in response data to details
                 details['nomor_peminjaman'] = resp['nomor_peminjaman'];
             }
         }).catch((error) => {
-            console.log(error.response.data);
+            //On Error
             if(error.response.status === 400){
+                //Get errors object from state
                 let errors = pinErrors;
 
+                //Set all errors to errors objects
                 for(var key in error.response.data){
                     errors[key] = error.response.data[key];
                 }
-                    
+                
+                //Set errors to errors state
                 SetPinErrors(errors);
                 
                 return;
@@ -147,21 +155,31 @@ export default function PinjamBarang (props) {
 
         //Create Details Peminjaman Informations
         await axiosInstance.post(`/api/detail/`, details).then((result) => {
+            //On Success
             if(result.status === 201){
+                //Retrieved the response data
                 const resp = result['data'];
+
+                //Print all response data to console
                 for(var key in resp){
                     console.log(`${key} : ${resp[key]}`);
                 }
             }
         }).catch((error) => {
+            //On Error
             if(error.response.status === 400){
+                //Get errors object from state
                 let errors = detErrors;
 
+                //Set all errors to errors objects
                 for(var key in error.response.data){
                     errors[key] = error.response.data[key];
                 }
-                    
+
+                //Set errors to errors state
                 SetDetErrors(errors);
+
+                return;
             }
         });
 
@@ -180,7 +198,13 @@ export default function PinjamBarang (props) {
             window.location.href = '/';
         });
     }
-        
+
+    /*
+        Call PinHandleValidation function to validate Peminjaman Inputs
+        Call DetHandleValidation function to validate Detail Inputs
+            Call PostInfo function to create a peminjaman data in database
+    */
+    
     const PostPeminjaman = event => {
         event.preventDefault();
 
@@ -192,20 +216,22 @@ export default function PinjamBarang (props) {
         }
     }
 
+    /*
+        Set Tanggal Pinjam/Kembali Functions
+            Set the values to corresponding object keys
+    */
 
     const SetPinjamDate = (event, date) => {
         pinFields['tgl_pinjam'] = date;
-        console.log(pinFields['tgl_pinjam']);
     }
 
     const SetKembaliDate = (event, date) => {
         pinFields['tgl_kembali'] = date;
-        console.log(pinFields['tgl_kembali']);
     }
 
     /*
         GetGedungName function will create a GET Rest API
-        All informations retrieved will be printed in browser console
+        All informations retrieved will stored inside the corresponding state
     */
 
     const GetGedungName = () => {
@@ -218,16 +244,12 @@ export default function PinjamBarang (props) {
             }, this);
     
             SetGedung(gedungList);
-
-            gedung.map((ged) => {
-                console.log(ged);
-            }, this);
         });
     }
 
     /*
         GetRuangName function will create a GET Rest API
-        All informations retrieved will be printed in browser console
+        All informations retrieved will stored inside the corresponding state
     */
 
     const GetRuang = () => {
@@ -245,7 +267,7 @@ export default function PinjamBarang (props) {
 
     /*
         GetBarang function will create a GET Rest API
-        All informations retrieved will be printed in browser console
+        All informations retrieved will stored inside the corresponding state
     */
 
     const GetBarang = () => {
@@ -264,8 +286,8 @@ export default function PinjamBarang (props) {
     }
 
     /*
-        componentDidMount function will be called on page loaded
-            when page loaded, call GetGedungName function
+        useEffect function will be called on page loaded
+            when page loaded, call GetGedungName function, GetRuang function, GetBarang function
     */
         
     useEffect(() => {
