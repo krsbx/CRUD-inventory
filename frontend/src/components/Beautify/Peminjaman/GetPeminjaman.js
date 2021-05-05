@@ -23,9 +23,10 @@ export default class GetPeminjaman extends Component {
     */
 
     PeminjamanList = (urls='') => {
-        axiosInstance.get(`/api/peminjaman/${urls}`).then((result) => {
-            const data = result.data.results;
-            let peminjamanList = data.map((pem) => {
+        axiosInstance.get(`/api/peminjaman/${urls}`).then((result) => { // melakukan get-request pada peminjaman API.
+            const data = result.data.results; // peroleh hasil dari get-request.
+
+            let peminjamanList = data.map((pem) => { // menyimpan semua objek yang ada pada data kedalam bentuk html.
                 return (
                     <div className="GroupsOfRows">
                         <div className="CustomRow">{pem.id_Peminjaman}</div>
@@ -42,24 +43,25 @@ export default class GetPeminjaman extends Component {
                 );
             }, this);
 
+            // memperoleh URI next dan prev page.
             const parser = [ result.data.next ? new URL(result.data.next) : null, result.data.prev ? new URL(result.data.prev) : null ];
 
-            const path = {
+            const path = { // memperoleh nilai dari tiap parameter yang ada pada parser.
                 'next' : parser[0] ? parser[0].searchParams.get('page') : null,
                 'prev' : previousCheck(parser[1], `peminjaman`),
             };
 
-            if(path.next){
-                const toNext = PrevNext(`?page=${path.next}`, this.PeminjamanList, true);
+            if(path.next){ // jika next ada pada path.
+                const toNext = PrevNext(`?page=${path.next}`, this.PeminjamanList, true); // memperoleh button next untuk ditampilkan.
                 this.setState( { next : toNext } );
             }
 
-            if(path.prev){
-                const toPrev = PrevNext(`?page=${path.prev}`, this.PeminjamanList, false);
+            if(path.prev){ // jika prev ada pada path.
+                const toPrev = PrevNext(`?page=${path.prev}`, this.PeminjamanList, false); // memperoleh button prev untuk ditampilkan.
                 this.setState( { prev : toPrev } );
             }
 
-            this.setState( { peminjaman : peminjamanList} );
+            this.setState( { peminjaman : peminjamanList} ); // mengubah variable peminjaman pada state menjadi peminjamanList.
         });
     }
 

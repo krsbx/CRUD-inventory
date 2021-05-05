@@ -19,9 +19,10 @@ export default class GetRuang extends Component {
     */
 
     RuangList = () => {
-        axiosInstance.get(`/api/ruang/`).then((result) => {
-            const data = result.data.results;
-            let ruangList = data.map((rng) => {
+        axiosInstance.get(`/api/ruang/`).then((result) => { // melakukan get-request pada peminjaman API.
+            const data = result.data.results; // peroleh hasil dari get-request.
+
+            let ruangList = data.map((rng) => { // menyimpan semua objek yang ada pada data kedalam bentuk html.
                 return (
                     <div className="GroupsOfRows">
                         <div className="CustomRow">{rng.ruangID}</div>
@@ -32,24 +33,25 @@ export default class GetRuang extends Component {
                 );
             }, this);
 
+            // memperoleh URI next dan prev page.
             const parser = [ result.data.next ? new URL(result.data.next) : null, result.data.prev ? new URL(result.data.prev) : null ];
 
-            const path = {
+            const path = { // memperoleh nilai dari tiap parameter yang ada pada parser.
                 'next' : parser[0] ? parser[0].searchParams.get('page') : null,
                 'prev' : previousCheck(parser[1], `ruang`),
             };
 
-            if(path.next){
-                const toNext = PrevNext(`?page=${path.next}`, this.RuangList, true);
+            if(path.next){ // jika next ada pada path.
+                const toNext = PrevNext(`?page=${path.next}`, this.RuangList, true); // memperoleh button next untuk ditampilkan.
                 this.setState( { next : toNext } );
             }
 
-            if(path.prev){
-                const toPrev = PrevNext(`?page=${path.prev}`, this.RuangList, false);
+            if(path.prev){ // jika prev ada pada path.
+                const toPrev = PrevNext(`?page=${path.prev}`, this.RuangList, false); // memperoleh button prev untuk ditampilkan.
                 this.setState( { prev : toPrev } );
             }
 
-            this.setState( { ruang : ruangList } )
+            this.setState( { ruang : ruangList } )  // mengubah variable ruang pada state menjadi ruangList.
         });
     }
 
