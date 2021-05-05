@@ -1,0 +1,81 @@
+.GetDetails {
+    display: flex;
+    color: #4a4e5e;
+}
+
+.BigGroups {
+    display: grid;
+    place-items: center;
+}
+
+.BigGroups:first-child {
+    padding-right: 50px;
+}
+
+.DetailsGroup {
+    display: flex;
+    padding-bottom: 35px;
+}
+
+.DetailTables {
+    display : block;
+    text-align: left;
+}
+
+.DetailHeader {
+    padding-right: 40px;
+    padding-top : 1px;
+    padding-bottom : 1px;
+    background: white;
+}
+
+.DetailHeader span {
+    padding-left: 10px;
+}
+.DetailHeader:first-child {
+    border-top-left-radius: 6px;
+}
+
+.DetailHeader:not(:last-child) {
+    border-bottom: 2px solid #dfdfdf;
+}
+
+.DetailHeader:last-child {
+    border-bottom: 3px solid #dfdfdf;
+    border-bottom-left-radius: 6px;
+}
+
+.DetailInfo {
+    padding-left : 10px;
+    padding-right : 20px;
+    border-left: 2px solid #dfdfdf;
+    background: #f5f6fa;
+    padding-top : 1px;
+    padding-bottom : 1px;
+}
+
+.DetailInfo span {
+    padding-right: 30px;
+}
+
+.DetailInfo:first-child {
+    border-top-right-radius: 6px;
+}
+
+.DetailInfo:not(:last-child) {
+    border-bottom : 2px solid #dfdfdf;
+}
+
+.DetailInfo:last-child {
+    border-bottom: 3px solid #dfdfdf;
+    border-bottom-right-radius: 6px;
+}
+
+@media screen and (max-width:980px) {
+    .GetDetails {
+        display: inline-block;
+    }
+    .BigGroups:first-child {
+        padding-right: 0px;
+    }
+}

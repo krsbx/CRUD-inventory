@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import About from './About';
-import NavBar from './NavBar';
 import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
@@ -18,9 +16,9 @@ export default class Homepage extends Component {
     }
 
     render () {
-        let isAuthorized = localStorage.getItem('isAuthorized');
+        let isAuthorized = localStorage.getItem('isAuthorized'); // mengambil variabel isAutho pada cache 
 
-        const drawRegister = () => {
+        const drawRegister = () => {    // render peminjaman atau register
             if(isAuthorized == "true"){
                 return <Peminjaman />
             }
@@ -32,7 +30,7 @@ export default class Homepage extends Component {
             <SideBar />
             <Switch>
                 <div className="container">
-                    <Route exact path='/' component={drawRegister} />
+                    <Route exact path='/' component={drawRegister} /> 
                     <Route path='/login' component={Login} />
                     <Route path='/register' component={Register} />
                     <Route path='/logout' component={Logout} />
@@ -46,4 +44,8 @@ export default class Homepage extends Component {
         </Router>
         );
     }
-}
+} 
+/*
+line 33  jika link tepat pada host tampilkan nilai dari drawRegister 
+line 34 - 41 tampilkan component sesuai dengan uri (link)
+*/

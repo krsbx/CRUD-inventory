@@ -18,3 +18,9 @@ export default class App extends Component {
 const appDiv = document.getElementById("app");
 
 render(<App />, appDiv);
+
+/*
+import module Homepage
+merender module Homepage 
+hasil render akan ditampilkan pada pada id html, app 
+*/

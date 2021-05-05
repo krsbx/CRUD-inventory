@@ -25,27 +25,27 @@ export default class Login extends Component {
 
         const data = this.state.fields;
 
-        if(this.handleValidation()){
-            axiosInstance.post(`/api/login/`, data).then((result) => {
+        if(this.handleValidation()){ // panggil fungsi handleValidation dan periksa nilainya  (state)
+            axiosInstance.post(`/api/login/`, data).then((result) => {    // lakukan post request pada login API 
                 if(result.status === 200){
                     if(result.data.access_token){
-                        localStorage.setItem('access_token', result.data.access_token);
+                        localStorage.setItem('access_token', result.data.access_token); //simpan akses token pada cache 
 
                         //Decode The Access Token
                         const decode = jwt_decode(result.data.access_token);
 
                         //Cache the current user nip_nrk to
-                        localStorage.setItem('nip_nrk', decode.user_id);
+                        localStorage.setItem('nip_nrk', decode.user_id); // simpan user id pada cache
 
-                        axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('access_token');
+                        axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('access_token'); 
+                        // ubah header request menjadi Bearer dan dilanjutkan dengan akses token pada cache
                     }
                     if(result.data.refresh){
-                        localStorage.setItem('refresh', result.data.refresh);
-                        console.log(localStorage.getItem('refresh'));
+                        localStorage.setItem('refresh', result.data.refresh); // simpan refresh token pada cache
                     }
                     
-                    localStorage.setItem('isAuthorized', true);
-                    window.location.href = '/';
+                    localStorage.setItem('isAuthorized', true); // ubah isAuthorized pada cache menjadi true
+                    window.location.href = '/'; // re direct user ke homepage
                 }
             });
         }
@@ -57,49 +57,51 @@ export default class Login extends Component {
     */
 
     handleValidation(){
-        let fields = this.state.fields;
+        let fields = this.state.fields; // mengambil informasi pada variabel fields
         let errors = {};
         let formIsValid = true;
 
         //nip_nrk
-        if(!fields["nip_nrk"]){
+        if(!fields["nip_nrk"]){    // cek kosong atau tidak bar nip_nrk
            formIsValid = false;
            errors["nip_nrk"] = "Cannot be empty";
         }
   
-        if(typeof fields["nip_nrk"] !== "undefined"){
-            if(!fields["nip_nrk"].match(/^[a-zA-Z0-9]+$/)){
+        if(typeof fields["nip_nrk"] !== "undefined"){ // jika bernilai , cek menggunakan regex 
+            if(!fields["nip_nrk"].match(/^[a-zA-Z0-9]+$/)){  // cek apakah sesuai dengan ketentuan 
                formIsValid = false;
                errors["nip_nrk"] = "Alpha Numeric Only";
             }
          }
  
         //password
-        if(!fields["password"]){
+        if(!fields["password"]){  //cek kosong atau tidak bar password
             formIsValid = false;
             errors["password"] = "Cannot be empty";
         }
     
-        if(typeof fields["password"] !== "undefined"){
-             if(!fields["password"].match(/^[a-zA-Z0-9]+$/)){
+        if(typeof fields["password"] !== "undefined"){ // jika bernilai , cek menggunakan regex 
+             if(!fields["password"].match(/^[a-zA-Z0-9]+$/)){ // cek apakah sesuai dengan ketentuan 
                 formIsValid = false;
                 errors["password"] = "Alpha Numeric Only";
             }
         }
 
-       this.setState({errors: errors});
-       return formIsValid;
+       this.setState({errors: errors}); // ubah variabel errors pada state menjadi errors
+       return formIsValid; // kembalikan nilai formisvalid false / true
    }
 
    /*
         handleChange function will set the state value for text input
+
     */
 
-    handleChange(field, e){         
+    handleChange(field, e){            // ubah variabel field pada state menjadi nilai e
         let fields = this.state.fields;
         fields[field] = e.target.value;        
         this.setState({fields});
     }
+
 
     /*
         render function is used to render all necessary component for the page
@@ -124,7 +126,7 @@ export default class Login extends Component {
                         <br /> <span style={{color: "red"}}>{this.state.errors["password"]}</span>
                     </p>
                     <p>
-                        <br /><Button variant="contained" color="primary" type="submit">Login!</Button>
+                        <br /><Button variant="contained" color="primary" type="submit">Login!</Button>  
                     </p>
                 </form>
             </div>

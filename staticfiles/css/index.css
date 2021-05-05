@@ -1,0 +1,56 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Ubuntu', sans-serif;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.container {
+    height: 100vh;
+    width: 100vw;
+    /* background: #2e2e2e; */
+    background: rgb(250, 250, 250);
+    /* color: white; */
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+@media screen and (max-width:980px) {
+    .container {
+        padding-top: 150px;
+    }
+}
+
+
+.login_textFields{
+    color: white !important;
+}
+
+.label_textfield{
+    color: white !important
+}
+
+.SelectInput {
+    text-align: center;
+    width: 250px;
+}
+
+.UploadInput {
+    text-align: center;
+    width: 300px;
+}
+
+.UploadInput Input {
+    padding-top: 25px;
+}
+
+option {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #dfdfdf;
+}

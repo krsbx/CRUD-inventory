@@ -27,13 +27,13 @@ export default class Register extends Component {
 
         if(this.handleValidation()){
             fetch(url, {
-                method: 'POST',
+                method: 'POST',   
                 headers: {
-                    'Content-type' : 'application/json'
+                    'Content-type' : 'application/json' // post req ke backend
                 },
                 body: JSON.stringify(data),
             }).then((result) => {
-                if(result.status === 400){
+                if(result.status === 400){   
                     let errors = this.state.errors;
                     result.json().then(resp => {
                         if(resp["nip_nrk"] != null){
