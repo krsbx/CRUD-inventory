@@ -7,4 +7,10 @@ urlpatterns = [
     path('login/', index),
     path('logout/', index),
     path('register/', index),
+    path('peminjaman/', index),
+    path('detail/<str:nomor_peminjaman>', index),
+    path('detail/', index),
+    path('barang/', index),
+    path('gedung/', index),
+    path('ruang/', index),
 ]

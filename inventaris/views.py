@@ -31,6 +31,9 @@ class PegawaiDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     lookup_field = "nip_nrk"
 
+    def perform_create(self, serializer):
+        return serializer.save()
+
     def get_queryset(self):
         return self.queryset.filter()
 
@@ -51,6 +54,9 @@ class PeminjamanDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     lookup_field = "nomor_peminjaman"
 
+    def perform_create(self, serializer):
+        return serializer.save()
+
     def get_queryset(self):
         return self.queryset.filter()
 
@@ -60,7 +66,17 @@ class BarangView(generics.ListCreateAPIView):
     # permission_classes = (permissions.IsAuthenticated,)
     
     def perform_create(self, serializer):
-        return serializer.save()
+        #Get The Value of each items
+        nama_barang = self.request.data.__getitem__('nama_barang')
+        kode_barang = self.request.data.__getitem__('kode_barang') if self.request.data.__contains__('kode_barang') else None
+
+        #Check if it exists or not
+        if kode_barang:
+            return serializer.save()
+
+        else:
+            kode_barang = TabelBarang.getKode(nama_barang)
+            return serializer.save(kode_barang=kode_barang)
 
     def get_queryset(self):
         return self.queryset.all()
@@ -70,6 +86,9 @@ class BarangDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BarangSerializer
     permission_classes = (permissions.IsAuthenticated,)
     lookup_field = "kode_barang"
+
+    def perform_create(self, serializer):
+        return serializer.save()
 
     def get_queryset(self):
         return self.queryset.filter()

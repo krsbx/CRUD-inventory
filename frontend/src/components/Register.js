@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, TextField } from '@material-ui/core';
+import {baseURL } from './AxiosInstance'
 
 export default class Register extends Component {
     constructor(props){
@@ -16,8 +17,10 @@ export default class Register extends Component {
             The result of the user registration will bre printed in browser console
     */
 
-    Submit = () => {
-        const url = 'http://localhost:8000/api/register/'
+    Submit = event => {
+        event.preventDefault();
+
+        const url = `${baseURL}api/register/`
         let data = this.state.fields;
 
         console.log(data);
@@ -127,24 +130,10 @@ export default class Register extends Component {
             errors["nama_pegawai"] = "Cannot be empty";
         }
    
-        if(typeof fields["nama_pegawai"] !== "undefined"){
-            if(!fields["nama_pegawai"].match(/^[a-zA-Z]+$/)){
-               formIsValid = false;
-               errors["nama_pegawai"] = "Letter Only";
-            }        
-        }
-
         //alamat
         if(!fields["alamat"]){
             formIsValid = false;
             errors["alamat"] = "Cannot be empty";
-        }
-   
-        if(typeof fields["alamat"] !== "undefined"){
-            if(!fields["alamat"].match(/^[a-zA-Z0-9]+$/)){
-               formIsValid = false;
-               errors["alamat"] = "Alpha Numeric Only";
-            }        
         }
 
         //telp
@@ -190,39 +179,41 @@ export default class Register extends Component {
     render () {
         return (
             <div className='Register'>
-                <p>
-                    <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "nip_nrk")} value={this.state.fields["nip_nrk"]} 
-                    label='NIP/NRK' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 120 }} />
-                    <br /> <span style={{color: "red"}}>{this.state.errors["nip_nrk"]}</span>
-                </p>
-                <p>
-                    <br /> <TextField type='password' size="30" onChange={this.handleChange.bind(this, "password")} value={this.state.fields["password"]} 
-                    label='Password' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 16, minLength: 8 }} />
-                    <br /> <span style={{color: "red"}}>{this.state.errors["password"]}</span>
-                </p>
-                <p>
-                    <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]} 
-                    label='Email' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 255 }} />
-                    <br /> <span style={{color: "red"}}>{this.state.errors["email"]}</span>
-                </p>
-                <p>
-                    <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "nama_pegawai")} value={this.state.fields["nama_pegawai"]} 
-                    label='Nama Pegawai' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 120 }} />
-                    <br /> <span style={{color: "red"}}>{this.state.errors["nama_pegawai"]}</span>
-                </p>
-                <p>
-                    <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "alamat")} value={this.state.fields["alamat"]} 
-                    label='Alamat' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 120 }} />
-                    <br /> <span style={{color: "red"}}>{this.state.errors["alamat"]}</span>
-                </p>
-                <p>
-                    <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "telp")} value={this.state.fields["telp"]} 
-                    label='Telepon' variant="outlined" InputLabelProps={{className: 'label_textfield'}} InputProps={{className: 'login_textFields'}} inputProps={{ maxLength: 120 }} />
-                    <br /> <span style={{color: "red"}}>{this.state.errors["telp"]}</span>
-                </p>
-                <p>
-                    <Button variant="contained" color="primary" onClick={() => this.Submit()}>Register!</Button>
-                </p>
+                <form onSubmit={this.Submit}>
+                    <p>
+                        <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "nip_nrk")} value={this.state.fields["nip_nrk"]} 
+                        label='NIP/NRK' variant="outlined" inputProps={{ maxLength: 120 }} />
+                        <br /> <span style={{color: "red"}}>{this.state.errors["nip_nrk"]}</span>
+                    </p>
+                    <p>
+                        <br /> <TextField type='password' size="30" onChange={this.handleChange.bind(this, "password")} value={this.state.fields["password"]} 
+                        label='Password' variant="outlined" inputProps={{ maxLength: 16, minLength: 8 }} />
+                        <br /> <span style={{color: "red"}}>{this.state.errors["password"]}</span>
+                    </p>
+                    <p>
+                        <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "email")} value={this.state.fields["email"]} 
+                        label='Email' variant="outlined" inputProps={{ maxLength: 255 }} />
+                        <br /> <span style={{color: "red"}}>{this.state.errors["email"]}</span>
+                    </p>
+                    <p>
+                        <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "nama_pegawai")} value={this.state.fields["nama_pegawai"]} 
+                        label='Nama Pegawai' variant="outlined" inputProps={{ maxLength: 120 }} />
+                        <br /> <span style={{color: "red"}}>{this.state.errors["nama_pegawai"]}</span>
+                    </p>
+                    <p>
+                        <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "alamat")} value={this.state.fields["alamat"]} 
+                        label='Alamat' variant="outlined" inputProps={{ maxLength: 120 }} />
+                        <br /> <span style={{color: "red"}}>{this.state.errors["alamat"]}</span>
+                    </p>
+                    <p>
+                        <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "telp")} value={this.state.fields["telp"]} 
+                        label='Telepon' variant="outlined" inputProps={{ maxLength: 120 }} />
+                        <br /> <span style={{color: "red"}}>{this.state.errors["telp"]}</span>
+                    </p>
+                    <p>
+                        <br /> <Button variant="contained" color="primary" type="submit">Register!</Button>
+                    </p>
+                </form>
             </div>
         );
     }

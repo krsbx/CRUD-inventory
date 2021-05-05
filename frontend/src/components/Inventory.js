@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axiosInstance from './AxiosInstance';
+import { axiosInstance } from './AxiosInstance';
 import { Button, TextField } from '@material-ui/core';
 
 export default class Inventory extends Component {
