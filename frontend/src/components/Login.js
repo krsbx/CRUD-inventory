@@ -7,8 +7,6 @@ export default class Login extends Component {
     constructor(props){
         super(props);
 
-        const { classes } = props;
-
         this.state = {
             fields: {},
             errors: {}

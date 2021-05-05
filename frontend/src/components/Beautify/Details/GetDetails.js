@@ -23,6 +23,7 @@ class GetDetails extends Component {
         this.jumlah = '';
         this.kembali = '';
         this.kembaliBool = false;
+        this.nama_pegawai = '';
 
         this.nomor_peminjaman = this.props.match.params.nomor_peminjaman;
     }
@@ -32,7 +33,7 @@ class GetDetails extends Component {
         All informations retrieved will be printed in browser console
     */
 
-    async DetailsList (urls) {
+    async DetailsList (urls='') {
         await axiosInstance.get(`/api/detail/${urls}`).then((result) => {
             //Change to result.data.results
             //  for a lot of data
@@ -43,7 +44,7 @@ class GetDetails extends Component {
             this.kodePath = data.kode_barang;
             this.jumlah = data.jumlah;
             this.kembali = (data.kembali == false ? "Belum Dikembalikan" : "Dikembalikan");
-            this.kembaliBool = data.kembali;
+            this.kembaliBool = Boolean(data.kembali);
         });
 
         await axiosInstance.get(`/api/peminjaman/${this.nomor_peminjaman}`).then((res) => {
@@ -65,6 +66,8 @@ class GetDetails extends Component {
                     <div className="DetailHeader"><span>{hdr}</span></div>
                 );
             }, this);
+
+            this.nama_pegawai = data.nama_pegawai;
 
             this.setState( { pinjam : [toSpan, toPinjam] } );
         });
@@ -125,7 +128,8 @@ class GetDetails extends Component {
             this.setState( { barang : [ toSpan, toBarang] } );
         });
         
-        this.setState( { returnBtn: <Button variant="contained" color="primary" onClick={() => this.ReturnItem()} disabled={(this.kembaliBool == false ? false : true)}>Kembalikan!</Button> } )
+        this.setState( { returnBtn: <Button variant="contained" color="primary" onClick={() => this.ReturnItem()}
+        disabled={ (Boolean(this.kembaliBool) === false ? (localStorage.getItem('nip_nrk') == this.nama_pegawai ? false : true) : true) }>Kembalikan!</Button> } )
     }
 
     componentDidMount () {

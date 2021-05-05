@@ -18,8 +18,8 @@ export default class GetBarang extends Component {
         All informations retrieved will be shown in a table
     */
 
-    BarangList = () => {
-        axiosInstance.get(`/api/barang/`).then((result) => { // melakukan get-request pada barang API.
+    BarangList = (urls='') => {
+        axiosInstance.get(`/api/barang/${urls}`).then((result) => { // melakukan get-request pada barang API.
             const data = result.data.results; // peroleh hasil dari get-request.
 
             let barangList = data.map((brg) => { // menyimpan semua objek yang ada pada data kedalam bentuk html.

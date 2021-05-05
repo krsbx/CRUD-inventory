@@ -18,8 +18,8 @@ export default class GetRuang extends Component {
         All informations retrieved will be printed in browser console
     */
 
-    RuangList = () => {
-        axiosInstance.get(`/api/ruang/`).then((result) => { // melakukan get-request pada peminjaman API.
+    RuangList = (urls='') => {
+        axiosInstance.get(`/api/ruang/${urls}`).then((result) => { // melakukan get-request pada peminjaman API.
             const data = result.data.results; // peroleh hasil dari get-request.
 
             let ruangList = data.map((rng) => { // menyimpan semua objek yang ada pada data kedalam bentuk html.

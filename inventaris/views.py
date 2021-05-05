@@ -63,7 +63,7 @@ class PeminjamanDetail(generics.RetrieveUpdateDestroyAPIView):
 class BarangView(generics.ListCreateAPIView):
     queryset = TabelBarang.objects.all()
     serializer_class = BarangSerializer
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     
     def perform_create(self, serializer):
         #Get The Value of each items
@@ -80,6 +80,12 @@ class BarangView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         return self.queryset.all()
+
+class AllBarang(generics.ListAPIView):
+    queryset = TabelBarang.objects.all()
+    serializer_class = BarangSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = None
 
 class BarangDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = TabelBarang.objects.all()

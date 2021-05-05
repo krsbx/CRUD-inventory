@@ -18,8 +18,8 @@ export default class GetOptions extends Component {
         All informations retrieved will be printed in browser console
     */
 
-    GedungList = () => { 
-        axiosInstance.get(`/api/gedung/`).then((result) => { // melakukan get-request pada gedung API.
+    GedungList = (urls='') => { 
+        axiosInstance.get(`/api/gedung/${urls}`).then((result) => { // melakukan get-request pada gedung API.
             const data = result.data.results; // peroleh hasil dari get-request.
 
             let gedungList = data.map((ged) => { // menyimpan semua objek yang ada pada data kedalam bentuk html.

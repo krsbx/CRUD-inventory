@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from inventaris.models import TabelRuang, TabelGedung, PeminjamanDetail
 from .serializer import DetailSerializer, GedungSerializer, RuangSerializer
 from rest_framework import permissions
@@ -79,3 +79,21 @@ class DetailPemDetail(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return self.queryset.filter()
+
+class AllDetail(ListAPIView):
+    serializer_class = DetailSerializer
+    queryset = PeminjamanDetail.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = None
+
+class AllGedung(ListAPIView):
+    serializer_class = GedungSerializer
+    queryset = TabelGedung.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = None
+
+class AllRuang(ListAPIView):
+    serializer_class = RuangSerializer
+    queryset = TabelRuang.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = None

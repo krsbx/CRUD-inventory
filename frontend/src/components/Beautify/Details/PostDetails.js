@@ -165,7 +165,7 @@ export default function PinjamBarang (props) {
             }
         });
 
-        //Get CUrren Barang Stock
+        //Get Current Barang Stock
         await axiosInstance.get(`/api/barang/${detFields['kode_barang']}`).then((result) => {
             const data = result.data;
 
@@ -209,8 +209,8 @@ export default function PinjamBarang (props) {
     */
 
     const GetGedungName = () => {
-        axiosInstance.get(`/api/gedung/`).then((result) => {
-            const data = result.data.results;
+        axiosInstance.get(`/api/allGedung/`).then((result) => {
+            const data = result.data;
             
             let gedungList =
             data.map((ged) => {
@@ -231,8 +231,8 @@ export default function PinjamBarang (props) {
     */
 
     const GetRuang = () => {
-        axiosInstance.get(`/api/ruang/`).then((result) => {
-            const data = result.data.results;
+        axiosInstance.get(`/api/allRuang/`).then((result) => {
+            const data = result.data;
             
             let ruangList =
             data.map((rng) => {
@@ -249,8 +249,8 @@ export default function PinjamBarang (props) {
     */
 
     const GetBarang = () => {
-        axiosInstance.get(`/api/barang/`).then((result) => {
-            const data = result.data.results;
+        axiosInstance.get(`/api/allBarang/`).then((result) => {
+            const data = result.data;
                 
             let barangList =
             data.map((brg) => {
