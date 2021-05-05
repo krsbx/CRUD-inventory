@@ -59,25 +59,26 @@ export default class PostGedung extends Component {
 
         const data = this.state.fields;
 
-        if(this.handleValidation()){
-            axiosInstance.post(`/api/gedung/`, data).then((result) => {
-                if(result.status === 201){
+        if(this.handleValidation()){  // memanggil fungsi handlevalidation.
+            axiosInstance.post(`/api/gedung/`, data).then((result) => { // membuat post request pada gedung API .
+                if(result.status === 201){ // jika sukses.
                     const resp = result['data'];
-                    for(var key in resp){
+
+                    for(var key in resp){ // mencetak hasil kedalam console.
                         console.log(`${key} : ${resp[key]}`);
                     }
-                    window.location.href = '/gedung';
+                    window.location.href = '/gedung'; // re-direct ke gedung page.
                 }
             }).catch((error) => {
                 console.log(error.response.data);
-                if(error.response.status === 400){
+                if(error.response.status === 400){ // jika terjadi kesalahan request.
                     let errors = this.state.errors;
 
-                    for(var key in error.response.data){
+                    for(var key in error.response.data){ //  masukan semua kesalahan pada variable errors.
                         errors[key] = error.response.data[key];
                     }
                     
-                    this.state.errors = errors;
+                    this.state.errors = errors; // mengubah variable errors pada state menjadi errors.
 
                     return;
                 }

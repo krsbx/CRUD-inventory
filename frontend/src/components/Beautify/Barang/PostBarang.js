@@ -16,7 +16,7 @@ export default class PostBarang extends Component {
         handleChange function will set the state value for text input
     */
 
-    handleChange(field, e){         
+    handleChange(field, e){          
         let fields = this.state.fields;
         fields[field] = e.target.value;
         this.setState({fields});
@@ -39,7 +39,7 @@ export default class PostBarang extends Component {
             the function will check all user the input same as the database require or nots
     */
 
-    handleValidation(){
+    handleValidation(){ 
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -88,40 +88,42 @@ export default class PostBarang extends Component {
         The POST Request will printed the result in browser console
     */
 
-    PostBarang = event => {
+    PostBarang = event => { 
         event.preventDefault();
 
         const data = this.state.fields;
 
-        if(this.handleValidation()){
-            let toPost = new FormData();
+        if(this.handleValidation()){ // memanggil fungsi handlevalidation.
+            let toPost = new FormData(); // membuat objek formData untuk di kirimkan.
 
-            for(let d in data){
+            for(let d in data){ // isi formData dengan data yang ada pada variabel fields.
                 toPost.append(d, data[d]);
             }
 
-            axiosInstance.post(`/api/barang/`, toPost, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
+            axiosInstance.post(`/api/barang/`, toPost, { // membuat post request pada barang API .
+                headers: { 
+                    'Content-Type': 'multipart/form-data', // mengubah header content-type menjadi form-data.
                 }
             }).then((result) => {
-                if(result.status === 201){
-                    const resp = result['data'];
-                    for(var key in resp){
+                if(result.status === 201){ // jika sukses.
+                    const resp = result['data']; 
+
+                    for(var key in resp){ // mencetak hasil kedalam console.
                         console.log(`${key} : ${resp[key]}`);
                     }
-                    window.location.href = '/barang';
+                    window.location.href = '/barang'; // re-direct ke barang page.
                 }
             }).catch((error) => {
                 console.log(error.response.data);
-                if(error.response.status === 400){
+                
+                if(error.response.status === 400){ // jika terjadi kesalahan request.
                     let errors = this.state.errors;
 
-                    for(var key in error.response.data){
+                    for(var key in error.response.data){ //  masukan semua kesalahan pada variable errors. 
                         errors[key] = error.response.data[key];
                     }
 
-                    this.state.errors = errors;
+                    this.state.errors = errors; // mengubah variable errors pada state menjadi errors.
                     
                     return;
                 }

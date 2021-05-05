@@ -75,34 +75,36 @@ export default class GetPeminjmana extends Component {
         
         const data = this.state.fields;
 
-        if(this.handleValidation()){
-            let toPost = new FormData();
+        if(this.handleValidation()){ // memanggil fungsi handlevalidation.
+            let toPost = new FormData(); // membuat objek formData untuk di kirimkan.
 
-            for(let d in data){
+            for(let d in data){ // isi formData dengan data yang ada pada variabel fields.
                 toPost.append(d, data[d]);
             }
 
-            axiosInstance.post(`/api/peminjaman/`, toPost, {
+            axiosInstance.post(`/api/peminjaman/`, toPost, { // membuat post request pada barang API .
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'multipart/form-data', // mengubah header content-type menjadi form-data.
                 }
             }).then((result) => {
-                if(result.status === 200){
+                if(result.status === 200){ // jika sukses.
                     const resp = result['data'];
-                    for(var key in resp){
+
+                    for(var key in resp){ // mencetak hasil kedalam console.
                         console.log(`${key} : ${resp[key]}`);
                     }
                 }
             }).catch((error) => {
                 console.log(error.response.data);
-                if(error.response.status === 400){
+
+                if(error.response.status === 400){ // jika terjadi kesalahan request.
                     let errors = this.state.errors;
 
-                    for(var key in error.response.data){
+                    for(var key in error.response.data){ // masukan semua kesalahan pada variable errors. 
                         errors[key] = error.response.data[key];
                     }
                     
-                    this.state.errors = errors;
+                    this.state.errors = errors; // mengubah variable errors pada state menjadi errors.
                     
                     return;
                 }
