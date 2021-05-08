@@ -4,7 +4,7 @@ import { Button, TextField, Input } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker, } from '@material-ui/pickers';
 
-export default class GetPeminjmana extends Component {
+export default class PostPeminjaman extends Component {
     constructor(props) {
         super(props);
 

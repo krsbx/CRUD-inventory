@@ -3,7 +3,7 @@ import { axiosInstance } from '../../AxiosInstance';
 import { Button, TextField, Select, InputLabel, FormControl, Input } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker, } from '@material-ui/pickers';
-
+import firebase from '../../Firebase/FirebaseSDK';
 
 export default function PinjamBarang (props) {
     const [pinFields, SetPinFields] = useState({});
@@ -13,9 +13,7 @@ export default function PinjamBarang (props) {
     const [kode, SetKode] = useState([]);
     const [gedung, SetGedung] = useState([]);
     const [ruang, SetRuang] = useState([]);
-
-    pinFields['tgl_pinjam'] = new Date();
-
+    
     /*
         handleChange function will set the state value for input fields
     */
@@ -107,21 +105,16 @@ export default function PinjamBarang (props) {
     async function PostInfo () {
         const data = pinFields;
         let details = detFields;
-        let toPost = new FormData();
         let stock = 0;
         const jumlah = detFields['jumlah'];
 
-        //Set Form Data Objects Key and Values
-        for(let d in data){
-            toPost.append(d, data[d]);
-        }
+        const DisposisiRef = firebase.storage().ref(`Documents/Perolehan/`).child(`${pinFields["BAST_disposisi"]["name"]}`);
+        await DisposisiRef.put(pinFields["BAST_disposisi"]["name"]);
+
+        await DisposisiRef.getDownloadURL().then(url => data['BAST_disposisi'] = url);
 
         //Create Peminjaman Informations
-        await axiosInstance.post(`/api/peminjaman/`, toPost, {
-            headers: {
-                'Content-Type': 'multipart/form-data', // Set Axios Post Content-Type Header to form-data
-            }
-        }).then((result) => {
+        await axiosInstance.post(`/api/peminjaman/`, data).then((result) => {
             //On Success
             if(result.status === 201){
                 //Retrieved the response data

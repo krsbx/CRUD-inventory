@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { axiosInstance } from '../../AxiosInstance';
 import { Button, TextField, InputLabel, FormControl, Input } from '@material-ui/core';
+import firebase from '../../Firebase/FirebaseSDK';
 
 export default class PostBarang extends Component {
     constructor(props){
@@ -88,23 +89,20 @@ export default class PostBarang extends Component {
         The POST Request will printed the result in browser console
     */
 
-    PostBarang = event => { 
+    PostBarang = async (event) => { 
         event.preventDefault();
 
         const data = this.state.fields;
 
         if(this.handleValidation()){ // memanggil fungsi handlevalidation.
-            let toPost = new FormData(); // membuat objek formData untuk di kirimkan.
+            
+            const PerolehanRef = firebase.storage().ref(`Documents/Perolehan/`).child(`${fields["BAST_perolehan"]["name"]}`);
+            await PerolehanRef.put(fields["BAST_perolehan"]["name"]);
 
-            for(let d in data){ // isi formData dengan data yang ada pada variabel fields.
-                toPost.append(d, data[d]);
-            }
+            await PerolehanRef.getDownloadURL().then(url => data['BAST_perolehan'] = url);
 
-            axiosInstance.post(`/api/barang/`, toPost, { // membuat post request pada barang API .
-                headers: { 
-                    'Content-Type': 'multipart/form-data', // mengubah header content-type menjadi form-data.
-                }
-            }).then((result) => {
+            axiosInstance.post(`/api/barang/`, data) // membuat post request pada barang API .
+            .then((result) => {
                 if(result.status === 201){ // jika sukses.
                     const resp = result['data']; 
 

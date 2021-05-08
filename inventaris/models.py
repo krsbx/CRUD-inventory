@@ -30,7 +30,7 @@ class TabelBarang(models.Model):
     nama_barang = models.CharField(verbose_name="Nama Barang", max_length=20, null=False, unique=True)
     merk = models.CharField(verbose_name="Merk Barang", max_length=20, null=False)
     stock = models.IntegerField(verbose_name="Stock Barang", max_length=None, null=False)
-    BAST_perolehan = models.FileField(upload_to='Documents/Perolehan/', verbose_name="BAST Perolehan", default=None, null=False)
+    BAST_perolehan = models.URLField(verbose_name="BAST Perolehan", default=None, null=False)
 
 #Peminjaman Model/Table
 #   Primary Key => nomor peminjaman
@@ -59,7 +59,7 @@ class TabelPeminjaman(models.Model):
     nama_pegawai = models.CharField(max_length=120, null=False, default=None, verbose_name="Nama Pegawai")
     tgl_pinjam = models.DateField(verbose_name="Tanggal Peminjaman", help_text="Masukkan Tanggal Peminjaman", default=datetime.date.today, null=False)
     tgl_kembali = models.DateField(verbose_name="Tanggal Pengembalian", help_text="Masukkan Tanggal Pengembalian", null=True)
-    BAST_disposisi = models.FileField(upload_to='Documents/Disposisi/', verbose_name="BAST Diposisi", default=None, null=False)
+    BAST_disposisi = models.URLField(verbose_name="BAST Diposisi", default=None, null=False)
 
 #Gedung Model/Table
 #   Primary Key => Gedung
