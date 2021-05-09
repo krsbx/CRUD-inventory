@@ -225,37 +225,37 @@ export default function GetDetails (props) {
         {returnBtn}
         <div className="GetDetails">
             <div className="BigGroups">
-            <div className="DetailsGroup">
-                {pinjam.map((pin) => {
-                    return(
-                        <div className="DetailTables">{pin}</div>
-                    );
-                }, this)}
+                <div className="DetailsGroup">
+                    {pinjam.map((pin) => {
+                        return(
+                            <div className="DetailTables">{pin}</div>
+                        );
+                    }, this)}
+                </div>
+                <div className="DetailsGroup">
+                    {barang.map((brg) => {
+                        return(
+                            <div className="DetailTables">{brg}</div>
+                        )
+                    })}
+                </div>
             </div>
-            <div className="DetailsGroup">
-                {barang.map((brg) => {
-                    return(
-                        <div className="DetailTables">{brg}</div>
-                    )
-                })}
-            </div>
-        </div>
             <div className="BigGroups">
-            <div className="DetailsGroup">
-                {ruang.map((rng) => {
-                    return(
-                        <div className="DetailTables">{rng}</div>
-                    )
-                })}
+                <div className="DetailsGroup">
+                    {ruang.map((rng) => {
+                        return(
+                            <div className="DetailTables">{rng}</div>
+                        )
+                    })}
+                </div>
+                <div className="DetailsGroup">
+                    {gedung.map((ged) => {
+                        return(
+                            <div className="DetailTables">{ged}</div>
+                        );
+                    }, this)}
+                </div>
             </div>
-            <div className="DetailsGroup">
-                {gedung.map((ged) => {
-                    return(
-                        <div className="DetailTables">{ged}</div>
-                    );
-                }, this)}
-            </div>
-        </div>
         </div>
     </>);
 }

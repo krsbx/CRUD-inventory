@@ -108,8 +108,8 @@ export default function PinjamBarang (props) {
         let stock = 0;
         const jumlah = detFields['jumlah'];
 
-        const DisposisiRef = firebase.storage().ref(`Documents/Perolehan/`).child(`${pinFields["BAST_disposisi"]["name"]}`);
-        await DisposisiRef.put(pinFields["BAST_disposisi"]["name"]);
+        const DisposisiRef = firebase.storage().ref(`Documents/Disposisi/`).child(`${pinFields["BAST_disposisi"]["name"]}`);
+        await DisposisiRef.put(pinFields["BAST_disposisi"]);
 
         await DisposisiRef.getDownloadURL().then(url => data['BAST_disposisi'] = url);
 

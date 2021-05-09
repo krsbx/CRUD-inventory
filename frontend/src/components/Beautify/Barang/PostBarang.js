@@ -11,6 +11,8 @@ export default class PostBarang extends Component {
             fields: {},
             errors: {},
         }
+
+        let perolehan;
     }
 
     /*
@@ -96,8 +98,8 @@ export default class PostBarang extends Component {
 
         if(this.handleValidation()){ // memanggil fungsi handlevalidation.
             
-            const PerolehanRef = firebase.storage().ref(`Documents/Perolehan/`).child(`${fields["BAST_perolehan"]["name"]}`);
-            await PerolehanRef.put(fields["BAST_perolehan"]["name"]);
+            const PerolehanRef = firebase.storage().ref(`Documents/Perolehan/`).child(`${data["BAST_perolehan"]["name"]}`);
+            await PerolehanRef.put(data["BAST_perolehan"]);
 
             await PerolehanRef.getDownloadURL().then(url => data['BAST_perolehan'] = url);
 
