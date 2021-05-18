@@ -11,8 +11,6 @@ export default class PostBarang extends Component {
             fields: {},
             errors: {},
         }
-
-        let perolehan;
     }
 
     /*
