@@ -20,12 +20,16 @@ export default function PinjamBarang (props) {
 
     function DetHandleChange(field, e) {
         let fields = detFields;
-        if(field != "kode_barang"){
+        if(field != "kode_barang" && field != "ruang"){
             fields[field] = e.target.value;
-        }else{
+        }else if(field == "kode_barang"){
             fields[field] = e.target.value.kode;
             fields["nama_barang"] = e.target.value.nama;
+        }else if(field == "ruang"){
+            fields[field] = e.target.value.ruang;
+            fields["gedung"] = e.target.value.gedung;
         }
+        
         SetDetFields(fields);
     }
 
@@ -251,7 +255,7 @@ export default function PinjamBarang (props) {
             
             let ruangList =
             data.map((rng) => {
-                return (<option value={rng.ruang}> {rng.ruang} </option>);
+                return (<option value={{'ruang':rng.ruang, 'gedung':rng.gedung}}> {rng.ruang} </option>);
             }, this);
 
             SetRuang(ruangList);
@@ -332,14 +336,6 @@ export default function PinjamBarang (props) {
                     <br /> <TextField type='text' size="30" onChange={DetHandleChange.bind(this, "jumlah")} value={detFields["jumlah"]} 
                     label='Jumlah' variant="outlined" inputProps={{ maxLength: 8 }} />
                     <br /> <span style={{color: "red"}}>{detErrors["ruang"]}</span>
-                </p>
-                {/* Gedung Field */}
-                <p>
-                    <br /><FormControl className="SelectInput">
-                    <InputLabel>Gedung</InputLabel>
-                        <Select name="Gedung" onChange={DetHandleChange.bind(this, "gedung")} > { gedung } </Select>
-                    </FormControl>
-                    <br /> <span style={{color: "red"}}>{detErrors["gedung"]}</span>
                 </p>
                 {/* Ruang Field */}
                 <p>
