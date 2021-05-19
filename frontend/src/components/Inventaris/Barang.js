@@ -21,6 +21,8 @@ export default class Barang extends Component {
         }
     }
 
+    is_staff = localStorage.getItem('is_staff');
+
     /*
         render function is used to render all necessary component for the page
     */
@@ -29,8 +31,13 @@ export default class Barang extends Component {
         const toRender = this.state.visible ? (<PostBarang />) : (<GetBarang />);
         return (
             <div className='Barang'>
-                <Button onClick={() => { this.setState({visible: !this.state.visible}) }}>Change View!</Button>
-                <br />{toRender}
+                { this.is_staff == 'false' ? null :
+                    <>
+                        <Button onClick={() => { this.setState({visible: !this.state.visible}) }}>Change View!</Button>
+                        <br />
+                    </>
+                }
+                {toRender}
             </div>
         );
     }

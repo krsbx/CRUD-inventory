@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { axiosInstance } from './AxiosInstance';
-import jwt_decode from 'jwt-decode';
 
 export default class Login extends Component {
     constructor(props){
@@ -27,13 +26,13 @@ export default class Login extends Component {
             axiosInstance.post(`/api/login/`, data).then((result) => {    // lakukan post request pada login API 
                 if(result.status === 200){
                     if(result.data.access_token){
-                        localStorage.setItem('access_token', result.data.access_token); //simpan akses token pada cache 
-
-                        //Decode The Access Token
-                        const decode = jwt_decode(result.data.access_token);
+                        localStorage.setItem('access_token', result.data.access_token); //simpan akses token pada cache
 
                         //Cache the current user nip_nrk to
-                        localStorage.setItem('nip_nrk', decode.user_id); // simpan user id pada cache
+                        localStorage.setItem('nip_nrk', result.data.nip_nrk); // simpan user id pada cache
+
+                        //Cache staff status
+                        localStorage.setItem('is_staff', result.data.is_staff);
 
                         axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + localStorage.getItem('access_token'); 
                         // ubah header request menjadi Bearer dan dilanjutkan dengan akses token pada cache

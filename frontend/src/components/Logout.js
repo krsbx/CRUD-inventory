@@ -14,6 +14,7 @@ export default class Logout extends Component {
             localStorage.removeItem('refresh');
             localStorage.removeItem('nip_nrk');
             localStorage.removeItem('isAuthorized');
+            localStorage.removeItem('is_staff');
             window.location.href = '/';
         }
 

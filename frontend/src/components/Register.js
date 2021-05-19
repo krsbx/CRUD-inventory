@@ -67,6 +67,8 @@ export default class Register extends Component {
                         }
                         console.log(resp);
                     });
+
+                    window.location.href = '/';
                 }
             });
         }

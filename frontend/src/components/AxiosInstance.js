@@ -113,6 +113,7 @@ axiosInstance.interceptors.response.use(
 					localStorage.removeItem('refresh');
 					localStorage.removeItem('nip_nrk');
 					localStorage.removeItem('isAuthorized');
+					localStorage.removeItem('is_staff');
 					window.location.href = `${baseURL}login/`;   // re direct user ke login page
 				}
 			} else {
@@ -122,6 +123,7 @@ axiosInstance.interceptors.response.use(
 				localStorage.removeItem('refresh');
 				localStorage.removeItem('nip_nrk');
 				localStorage.removeItem('isAuthorized');
+				localStorage.removeItem('is_staff');
 				window.location.href = `${baseURL}login/`; // re direct user ke login page
 			}
 		}

@@ -21,6 +21,8 @@ export default class Gedung extends Component {
         }
     }
 
+    is_staff = localStorage.getItem('is_staff');
+
     /*
         render function is used to render all necessary component for the page
     */
@@ -29,8 +31,13 @@ export default class Gedung extends Component {
         const toRender = this.state.visible ? (<PostGedung />) : (<GetGedung />);
         return (
             <div className='Gedung'>
-                <Button onClick={() => { this.setState({visible: !this.state.visible}) }}>Change View!</Button>
-                <br />{toRender}
+                { this.is_staff == 'false' ? null :
+                    <>
+                        <Button onClick={() => { this.setState({visible: !this.state.visible}) }}>Change View!</Button>
+                        <br />
+                    </>
+                }
+                {toRender}
             </div>
         );
     }

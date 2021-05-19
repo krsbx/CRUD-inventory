@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed
 from .models import UserAccounts
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 #Sertializer modules
 #   Used for creating API view
@@ -30,28 +31,15 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return UserAccounts.objects.create_user(**validated_data)
 
-class LoginSerializer(serializers.ModelSerializer):
-    nip_nrk = serializers.CharField(max_length=120, write_only=True, label="NIP/NIK")
-    password  = serializers.CharField(max_length=32, min_length=8, write_only=True, label="Passwords")
-    access_token = serializers.CharField(max_length=64, min_length=6, read_only=True)
-    refresh = serializers.CharField(max_length=64, min_length=6, read_only=True)
-
-    class Meta:
-        model = UserAccounts
-        fields = ['nip_nrk', 'password', 'access_token', 'refresh']
+class LoginSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
-        nip_nrk = attrs.get('nip_nrk', '')
-        password = attrs.get('password', '')
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data['refresh'] = str(refresh)
+        data['access_token'] = str(refresh.access_token)
 
-        user = auth.authenticate(nip_nrk=nip_nrk, password=password)
+        data['nip_nrk'] = self.user.nip_nrk
+        data['is_staff'] = self.user.is_staff
 
-        if not user:
-            raise AuthenticationFailed('User not founds!')
-        
-        refresh = RefreshToken.for_user(user)
-
-        return {
-            'access_token': str(refresh.access_token),
-            'refresh': str(refresh),
-        }
+        return data
