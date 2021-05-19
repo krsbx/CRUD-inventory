@@ -199,6 +199,12 @@ export default function GetDetails (props) {
             'stock' : jumlah+stock,
         });
 
+        //Update Peminjaman Tanggal
+        //  Patch the database so the tgl_kembali in Peminjaman Table set as current adte
+        await axiosInstance.patch(`/api/peminjaman/${nomor_peminjaman}`, {
+            'tgl_kembali' : new Date().toISOString().slice(0, 10),
+        });
+
         //Update Peminjaman Detail
         //  Patch the DetailPeminjaman table to make sure that the object has been returned
         await axiosInstance.patch(`/api/detail/${nomor_peminjaman}`, {

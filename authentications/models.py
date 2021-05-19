@@ -41,7 +41,7 @@ class UserAccountsManager(BaseUserManager):
         return user
 
 class UserAccounts(AbstractBaseUser, PermissionsMixin):
-    nip_nrk = models.CharField(max_length=120, unique=True, null=False, verbose_name="NIP/NIK", primary_key=True)
+    nip_nrk = models.CharField(max_length=120, unique=True, null=False, verbose_name="NIP/NRK", primary_key=True)
     email = models.EmailField(max_length=255, unique=True, null = False, verbose_name="Email")
     nama_pegawai = models.CharField(max_length=120, null=False, verbose_name="Nama")
     alamat = models.CharField(max_length=120, null=False, verbose_name="Alamat")
