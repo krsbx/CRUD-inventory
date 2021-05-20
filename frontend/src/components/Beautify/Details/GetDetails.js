@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { axiosInstance } from '../../AxiosInstance'
 import { useParams } from 'react-router-dom'
-import { Button } from '@material-ui/core';
+import {
+    Button, 
+    Table, 
+    TableHead, 
+    TableRow, 
+    TableCell, 
+    TableBody, 
+    TableContainer, 
+    TablePagination, 
+    Paper } from '@material-ui/core';
 
 // class GetDetails extends Component {
 export default function GetDetails (props) {
@@ -45,33 +54,38 @@ export default function GetDetails (props) {
             
             //Map the response to toPinjam
             //  The result of map is an array of html element, with value from response body
-            const toPinjam = Object.keys(data).map(function (key, index) {
-                if(key != "BAST_disposisi"){
-                    return (
-                        <div className="DetailInfo"><span>{ key == "tgl_kembali" ? (data[key] != null ? data[key] : "Undefined" ) : data[key] }</span></div>
-                    );
-                }
+            const info = Object.keys(data).map(function (key, index) {
+                return (
+                    key == "tgl_kembali" ? (data[key] != null ? data[key] : "Undefined" ) : data[key]
+                );
             });
             
             //Add aditional informations of the total borrowed objects
-            toPinjam.push(<div className="DetailInfo">{jumlah}</div>);
+            info.push(jumlah);
             //Add aditional informations of the status of the objects
-            toPinjam.push(<div className="DetailInfo">{kembali}</div>);
+            info.push(kembali);
 
             //Create a header array for tables
-            const toSpan = ["ID Peminjaman", "Nomor Peminjaman", "NIP/NRK", "Nama Pegawai", "Tanggal Peminjaman", "Tanggal Pengembalian", "Jumlah", "Dikembalikan"].map((hdr) => {
-                return (
-                    <div className="DetailHeader"><span>{hdr}</span></div>
-                );
-            }, this);
+            const head = ["ID Peminjaman", "Nomor Peminjaman", "NIP/NRK", "Nama Pegawai", "Tanggal Peminjaman", "Tanggal Pengembalian", "BAST Perolehan", "Jumlah", "Dikembalikan"];
 
             //Get the name of the person who borrow the objects
             nama_pegawai = data.nama_pegawai;
 
-            //Set pinjam values to toSpan and toPinjam
-            //  toSpan => Header of the tables
-            //  toPinjam => Values of the tables
-            setPinjam( [toSpan, toPinjam] );
+            const toPinjam = head.map(function (x, i) {
+                return (
+                    <TableRow>
+                        <TableCell align='left'>
+                            {x}
+                        </TableCell>
+                        <TableCell align='right'>
+                            { x == "BAST Perolehan" ? <a href={info[i]}>File BAST</a> : info[i]}
+                        </TableCell>
+                    </TableRow>
+                )
+            })
+
+            //Set pinjam values to toPinjam
+            setPinjam( toPinjam );
         });
         
         await axiosInstance.get(`/api/gedung/${gedungPath}`).then((result) => {
@@ -80,23 +94,30 @@ export default function GetDetails (props) {
 
             //Map the response to toGedung
             //  The result of map is an array of html element, with value from response body
-            const toGedung = Object.keys(data).map(function (key, index) {
+            const info = Object.keys(data).map(function (key, index) {
                 return (
-                    <div className="DetailInfo"><span>{data[key]}</span></div>
+                    data[key]
                 );
             });
 
             //Create a header array for tables
-            const toSpan = ["ID Gedung", "Gedung", "MG Gedung"].map((hdr) => {
-                return (
-                    <div className="DetailHeader"><span>{hdr}</span></div>
-                );
-            }, this);
+            const head = ["ID Gedung", "Gedung", "MG Gedung"]
 
-            //Set pinjam values to toSpan and toGedung
-            //  toSpan => Header of the tables
-            //  toGedung => Values of the tables
-            setGedung( [toSpan, toGedung] );
+            const toGedung = head.map(function (x, i) {
+                return (
+                    <TableRow>
+                        <TableCell align='left'>
+                            {x}
+                        </TableCell>
+                        <TableCell align='right'>
+                            {info[i]}
+                        </TableCell>
+                    </TableRow>
+                )
+            })
+
+            //Set pinjam values to toGedung
+            setGedung( toGedung );
         });
         
         await axiosInstance.get(`/api/ruang/${ruangPath}`).then((result) => {
@@ -105,23 +126,30 @@ export default function GetDetails (props) {
 
             //Map the response to toRuang
             //  The result of map is an array of html element, with value from response body
-            const toRuang = Object.keys(data).map(function (key, index) {
+            const info = Object.keys(data).map(function (key, index) {
                 return (
-                    <div className="DetailInfo"><span>{data[key]}</span></div>
+                    data[key]
                 );
             });
 
             //Create a header array for tables
-            const toSpan = ["ID Ruang", "Ruang", "PJ Ruang", "Gedung"].map((hdr) => {
-                return (
-                    <div className="DetailHeader"><span>{hdr}</span></div>
-                );
-            }, this);
+            const head = ["ID Ruang", "Ruang", "PJ Ruang", "Gedung"];
 
-            //Set pinjam values to toSpan and toRuang
-            //  toSpan => Header of the tables
-            //  toRuang => Values of the tables
-            setRuang( [toSpan, toRuang] );
+            const toRuang = head.map(function (x, i) {
+                return (
+                    <TableRow>
+                        <TableCell align='left'>
+                            {x}
+                        </TableCell>
+                        <TableCell align='right'>
+                            {info[i]}
+                        </TableCell>
+                    </TableRow>
+                )
+            })
+
+            //Set ruang values to toRuang
+            setRuang( toRuang );
         });
         
         await axiosInstance.get(`/api/barang/${kodePath}`).then((result) => {
@@ -130,25 +158,32 @@ export default function GetDetails (props) {
 
             //Map the response to toBarang
             //  The result of map is an array of html element, with value from response body
-            const toBarang = Object.keys(data).map(function (key, index) {
+            const info = Object.keys(data).map(function (key, index) {
                 if(key != "BAST_perolehan"){
                     return (
-                        <div className="DetailInfo"><span>{data[key]}</span></div>
+                        data[key]
                     );
                 }
             });
 
             //Create a header array for tables
-            const toSpan = ["ID Barang", "Kode Barang", "Nama Barang", "Merk Barang", "Stok"].map((hdr) => {
-                return (
-                    <div className="DetailHeader"><span>{hdr}</span></div>
-                );
-            }, this);
+            const head = ["ID Barang", "Kode Barang", "Nama Barang", "Merk Barang", "Stok"]
 
-            //Set pinjam values to toSpan and toBarang
-            //  toSpan => Header of the tables
-            //  toBarang => Values of the tables
-            setBarang( [toSpan, toBarang] );
+            const toBarang = head.map(function (x, i) {
+                return (
+                    <TableRow>
+                        <TableCell align='left'>
+                            {x}
+                        </TableCell>
+                        <TableCell align='right'>
+                            {info[i]}
+                        </TableCell>
+                    </TableRow>
+                )
+            })
+
+            //Set barang values to toBarang
+            setBarang( toBarang );
         });
         
         //Set return button to corresponding status
@@ -222,6 +257,46 @@ export default function GetDetails (props) {
         setReturn( [<Button variant="contained" color="primary" onClick={() => ReturnItem()} disabled={(kembaliBool == false ? false : true)}>Kembalikan!</Button>] );
     }
 
+    const PeminjamanContainer = () => {
+        return(
+            <TableContainer component={Paper}>
+                <Table>
+                    { pinjam }
+                </Table>
+            </TableContainer>
+        )
+    }
+
+    const BarangContainer = () => {
+        return(
+            <TableContainer component={Paper}>
+                <Table>
+                    { barang }
+                </Table>
+            </TableContainer>
+        )
+    }
+
+    const RuangContainer = () => {
+        return(
+            <TableContainer component={Paper} id='ruang'>
+                <Table>
+                    { ruang }
+                </Table>
+            </TableContainer>
+        )
+    }
+
+    const GedungContainer = () => {
+        return(
+            <TableContainer component={Paper} id='gedung'>
+                <Table>
+                    { gedung }
+                </Table>
+            </TableContainer>
+        )
+    }
+
     /*
         render function is used to render all necessary component for the page
     */
@@ -231,36 +306,14 @@ export default function GetDetails (props) {
         {returnBtn}
         <div className="GetDetails">
             <div className="BigGroups">
-                <div className="DetailsGroup">
-                    {pinjam.map((pin) => {
-                        return(
-                            <div className="DetailTables">{pin}</div>
-                        );
-                    }, this)}
-                </div>
-                <div className="DetailsGroup">
-                    {barang.map((brg) => {
-                        return(
-                            <div className="DetailTables">{brg}</div>
-                        )
-                    })}
-                </div>
+                { PeminjamanContainer() }
             </div>
             <div className="BigGroups">
-                <div className="DetailsGroup">
-                    {ruang.map((rng) => {
-                        return(
-                            <div className="DetailTables">{rng}</div>
-                        )
-                    })}
-                </div>
-                <div className="DetailsGroup">
-                    {gedung.map((ged) => {
-                        return(
-                            <div className="DetailTables">{ged}</div>
-                        );
-                    }, this)}
-                </div>
+                { BarangContainer() }
+            </div>
+            <div className="BigGroups">
+                { RuangContainer() }
+                { GedungContainer() }
             </div>
         </div>
     </>);

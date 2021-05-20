@@ -4,6 +4,7 @@ import { Button, TextField, Select, InputLabel, FormControl, Input } from '@mate
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker, } from '@material-ui/pickers';
 import firebase from '../../Firebase/FirebaseSDK';
+import { Autocomplete } from '@material-ui/lab';
 
 export default function PinjamBarang (props) {
     const [pinFields, SetPinFields] = useState({});
@@ -20,15 +21,25 @@ export default function PinjamBarang (props) {
 
     function DetHandleChange(field, e) {
         let fields = detFields;
+
         if(field != "kode_barang" && field != "ruang"){
             fields[field] = e.target.value;
-        }else if(field == "kode_barang"){
-            fields[field] = e.target.value.kode;
-            fields["nama_barang"] = e.target.value.nama;
-        }else if(field == "ruang"){
-            fields[field] = e.target.value.ruang;
-            fields["gedung"] = e.target.value.gedung;
         }
+        
+        SetDetFields(fields);
+    }
+
+    function OptionHandler(field, val) {
+        let fields = detFields;
+        
+        fields[field] = val[field];
+
+        if(field == "kode_barang"){
+            fields["nama_barang"] = val['nama_barang'];
+        }else if(field == "ruang"){
+            fields["gedung"] = val['gedung'];
+        }
+
         
         SetDetFields(fields);
     }
@@ -227,24 +238,6 @@ export default function PinjamBarang (props) {
     }
 
     /*
-        GetGedungName function will create a GET Rest API
-        All informations retrieved will stored inside the corresponding state
-    */
-
-    const GetGedungName = () => {
-        axiosInstance.get(`/api/allGedung/`).then((result) => {
-            const data = result.data;
-            
-            let gedungList =
-            data.map((ged) => {
-                return (<option value={ged.gedung}> {ged.gedung} </option>);
-            }, this);
-    
-            SetGedung(gedungList);
-        });
-    }
-
-    /*
         GetRuangName function will create a GET Rest API
         All informations retrieved will stored inside the corresponding state
     */
@@ -255,7 +248,10 @@ export default function PinjamBarang (props) {
             
             let ruangList =
             data.map((rng) => {
-                return (<option value={{'ruang':rng.ruang, 'gedung':rng.gedung}}> {rng.ruang} </option>);
+                return {
+                    ruang: rng.ruang,
+                    gedung: rng.gedung,
+                }
             }, this);
 
             SetRuang(ruangList);
@@ -268,13 +264,17 @@ export default function PinjamBarang (props) {
     */
 
     const GetBarang = () => {
-        axiosInstance.get(`/api/allBarang/`).then((result) => {
+        axiosInstance.get(`/api/barang/`).then((result) => {
             const data = result.data;
                 
             let barangList =
             data.map((brg) => {
                 if(brg.stock > 0){
-                    return (<option value={{"kode": brg.kode_barang, "nama": brg.nama_barang}}> { brg.nama_barang } | { brg.stock } </option>);
+                    return {
+                        kode_barang: brg.kode_barang,
+                        nama_barang: brg.nama_barang,
+                        stock: brg.stock,
+                    }
                 }
             }, this);
     
@@ -288,7 +288,6 @@ export default function PinjamBarang (props) {
     */
         
     useEffect(() => {
-        GetGedungName();
         GetRuang();
         GetBarang();
     }, []);
@@ -325,24 +324,32 @@ export default function PinjamBarang (props) {
             <form onSubmit={PostPeminjaman}>
                 {/* Barang Field */}
                 <p>
-                    <br /><FormControl className="SelectInput">
-                    <InputLabel>Nama Barang</InputLabel>
-                        <Select name="Nama Barang" onChange={DetHandleChange.bind(this, "kode_barang")} > { kode } </Select>
-                    </FormControl>
+                    <Autocomplete
+                        options={kode}
+                        getOptionLabel={opt => `${opt['nama_barang']}  |  ${opt['stock']}`}
+                        onChange={(e, val) => OptionHandler('kode_barang', val)}
+                        style={{ width: 300 }}
+                        renderInput={(params) => <TextField {...params} label="Nama Barang" variant="outlined" />}
+                    />
                     <br /> <span style={{color: "red"}}>{detErrors["kode_barang"]}</span>
                 </p>
                 {/* Jumlah Field */}
                 <p>
                     <br /> <TextField type='text' size="30" onChange={DetHandleChange.bind(this, "jumlah")} value={detFields["jumlah"]} 
-                    label='Jumlah' variant="outlined" inputProps={{ maxLength: 8 }} />
+                    label='Jumlah' variant="outlined" inputProps={{ maxLength: 32 }} />
                     <br /> <span style={{color: "red"}}>{detErrors["ruang"]}</span>
                 </p>
                 {/* Ruang Field */}
+                <br />
+                <br />
                 <p>
-                    <br /><FormControl className="SelectInput">
-                    <InputLabel>Ruang</InputLabel>
-                        <Select name="Ruang" onChange={DetHandleChange.bind(this, "ruang")} > { ruang } </Select>
-                    </FormControl>
+                    <Autocomplete
+                        options={ruang}
+                        getOptionLabel={opt => `${opt['ruang']}  =>  ${opt['gedung']}`}
+                        onChange={(e, val) => OptionHandler('ruang', val)}
+                        style={{ width: 300 }}
+                        renderInput={(params) => <TextField {...params} label="Ruang" variant="outlined" />}
+                    />
                     <br /> <span style={{color: "red"}}>{detErrors["ruang"]}</span>
                 </p>
                 {/* Tanggal Peminjaman */}

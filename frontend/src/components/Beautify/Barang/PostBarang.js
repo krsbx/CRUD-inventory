@@ -147,19 +147,19 @@ export default class PostBarang extends Component {
                     {/* Kode Barang Field */}
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "kode_barang")} value={this.state.fields["kode_barang"]} 
-                        label='Kode Barang' variant="outlined" inputProps={{ maxLength: 20 }} />
+                        label='Kode Barang' variant="outlined" inputProps={{ maxLength: 120 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["kode_barang"]}</span>
                     </p>
                     {/* Nama Barang Field */}
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "nama_barang")} value={this.state.fields["nama_barang"]} 
-                        label='Nama Barang' variant="outlined" inputProps={{ maxLength: 20 }} />
+                        label='Nama Barang' variant="outlined" inputProps={{ maxLength: 120 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["nama_barang"]}</span>
                     </p>
                     {/* Merk Barang Field */}
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "merk")} value={this.state.fields["merk"]} 
-                        label='Merk' variant="outlined" inputProps={{ maxLength: 20 }} />
+                        label='Merk' variant="outlined" inputProps={{ maxLength: 120 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["merk"]}</span>
                     </p>
                     {/* Stock Barang Field */}

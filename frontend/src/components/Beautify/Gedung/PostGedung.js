@@ -101,7 +101,7 @@ export default class PostGedung extends Component {
                     {/* Gedung Field */}
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "gedung")} value={this.state.fields["gedung"]} 
-                        label='Gedung' variant="outlined" inputProps={{ maxLength: 8 }} />
+                        label='Gedung' variant="outlined" inputProps={{ maxLength: 120 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["gedung"]}</span>
                     </p>
                     {/* MG Gedung Field */}

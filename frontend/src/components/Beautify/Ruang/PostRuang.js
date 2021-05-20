@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { axiosInstance } from '../../AxiosInstance';
 import { Button, TextField, Select, InputLabel, FormControl } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 
 export default class PostRuang extends Component {
     constructor(props){
@@ -20,6 +21,12 @@ export default class PostRuang extends Component {
     handleChange(field, e){
         let fields = this.state.fields;
         fields[field] = e.target.value;        
+        this.setState({fields});
+    }
+
+    handleOptions(field, val){
+        let fields = this.state.fields;
+        fields[field] = val[field];
         this.setState({fields});
     }
 
@@ -100,11 +107,13 @@ export default class PostRuang extends Component {
 
     GetGedungName = () => {
         axiosInstance.get(`/api/gedung/`).then((result) => {
-            const data = result.data.results;
+            const data = result.data;
             
             let gedungList =
             data.map((m) => {
-                return (<option value={m.gedung}> {m.gedung} </option>);
+                return {
+                    gedung: m.gedung
+                };
             }, this);
 
             this.setState( { gedung : gedungList } );
@@ -136,7 +145,7 @@ export default class PostRuang extends Component {
                     {/* Ruang Field */}
                     <p>
                         <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "ruang")} value={this.state.fields["ruang"]} 
-                        label='Ruang' variant="outlined" inputProps={{ maxLength: 8 }} />
+                        label='Ruang' variant="outlined" inputProps={{ maxLength: 120 }} />
                         <br /> <span style={{color: "red"}}>{this.state.errors["ruang"]}</span>
                     </p>
                     {/* PJ Ruang Field */}
@@ -146,12 +155,16 @@ export default class PostRuang extends Component {
                         <br /> <span style={{color: "red"}}>{this.state.errors["pj_ruang"]}</span>
                     </p>
                     {/* Gedung Field */}
+                    <br />
                     <p>
-                        <br /><FormControl className="SelectInput">
-                            <InputLabel>Gedung</InputLabel>
-                            <Select name="Gedung" onChange={this.handleChange.bind(this, "gedung")} > { this.state.gedung } </Select>
-                        </FormControl>
-                        <br /> <span style={{color: "red"}}>{this.state.errors["gedung"]}</span>
+                        <Autocomplete
+                            options={this.state.gedung}
+                            getOptionLabel={opt => opt['gedung']}
+                            onChange={(e, val) => this.handleOptions('gedung', val)}
+                            style={{ width: 300 }}
+                            renderInput={(params) => <TextField {...params} label="Gedung" variant="outlined" />}
+                        />
+                        <span style={{color: "red"}}>{this.state.errors["gedung"]}</span>
                     </p>
                     <br /><Button variant="contained" color="primary" type="submit">Simpan!</Button>
                 </form>

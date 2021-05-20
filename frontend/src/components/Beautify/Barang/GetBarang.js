@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { axiosInstance, PrevNext, previousCheck } from '../../AxiosInstance'
+import { 
+    TextField, 
+    Table, 
+    TableHead, 
+    TableRow, 
+    TableCell, 
+    TableBody, 
+    TableContainer, 
+    TablePagination, 
+    Paper } from '@material-ui/core';
 
 export default function GetBarang (props) {
     const [barang, setBarang] = useState([]);
-    const [next, setNext] = useState([]);
-    const [prev, setPrev] = useState([]);
+    const [searchParams, setSearchParams] = useState('');
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     /*
         BarangList function will create a GET Rest API
@@ -13,55 +24,56 @@ export default function GetBarang (props) {
 
     const BarangList = (urls='') => {
         axiosInstance.get(`/api/barang/${urls}`).then((result) => { // melakukan get-request pada barang API.
-            const data = result.data.results; // peroleh hasil dari get-request.
+            const data = result.data; // peroleh hasil dari get-request.
 
-            let barangList = data.map((brg) => { // menyimpan semua objek yang ada pada data kedalam bentuk html.
-                return (
-                <div className="GroupsOfRows">
-                    <div className="CustomRow">
-                        {brg.barangId}
-                    </div>
-                    <div className="CustomRow">
-                        {brg.kode_barang}
-                    </div>
-                    <div className="CustomRow">
-                        {brg.nama_barang}
-                    </div>
-                    <div className="CustomRow">
-                        {brg.merk}
-                    </div>
-                    <div className="CustomRow">
-                        {brg.stock}
-                    </div>
-                </div>
-                );
-            }, this);
-            
-            // memperoleh URI next dan prev page.
-            const parser = [ result.data.next ? new URL(result.data.next) : null, result.data.prev ? new URL(result.data.prev) : null ]; 
-
-            const path = { // memperoleh nilai dari tiap parameter yang ada pada parser.
-                'next' : parser[0] ? parser[0].searchParams.get('page') : null,
-                'prev' : previousCheck(parser[1], `barang`),
-            };
-
-            if(path.next){ // jika next ada pada path.
-                const toNext = PrevNext(`?page=${path.next}`, BarangList, true); // memperoleh button next untuk ditampilkan.
-                setNext(toNext);
-            }
-
-            if(path.prev){ // jika prev ada pada path.
-                const toPrev = PrevNext(`?page=${path.prev}`, BarangList, false); // memperoleh button prev untuk ditampilkan.
-                setPrev(toPrev);
-            }
-
-            setBarang(barangList) // mengubah variable barang pada state menjadi barangList.
+            setBarang(data) // mengubah variable barang pada state menjadi data.
         });
+    }
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const rowsPage = () => {
+        const arr = [5, 10];
+        return arr;
     }
 
     useEffect(() => {
         BarangList();
     }, [])
+
+    const searchResult = () => {
+        return barang.filter(params => {
+            if(searchParams === ''){
+                return params;
+            }else if(params.nama_barang.toLowerCase().includes(searchParams)){
+                return params;
+            }
+        }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((brg) => { // menyimpan semua objek yang ada pada data kedalam bentuk html.
+            return (
+            <TableRow>
+                <TableCell>
+                    {brg.kode_barang}
+                </TableCell>
+                <TableCell align='right'>
+                    {brg.nama_barang}
+                </TableCell>
+                <TableCell align='right'>
+                    {brg.merk}
+                </TableCell>
+                <TableCell align='right'>
+                    {brg.stock}
+                </TableCell>
+            </TableRow>
+            );
+        }, this);
+    }
 
     /*
         render function is used to render all necessary component for the page
@@ -69,16 +81,32 @@ export default function GetBarang (props) {
 
     return (
         <>
-            <div className="CustomTables">
-                <div className="CustomHeader">ID Barang</div>
-                <div className="CustomHeader">Kode Barang</div>
-                <div className="CustomHeader">Nama Barang</div>
-                <div className="CustomHeader">Merk Barang</div>
-                <div className="CustomHeader last">Stock Barang</div>
-                { barang }
-            </div>
-            { prev }
-            { next }
+            <TextField type='text' size="30" onChange={(e) => setSearchParams(e.target.value)}
+            value={searchParams} label='Cari Barang' variant="outlined" />
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Kode Barang</TableCell>
+                            <TableCell align='right'>Nama Barang</TableCell>
+                            <TableCell align='right'>Merk Barang</TableCell>
+                            <TableCell align='right'>Stock Barang</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        { searchResult() }
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={rowsPage()}
+                component="div"
+                count={barang.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
         </>
     );
 }
