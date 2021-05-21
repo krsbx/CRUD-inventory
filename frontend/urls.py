@@ -11,6 +11,10 @@ urlpatterns = [
     path('detail/<str:nomor_peminjaman>', index),
     path('detail/', index),
     path('barang/', index),
+    path('barang/<str:kode_barang>', index),
+    path('barang/edit/<str:kode_barang>', index),
     path('gedung/', index),
+    path('gedung/edit/<str:gedung>', index),
     path('ruang/', index),
+    path('ruang/edit/<str:ruang>', index),
 ]

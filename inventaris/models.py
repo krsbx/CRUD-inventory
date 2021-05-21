@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from authentications.models import UserAccounts
+from django.utils.translation import gettext_lazy as _
 import string
 import random
 import datetime
@@ -94,6 +95,12 @@ class PeminjamanDetail(models.Model):
         count = PeminjamanDetail.objects.all().count()
         return 'DET_{}'.format(str(count+1).zfill(5))
 
+    #Used for object condition
+    class ObjectConditions(models.TextChoices):
+        RUSAK = 'Rusak', _('Rusak')
+        PENDING = 'Pending', _('Pending')
+        BAIK = 'Baik', _('Baik')
+
     peminjamanID = models.CharField(verbose_name="ID Peminjaman", max_length=10, default=getTotalCount, primary_key=True)
     nomor_peminjaman = models.ForeignKey(TabelPeminjaman, on_delete=models.CASCADE, verbose_name="Nomor Peminjaman")
     kode_barang = models.ForeignKey(TabelBarang, on_delete=models.CASCADE, verbose_name="Kode Barang")
@@ -101,4 +108,5 @@ class PeminjamanDetail(models.Model):
     jumlah = models.IntegerField(verbose_name="Jumlah Peminjaman", max_length=None, null=False)
     gedung = models.ForeignKey(TabelGedung, on_delete=models.CASCADE, verbose_name="Gedung")
     ruang = models.ForeignKey(TabelRuang, on_delete=models.CASCADE, verbose_name="Ruang")
-    kembali = models.BooleanField(verbose_name="Dikembalikan", default=False)
+    status = models.BooleanField(verbose_name="Dikembalikan", default=False)
+    kondisi = models.CharField(max_length=10, choices=ObjectConditions.choices, null=True, default=ObjectConditions.PENDING)

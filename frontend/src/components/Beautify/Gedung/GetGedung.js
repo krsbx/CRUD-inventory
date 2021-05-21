@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { axiosInstance, baseURL, PrevNext, previousCheck } from '../../AxiosInstance'
 import { 
     TextField, 
@@ -14,8 +16,8 @@ import {
 export default function GetOptions (props) {
     const [gedung, setGedung] = useState([]);
     const [searchParams, setSearchParams] = useState('');
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     /*
         GedungList function will create a GET Rest API
@@ -52,7 +54,7 @@ export default function GetOptions (props) {
         return gedung.filter(params => {
             if(searchParams === ''){
                 return params;
-            }else if(params.gedung.toLowerCase().includes(searchParams)){
+            }else if(params.gedung.toLowerCase().includes(searchParams.toLowerCase())){
                 return params;
             }
         }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((ged) => { // menyimpan semua objek yang ada pada data kedalam bentuk html.
@@ -66,6 +68,11 @@ export default function GetOptions (props) {
                 </TableCell>
                 <TableCell align='right'>
                     {ged.mg_gedung}
+                </TableCell>
+                <TableCell align='right'>
+                    <Link to={`/gedung/edit/${ged.gedung}`} id='moreInfo'>
+                        <EditOutlinedIcon style={{ fontSize: '10px' }} /> Edit
+                    </Link>
                 </TableCell>
             </TableRow>
             );
@@ -87,6 +94,7 @@ export default function GetOptions (props) {
                         <TableCell>ID Gedung</TableCell>
                         <TableCell align='right'>Gedung</TableCell>
                         <TableCell align='right'>MG Gedung</TableCell>
+                        <TableCell align='right'>Aksi</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

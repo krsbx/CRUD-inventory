@@ -11,9 +11,13 @@ export default function PinjamBarang (props) {
     const [detFields, SetDetFields] = useState({});
     const [pinErrors, SetPinErrors] = useState({});
     const [detErrors, SetDetErrors] = useState({});
+    const [tglPinjam, setTglPinjam] = useState();
+    const [tglKembali, setTglKembali] = useState();
+    const [jumlah, setJumlah] = useState();
     const [kode, SetKode] = useState([]);
-    const [gedung, SetGedung] = useState([]);
     const [ruang, SetRuang] = useState([]);
+    const [stkBrg, setStkBrg] = useState(0);
+    const [bast, setBAST] = useState('Tidak ada file terpilih');
     
     /*
         handleChange function will set the state value for input fields
@@ -36,6 +40,7 @@ export default function PinjamBarang (props) {
 
         if(field == "kode_barang"){
             fields["nama_barang"] = val['nama_barang'];
+            setStkBrg(val['stock']);
         }else if(field == "ruang"){
             fields["gedung"] = val['gedung'];
         }
@@ -61,16 +66,14 @@ export default function PinjamBarang (props) {
         }
 
         //jumlah
-        if(!fields["jumlah"]){
+        if(!jumlah){
             formIsValid = false;
             errors["jumlah"] = "Cannot be empty";
         }
-    
-        if(typeof fields["jumlah"] !== "undefined"){
-            if(!fields["jumlah"].match(/^[0-9]+$/)){
-                formIsValid = false;
-                errors["jumlah"] = "Integer Only";
-            }
+
+        if(jumlah > stkBrg){
+            formIsValid = false;
+            errors["jumlah"] = "Peminjaman melebihi stock";
         }
 
         //gedung
@@ -96,9 +99,17 @@ export default function PinjamBarang (props) {
         let formIsValid = true;
 
         //tgl_pinjam
-        if(!fields["tgl_pinjam"]){
+        if(!tglPinjam){
             formIsValid = false;
             errors["tgl_pinjam"] = "Cannot be empty";
+        }
+
+        //Check if tgl_kembali exist
+        if(tglKembali){
+            if(Date.parse(tglKembali) < Date.parse(tglPinjam)){
+                formIsValid = false;
+                errors["tgl_kembali"] = "Pengembalian harus sesudah Peminjaman";
+            }
         }
 
         //BAST_disposisi
@@ -108,6 +119,7 @@ export default function PinjamBarang (props) {
         }
 
         SetPinErrors(errors);
+        console.log(pinErrors);
         return formIsValid;
     }
 
@@ -118,13 +130,17 @@ export default function PinjamBarang (props) {
     */
 
     async function PostInfo () {
-        const data = pinFields;
+        let data = pinFields;
         let details = detFields;
         let stock = 0;
-        const jumlah = detFields['jumlah'];
 
-        const DisposisiRef = firebase.storage().ref(`Documents/Disposisi/`).child(`${pinFields["BAST_disposisi"]["name"]}`);
-        await DisposisiRef.put(pinFields["BAST_disposisi"]);
+        data['tgl_pinjam'] = tglPinjam;
+        data['tgl_kembali'] = tglKembali;
+
+        details['jumlah'] = jumlah;
+
+        const DisposisiRef = firebase.storage().ref(`Documents/Disposisi/`).child(`${data["BAST_disposisi"]["name"]}`);
+        await DisposisiRef.put(data["BAST_disposisi"]);
 
         await DisposisiRef.getDownloadURL().then(url => data['BAST_disposisi'] = url);
 
@@ -225,25 +241,12 @@ export default function PinjamBarang (props) {
     }
 
     /*
-        Set Tanggal Pinjam/Kembali Functions
-            Set the values to corresponding object keys
-    */
-
-    const SetPinjamDate = (event, date) => {
-        pinFields['tgl_pinjam'] = date;
-    }
-
-    const SetKembaliDate = (event, date) => {
-        pinFields['tgl_kembali'] = date;
-    }
-
-    /*
         GetRuangName function will create a GET Rest API
         All informations retrieved will stored inside the corresponding state
     */
 
     const GetRuang = () => {
-        axiosInstance.get(`/api/allRuang/`).then((result) => {
+        axiosInstance.get(`/api/ruang/`).then((result) => {
             const data = result.data;
             
             let ruangList =
@@ -277,8 +280,12 @@ export default function PinjamBarang (props) {
                     }
                 }
             }, this);
+
+            const filtered = barangList.filter((brg) => {
+                return brg != undefined;
+            });
     
-            SetKode(barangList);
+            SetKode(filtered);
         });
     }
 
@@ -300,6 +307,8 @@ export default function PinjamBarang (props) {
         let fields = pinFields;
         fields[field] = e.target.files[0];
         SetPinFields(fields);
+
+        setBAST(e.target.files[0]['name']);
 
         console.log(e.target.files[0]);
     }
@@ -331,16 +340,15 @@ export default function PinjamBarang (props) {
                         style={{ width: 300 }}
                         renderInput={(params) => <TextField {...params} label="Nama Barang" variant="outlined" />}
                     />
-                    <br /> <span style={{color: "red"}}>{detErrors["kode_barang"]}</span>
+                    <span style={{color: "red"}}>{detErrors["kode_barang"]}</span>
                 </p>
                 {/* Jumlah Field */}
                 <p>
-                    <br /> <TextField type='text' size="30" onChange={DetHandleChange.bind(this, "jumlah")} value={detFields["jumlah"]} 
+                    <br /> <TextField type='number' size="30" onChange={(e) => setJumlah(e.target.value)} value={jumlah} 
                     label='Jumlah' variant="outlined" inputProps={{ maxLength: 32 }} />
-                    <br /> <span style={{color: "red"}}>{detErrors["ruang"]}</span>
+                    <br /> <span style={{color: "red"}}>{detErrors["jumlah"]}</span>
                 </p>
                 {/* Ruang Field */}
-                <br />
                 <br />
                 <p>
                     <Autocomplete
@@ -350,29 +358,35 @@ export default function PinjamBarang (props) {
                         style={{ width: 300 }}
                         renderInput={(params) => <TextField {...params} label="Ruang" variant="outlined" />}
                     />
-                    <br /> <span style={{color: "red"}}>{detErrors["ruang"]}</span>
+                    <span style={{color: "red"}}>{detErrors["ruang"]}</span>
                 </p>
                 {/* Tanggal Peminjaman */}
                 <p>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <br /> <KeyboardDatePicker margin="normal" label="Tanggal Peminjaman" format="yyyy-MM-dd" KeyboardButtonProps={{ 'aria-label': 'change date', }} 
-                        value={pinFields['tgl_pinjam']} onChange={SetPinjamDate} minDate={new Date()} />
+                    <KeyboardDatePicker margin="normal" label="Tanggal Peminjaman" format="yyyy-MM-dd" KeyboardButtonProps={{ 'aria-label': 'change date', }} 
+                        value={tglPinjam} onChange={(e, d) => setTglPinjam(d)} minDate={new Date()} />
                     </MuiPickersUtilsProvider>
                     <br /> <span style={{color: "red"}}>{pinErrors["tgl_pinjam"]}</span>
                 </p>
                 {/* Tanggal Kembali */}
                 <p>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <br /> <KeyboardDatePicker margin="normal" label="Tanggal Kembali" format="yyyy-MM-dd" KeyboardButtonProps={{ 'aria-label': 'change date', }} 
-                        value={pinFields['tgl_kembali']} onChange={SetKembaliDate} minDate={new Date()} />
+                    <KeyboardDatePicker margin="normal" label="Tanggal Kembali" format="yyyy-MM-dd" KeyboardButtonProps={{ 'aria-label': 'change date', }} 
+                        value={tglKembali} onChange={(e, d) => setTglKembali(d)} minDate={new Date()} />
                     </MuiPickersUtilsProvider>
                     <br /> <span style={{color: "red"}}>{pinErrors["tgl_kembali"]}</span>
                 </p>
                 {/* BAST Disposisi */}
                 <p>
-                    <br /><FormControl className="UploadInput">
-                        <InputLabel>BAST Disposisi</InputLabel>
-                        <br /><Button variant="outlined" component="BAST_disposisi" label="BAST Disposisi"><Input type='file' onChange={handleFile.bind(this, "BAST_disposisi")}/></Button>
+                    <FormControl className="UploadInput">
+                        <br /> <span id="bast_name">{bast}</span>
+                        <br />
+                        <input accept="application/pdf" id="contained-button-file" type="file" 
+                            style={{ visibility: 'hidden', width: '0px', height: '0px' }}
+                            onChange={handleFile.bind(this, "BAST_disposisi")} />
+                        <label htmlFor="contained-button-file">
+                            <Button variant="contained" component="span">BAST Perolehan [*.pdf]</Button>
+                        </label>
                     </FormControl>
                     <br /> <span style={{color: "red"}}>{pinErrors["BAST_disposisi"]}</span>
                 </p>

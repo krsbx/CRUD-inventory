@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { axiosInstance, PrevNext, previousCheck } from '../../AxiosInstance'
+import { axiosInstance, PrevNext, previousCheck } from '../../AxiosInstance';
+import CallToActionOutlinedIcon from '@material-ui/icons/CallToActionOutlined';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import { Link } from 'react-router-dom';
 import { 
     TextField, 
     Table, 
@@ -14,8 +17,8 @@ import {
 export default function GetBarang (props) {
     const [barang, setBarang] = useState([]);
     const [searchParams, setSearchParams] = useState('');
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     /*
         BarangList function will create a GET Rest API
@@ -52,16 +55,13 @@ export default function GetBarang (props) {
         return barang.filter(params => {
             if(searchParams === ''){
                 return params;
-            }else if(params.nama_barang.toLowerCase().includes(searchParams)){
+            }else if(params.nama_barang.toLowerCase().includes(searchParams.toLowerCase())){
                 return params;
             }
         }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((brg) => { // menyimpan semua objek yang ada pada data kedalam bentuk html.
             return (
             <TableRow>
                 <TableCell>
-                    {brg.kode_barang}
-                </TableCell>
-                <TableCell align='right'>
                     {brg.nama_barang}
                 </TableCell>
                 <TableCell align='right'>
@@ -69,6 +69,14 @@ export default function GetBarang (props) {
                 </TableCell>
                 <TableCell align='right'>
                     {brg.stock}
+                </TableCell>
+                <TableCell align='right'>
+                    <Link to={`/barang/${brg.kode_barang}`} id='moreInfo'>
+                        <CallToActionOutlinedIcon style={{ fontSize: '10px' }} /> Details
+                    </Link>
+                    <Link to={`/barang/edit/${brg.kode_barang}`} id='moreInfo'>
+                         <EditOutlinedIcon style={{ fontSize: '10px' }} /> Edit 
+                    </Link>
                 </TableCell>
             </TableRow>
             );
@@ -87,10 +95,10 @@ export default function GetBarang (props) {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Kode Barang</TableCell>
-                            <TableCell align='right'>Nama Barang</TableCell>
+                            <TableCell>Nama Barang</TableCell>
                             <TableCell align='right'>Merk Barang</TableCell>
                             <TableCell align='right'>Stock Barang</TableCell>
+                            <TableCell align='right'>Aksi</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

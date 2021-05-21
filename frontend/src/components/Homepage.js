@@ -3,8 +3,12 @@ import Login from './Login';
 import Register from './Register';
 import Logout from './Logout';
 import Gedung from './Inventaris/Gedung';
+import EditGedung from './Beautify/Gedung/EditGedung';
 import Barang from './Inventaris/Barang';
+import BarangInfo from './Beautify/Barang/BarangInfo';
+import EditBarang from './Beautify/Barang/EditBarang';
 import Ruang from './Inventaris/Ruang';
+import EditRuang from './Beautify/Ruang/EditRuang';
 import Peminjaman from './Inventaris/Peminjaman';
 import Details from './Inventaris/Details';
 import SideBar from './Beautify/SideBar/SideBar';
@@ -36,9 +40,13 @@ export default class Homepage extends Component {
                     <Route path='/logout' component={Logout} />
                     <Route path='/peminjaman/' component={Peminjaman} />
                     <Route path='/detail/:nomor_peminjaman' component={Details} />
-                    <Route path='/barang/' component={Barang} />
-                    <Route path='/gedung/' component={Gedung} />
-                    <Route path='/ruang/' component={Ruang} />
+                    <Route exact path='/barang/' component={Barang} />
+                    <Route exact path='/barang/:kode_barang' component={BarangInfo} />
+                    <Route exact path='/barang/edit/:kode_barang' component={EditBarang} />
+                    <Route exact path='/gedung/' component={Gedung} />
+                    <Route exact path='/gedung/edit/:gedung' component={EditGedung} />
+                    <Route exact path='/ruang/' component={Ruang} />
+                    <Route exact path='/ruang/edit/:ruang' component={EditRuang} />
                 </div>
             </Switch>
         </Router>

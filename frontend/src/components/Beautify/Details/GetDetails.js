@@ -21,7 +21,7 @@ export default function GetDetails (props) {
     const [barang, setBarang] = useState([]);
     const [returnBtn, setReturn] = useState([]);
 
-    let gedungPath, ruangPath, kodePath, jumlah, kembali, kembaliBool, nama_pegawai;
+    let gedungPath, ruangPath, kodePath, jumlah, status, kembaliBool, nama_pegawai, kondisi;
     const { nomor_peminjaman } = useParams();
 
     /*
@@ -41,10 +41,11 @@ export default function GetDetails (props) {
             ruangPath = data.ruang;
             kodePath = data.kode_barang;
             jumlah = data.jumlah;
-            kembaliBool = Boolean(data.kembali);
+            kembaliBool = Boolean(data.status);
+            kondisi = data.kondisi;
 
             //Check if the object has been returned or not
-            kembali = (data.kembali === false ? "Belum Dikembalikan" : "Dikembalikan");
+            status = (data.status === false ? "Belum Dikembalikan" : "Dikembalikan");
         });
 
         //Create a get request to peminjaman API
@@ -62,11 +63,13 @@ export default function GetDetails (props) {
             
             //Add aditional informations of the total borrowed objects
             info.push(jumlah);
-            //Add aditional informations of the status of the objects
-            info.push(kembali);
+            //Add aditional informations of the current status of the objects
+            info.push(status);
+            //Add additional informations of the conditions of the objects
+            info.push(kondisi);
 
             //Create a header array for tables
-            const head = ["ID Peminjaman", "Nomor Peminjaman", "NIP/NRK", "Nama Pegawai", "Tanggal Peminjaman", "Tanggal Pengembalian", "BAST Perolehan", "Jumlah", "Dikembalikan"];
+            const head = ["ID Peminjaman", "Nomor Peminjaman", "NIP/NRK", "Nama Pegawai", "Tanggal Peminjaman", "Tanggal Pengembalian", "BAST Disposisi", "Jumlah", "Dikembalikan", "Kondisi"];
 
             //Get the name of the person who borrow the objects
             nama_pegawai = data.nama_pegawai;
@@ -78,7 +81,7 @@ export default function GetDetails (props) {
                             {x}
                         </TableCell>
                         <TableCell align='right'>
-                            { x == "BAST Perolehan" ? <a href={info[i]}>File BAST</a> : info[i]}
+                            { x == "BAST Disposisi" ? <a href={info[i]}>File BAST</a> : info[i]}
                         </TableCell>
                     </TableRow>
                 )

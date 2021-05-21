@@ -11,13 +11,15 @@ export default class PostBarang extends Component {
             fields: {},
             errors: {},
         }
+
+        this.fileName = 'Tidak ada file terpilih';
     }
 
     /*
         handleChange function will set the state value for text input
     */
 
-    handleChange(field, e){          
+    handleChange(field, e){
         let fields = this.state.fields;
         fields[field] = e.target.value;
         this.setState({fields});
@@ -32,6 +34,8 @@ export default class PostBarang extends Component {
         fields[field] = e.target.files[0];
         this.setState({fields});
 
+        this.fileName = e.target.files[0]['name'];
+
         console.log(e.target.files[0]);
     }
 
@@ -44,9 +48,6 @@ export default class PostBarang extends Component {
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
- 
-        //kode_barang
-        //  kode_barang can be empty
 
         //nama_barang
         if(!fields["nama_barang"]){
@@ -164,16 +165,23 @@ export default class PostBarang extends Component {
                     </p>
                     {/* Stock Barang Field */}
                     <p>
-                        <br /> <TextField type='text' size="30" onChange={this.handleChange.bind(this, "stock")} value={this.state.fields["stock"]} 
+                        <br /> <TextField type='number' size="30" onChange={this.handleChange.bind(this, "stock")} value={this.state.fields["stock"]} 
                         label='Stock' variant="outlined" />
                         <br /> <span style={{color: "red"}}>{this.state.errors["stock"]}</span>
                     </p>
                     {/* BAST Perolehan Field */}
                     <p>
-                        <br /><FormControl className="UploadInput">
-                            <InputLabel>BAST Perolehan</InputLabel>
-                            <br /><Button variant="outlined" component="BAST_perolehan" label="BAST Perolehan"><Input type='file' hidden onChange={this.handleFile.bind(this, "BAST_perolehan")}/></Button>
+                        <FormControl className="UploadInput">
+                            <br /> <span id="bast_name">{this.fileName}</span>
+                            <br />
+                            <input accept="application/pdf" id="contained-button-file" type="file" 
+                                style={{ visibility: 'hidden', width: '0px', height: '0px' }}
+                                onChange={this.handleFile.bind(this, "BAST_perolehan")} />
+                            <label htmlFor="contained-button-file">
+                                <Button variant="contained" component="span">BAST Perolehan [*.pdf]</Button>
+                            </label>
                         </FormControl>
+                        
                         <br /> <span style={{color: "red"}}>{this.state.errors["BAST_perolehan"]}</span>
                     </p>
                     <br /><Button variant="contained" color="primary" type="submit">Simpan Barang!</Button>

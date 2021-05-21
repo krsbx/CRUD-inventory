@@ -20,7 +20,7 @@ class ruangAdmin(admin.ModelAdmin):
     list_display = ('ruangID', 'ruang', 'pj_ruang', 'gedung')
 
 class detailPinjam(admin.ModelAdmin):
-    list_display = ('peminjamanID', 'nomor_peminjaman', 'kode_barang', 'nama_barang', 'jumlah', 'gedung', 'ruang')
+    list_display = ('peminjamanID', 'nomor_peminjaman', 'kode_barang', 'nama_barang', 'jumlah', 'gedung', 'ruang', 'status', 'kondisi')
 
 #Register all the models admin to admin page
 #   This block of codes used for registering the all class created above

@@ -12,7 +12,7 @@ from inventaris.models import TabelGedung, TabelRuang, PeminjamanDetail
 class DetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = PeminjamanDetail
-        fields = ('peminjamanID', 'nomor_peminjaman', 'kode_barang', 'nama_barang', 'jumlah', 'gedung', 'ruang', 'kembali')
+        fields = ('peminjamanID', 'nomor_peminjaman', 'kode_barang', 'nama_barang', 'jumlah', 'gedung', 'ruang', 'status', 'kondisi')
 
 class GedungSerializer(serializers.ModelSerializer):
     class Meta:

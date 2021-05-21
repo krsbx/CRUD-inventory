@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { axiosInstance, PrevNext, previousCheck } from '../../AxiosInstance'
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { 
     TextField, 
     Table, 
@@ -14,8 +16,8 @@ import {
 export default function GetRuang (props) {
     const [ruang, setRuang] = useState([]);
     const [searchParams, setSearchParams] = useState('');
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     /*
         RuangList function will create a GET Rest API
@@ -52,7 +54,7 @@ export default function GetRuang (props) {
         return ruang.filter((params) => {
             if(searchParams === ''){
                 return params;
-            }else if(params.ruang.toLowerCase().includes(searchParams)){
+            }else if(params.ruang.toLowerCase().includes(searchParams.toLowerCase())){
                 return params;
             }
         }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((rng) => { // menyimpan semua objek yang ada pada data kedalam bentuk html.
@@ -69,6 +71,11 @@ export default function GetRuang (props) {
                     </TableCell>
                     <TableCell align='right'>
                         {rng.gedung}
+                    </TableCell>
+                    <TableCell align='right'>
+                        <Link to={`/ruang/edit/${rng.ruang}`} id='moreInfo'>
+                            <EditOutlinedIcon style={{ fontSize: '10px' }} /> Edit
+                        </Link>
                     </TableCell>
                 </TableRow>
             );
@@ -91,6 +98,7 @@ export default function GetRuang (props) {
                         <TableCell align='right'>Ruang</TableCell>
                         <TableCell align='right'>PJ Ruang</TableCell>
                         <TableCell align='right'>Gedung</TableCell>
+                        <TableCell align='right'>Aksi</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
