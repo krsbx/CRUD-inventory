@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { axiosInstance } from '../../AxiosInstance';
+import BarangSpend from './/BarangSpend';
 import { 
   Table, 
   TableRow, 
@@ -35,7 +36,7 @@ export default function BarangInfo() {
                         {x}
                     </TableCell>
                     <TableCell align='right'>
-                    { x == "BAST Perolehan" ? <a href={info[i]}>File BAST</a> : info[i]}
+                    { x == "BAST Perolehan" ? <a href={info[i]} id='File_BAST'>File BAST</a> : info[i]}
                     </TableCell>
                 </TableRow>
             )
@@ -62,8 +63,14 @@ export default function BarangInfo() {
   }
 
   return (
-    <>
-      { BarangContainer() }
-    </>
+    <div id="BarangInfo">
+      <div>
+        { BarangContainer() }
+      </div>
+      <br />
+      <div>
+        <BarangSpend />
+      </div>
+    </div>
   )
 }

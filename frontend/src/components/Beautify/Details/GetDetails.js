@@ -81,7 +81,7 @@ export default function GetDetails (props) {
                             {x}
                         </TableCell>
                         <TableCell align='right'>
-                            { x == "BAST Disposisi" ? <a href={info[i]}>File BAST</a> : info[i]}
+                            { x == "BAST Disposisi" ? <a href={info[i]} id='File_BAST'>File BAST</a> : info[i]}
                         </TableCell>
                     </TableRow>
                 )
