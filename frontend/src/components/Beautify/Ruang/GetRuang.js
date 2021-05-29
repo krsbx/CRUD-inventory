@@ -50,6 +50,21 @@ export default function GetRuang (props) {
         RuangList();
     }, [])
 
+    const is_staff = localStorage.getItem('is_staff');
+
+    const EditButton = (ruang) => {
+        if(is_staff == 'true') {
+            return (
+                <TableCell align='right'>
+                    <Link to={`/ruang/edit/${ruang}`} id='moreInfo'>
+                        <EditOutlinedIcon style={{ fontSize: '10px' }} /> Edit
+                    </Link>
+                </TableCell>
+            )
+        }
+        return null;
+    }
+
     const searchResult = () => {
         return ruang.filter((params) => {
             if(searchParams === ''){
@@ -72,11 +87,7 @@ export default function GetRuang (props) {
                     <TableCell align='right'>
                         {rng.gedung}
                     </TableCell>
-                    <TableCell align='right'>
-                        <Link to={`/ruang/edit/${rng.ruang}`} id='moreInfo'>
-                            <EditOutlinedIcon style={{ fontSize: '10px' }} /> Edit
-                        </Link>
-                    </TableCell>
+                    { EditButton(rng.ruang) }
                 </TableRow>
             );
         }, this);
@@ -98,7 +109,7 @@ export default function GetRuang (props) {
                         <TableCell align='right'>Ruang</TableCell>
                         <TableCell align='right'>PJ Ruang</TableCell>
                         <TableCell align='right'>Gedung</TableCell>
-                        <TableCell align='right'>Aksi</TableCell>
+                        { is_staff == 'true' && <TableCell align='right'>Aksi</TableCell> }
                     </TableRow>
                 </TableHead>
                 <TableBody>

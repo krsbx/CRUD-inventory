@@ -51,6 +51,19 @@ export default function GetBarang (props) {
         BarangList();
     }, [])
 
+    const EditButton = (kode_barang) => {
+        const is_staff = localStorage.getItem('is_staff');
+
+        if(is_staff == 'true') {
+            return (
+                <Link to={`/barang/edit/${kode_barang}`} id='moreInfo'>
+                    <EditOutlinedIcon style={{ fontSize: '10px' }} /> Edit 
+                </Link>
+            )
+        }
+        return null;
+    }
+
     const searchResult = () => {
         return barang.filter(params => {
             if(searchParams === ''){
@@ -74,9 +87,7 @@ export default function GetBarang (props) {
                     <Link to={`/barang/${brg.kode_barang}`} id='moreInfo'>
                         <CallToActionOutlinedIcon style={{ fontSize: '10px' }} /> Details
                     </Link>
-                    <Link to={`/barang/edit/${brg.kode_barang}`} id='moreInfo'>
-                         <EditOutlinedIcon style={{ fontSize: '10px' }} /> Edit 
-                    </Link>
+                    { EditButton(brg.kode_barang) }
                 </TableCell>
             </TableRow>
             );

@@ -50,6 +50,21 @@ export default function GetOptions (props) {
         GedungList();
     }, [])
 
+    const is_staff = localStorage.getItem('is_staff');
+
+    const EditButton = (gedung) => {
+        if(is_staff == 'true') {
+            return (
+                <TableCell align='right'>
+                    <Link to={`/gedung/edit/${gedung}`} id='moreInfo'>
+                        <EditOutlinedIcon style={{ fontSize: '10px' }} /> Edit
+                    </Link>
+                </TableCell>
+            )
+        }
+        return null;
+    }
+
     const searchResult = () => {
         return gedung.filter(params => {
             if(searchParams === ''){
@@ -69,11 +84,7 @@ export default function GetOptions (props) {
                 <TableCell align='right'>
                     {ged.mg_gedung}
                 </TableCell>
-                <TableCell align='right'>
-                    <Link to={`/gedung/edit/${ged.gedung}`} id='moreInfo'>
-                        <EditOutlinedIcon style={{ fontSize: '10px' }} /> Edit
-                    </Link>
-                </TableCell>
+                { EditButton(ged.gedung) }
             </TableRow>
             );
         }, this);
@@ -94,7 +105,7 @@ export default function GetOptions (props) {
                         <TableCell>ID Gedung</TableCell>
                         <TableCell align='right'>Gedung</TableCell>
                         <TableCell align='right'>MG Gedung</TableCell>
-                        <TableCell align='right'>Aksi</TableCell>
+                        { is_staff == 'true' && <TableCell align='right'>Aksi</TableCell> }
                     </TableRow>
                 </TableHead>
                 <TableBody>

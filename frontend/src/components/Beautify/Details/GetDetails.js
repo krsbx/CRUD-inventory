@@ -246,7 +246,7 @@ export default function GetDetails (props) {
         //Update Peminjaman Detail
         //  Patch the DetailPeminjaman table to make sure that the object has been returned
         await axiosInstance.patch(`/api/detail/${nomor_peminjaman}`, {
-            'kembali' : !kembaliBool,
+            'status' : !kembaliBool,
         }).then((result) => {
             //Print the result after patching
             console.log(result.data);
