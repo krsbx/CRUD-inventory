@@ -3,8 +3,8 @@ from django.http import HttpResponse
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializer import PegawaiSerializer, BarangSerializer, PeminjamanSerializer
-from .models import Pegawai, TabelPeminjaman, TabelBarang
+from .serializer import BarangSerializer, PeminjamanSerializer
+from .models import TabelPeminjaman, TabelBarang
 from rest_framework import permissions
 
 #All this view is used for API View
@@ -14,29 +14,6 @@ from rest_framework import permissions
 #The View with View class name is for post/get request
 #   The View with Detail class name is for detailed request informations
 
-class PegawaiView(generics.ListCreateAPIView):
-    queryset = Pegawai.objects.all()
-    serializer_class = PegawaiSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def perform_create(self, serializer):
-        return serializer.save()
-
-    def get_queryset(self):
-        return self.queryset.all()
-
-class PegawaiDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Pegawai.objects.all()
-    serializer_class = PegawaiSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-    lookup_field = "nip_nrk"
-
-    def perform_create(self, serializer):
-        return serializer.save()
-
-    def get_queryset(self):
-        return self.queryset.filter()
-
 class PeminjamanView(generics.ListCreateAPIView):
     queryset = TabelPeminjaman.objects.all()
     serializer_class = PeminjamanSerializer
@@ -44,7 +21,18 @@ class PeminjamanView(generics.ListCreateAPIView):
     pagination_class = None
 
     def perform_create(self, serializer):
-        return serializer.save(nip_nrk=self.request.user, nama_pegawai=self.request.user.nama_pegawai)
+        nip_nrk = None
+        nama_pegawai = None
+        
+        try:
+            nip_nrk = serializer.validated_data['nip_nrk']
+            nama_pegawai = serializer.validated_data['nama_pegawai']
+        finally:
+            if(nip_nrk == None and nama_pegawai == None):
+                return serializer.save(nip_nrk=self.request.user, nama_pegawai=self.request.user.nama_pegawai)
+            else:
+                return serializer.save()
+
 
     def get_queryset(self):
         return self.queryset.all()

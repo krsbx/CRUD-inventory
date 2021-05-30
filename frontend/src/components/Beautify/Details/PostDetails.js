@@ -18,19 +18,20 @@ export default function PinjamBarang (props) {
     const [ruang, SetRuang] = useState([]);
     const [stkBrg, setStkBrg] = useState(0);
     const [bast, setBAST] = useState('Tidak ada file terpilih');
+    const is_staff = localStorage.getItem('is_staff');
+    const [pegawai, setPegawai] = useState([]);
     
     /*
         handleChange function will set the state value for input fields
     */
 
-    function DetHandleChange(field, e) {
+    function PeminjamanOptions(field, val) {
         let fields = detFields;
-
-        if(field != "kode_barang" && field != "ruang"){
-            fields[field] = e.target.value;
-        }
         
-        SetDetFields(fields);
+        fields[field] = val[field];
+        fields['nip_nrk'] = val['nip_nrk'];
+
+        SetPinFields(fields);
     }
 
     function OptionHandler(field, val) {
@@ -38,10 +39,10 @@ export default function PinjamBarang (props) {
         
         fields[field] = val[field];
 
-        if(field == "kode_barang"){
+        if(field == "kode_barang") {
             fields["nama_barang"] = val['nama_barang'];
             setStkBrg(val['stock']);
-        }else if(field == "ruang"){
+        }else if(field == "ruang") {
             fields["gedung"] = val['gedung'];
         }
 
@@ -119,7 +120,6 @@ export default function PinjamBarang (props) {
         }
 
         SetPinErrors(errors);
-        console.log(pinErrors);
         return formIsValid;
     }
 
@@ -289,6 +289,41 @@ export default function PinjamBarang (props) {
         });
     }
 
+    const GetPegawai = () => {
+        axiosInstance.get(`/api/user/`).then((result) => {
+            const data = result.data;
+                
+            let userList =
+            data.map((usr) => {
+                return {
+                    nip_nrk: usr.nip_nrk,
+                    nama_pegawai: usr.nama_pegawai,
+                }
+            }, this);
+    
+            setPegawai(userList);
+        });
+    }
+
+    const UserSelections = () => {
+        if(is_staff == 'true') {
+            return (
+                <p>
+                    <Autocomplete
+                        options={pegawai}
+                        getOptionLabel={opt => `${opt['nama_pegawai']}`}
+                        onChange={(e, val) => PeminjamanOptions('nama_pegawai', val)}
+                        style={{ width: 300 }}
+                        renderInput={(params) => <TextField {...params} label="Pegawai" variant="outlined" />}
+                    />
+                    <br />
+                </p>
+            );
+        } else {
+            return null;
+        }
+    }
+
     /*
         useEffect function will be called on page loaded
             when page loaded, call GetGedungName function, GetRuang function, GetBarang function
@@ -297,6 +332,7 @@ export default function PinjamBarang (props) {
     useEffect(() => {
         GetRuang();
         GetBarang();
+        GetPegawai();
     }, []);
 
     /*
@@ -309,8 +345,6 @@ export default function PinjamBarang (props) {
         SetPinFields(fields);
 
         setBAST(e.target.files[0]['name']);
-
-        console.log(e.target.files[0]);
     }
 
     /*
@@ -331,6 +365,8 @@ export default function PinjamBarang (props) {
     return (
         <div className="PostDetails">
             <form onSubmit={PostPeminjaman}>
+                {/* User Fileds */}
+                    { UserSelections() }
                 {/* Barang Field */}
                 <p>
                     <Autocomplete

@@ -5,7 +5,7 @@ import { Button, TextField, InputLabel, FormControl, Input } from '@material-ui/
 import firebase from '../../Firebase/FirebaseSDK';
 
 export default function EditBarang() {
-  const [barang, setBarang] = useState({});
+  const [nama_barang, setNama] = useState('');
   const [merk, setMerk] = useState('');
   const [stock, setStock] = useState('');
   const [bast, setBAST] = useState('');
@@ -17,9 +17,7 @@ export default function EditBarang() {
         //Retrieved response body of the request
         const data = result.data;
 
-        //Set barang values to toBarang
-        setBarang( data );
-
+        setNama(data.nama_barang);
         setMerk(data.merk);
         setStock(data.stock);
         setBAST(data.BAST_perolehan);
@@ -82,15 +80,10 @@ export default function EditBarang() {
   return (
     <div>
         <form onSubmit={UpdateBarang}>
-            {/* Kode Barang Field */}
-            <p>
-                <br /> <TextField type='text' size="30" value={barang["kode_barang"]} 
-                variant="outlined" inputProps={{ readOnly: true, }} />
-            </p>
             {/* Nama Barang Field */}
             <p>
-                <br /> <TextField type='text' size="30" value={barang["nama_barang"]} 
-                variant="outlined" inputProps={{ readOnly: true, }}/>
+                <br /> <TextField type='text' size="30" value={nama_barang} 
+                variant="outlined" label='Nama Barang' inputProps={{ readOnly: true, }}/>
             </p>
             {/* Merk Barang Field */}
             <p>

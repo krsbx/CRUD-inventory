@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializer import RegisterSerializer, LoginSerializer
+from rest_framework import permissions
+from .models import UserAccounts
 
 
 #All this view is used for API View
@@ -27,3 +28,12 @@ class RegisterView(generics.CreateAPIView):
 
 class LoginView(TokenObtainPairView):
     serializer_class = LoginSerializer
+
+class PegawaiView(generics.ListAPIView):
+    queryset = UserAccounts.objects.all()
+    serializer_class = RegisterSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    pagination_class = None
+
+    def get_queryset(self):
+        return self.queryset.all()
