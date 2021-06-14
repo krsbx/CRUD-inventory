@@ -1,6 +1,0 @@
-POST http://localhost:8000/api/login HTTP/1.1
-["[HEAD]"  "Content-Type: application/json"]
-{
-  "nip_nrk": "admin",
-  "password": "initubespbo"
-}
